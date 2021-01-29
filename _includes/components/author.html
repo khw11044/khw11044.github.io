@@ -14,10 +14,10 @@
             {% include_cached components/hy-img.html class="avatar" img=author.picture alt=author.name width="180" height="180" %}
         {% endif %}
 
-        
+
     <div class="author-body-description" style="margin-left: 200px; margin-top: 40px;" >
         <span style = " font-size:1.4em;  color: rgb(0, 0, 0);"><strong>{{ author.name | markdownify }}</strong></span>
-        <span style = "font-size:1em; color: rgb(141, 141, 141);"><b>{{ author.about | markdownify }}</b></span>
+        <span style = "font-size:1em; color: rgb(141, 141, 141);">{{ author.about | markdownify }}</span>
     </div>
        <!--소셜-->
        <div class="sidebar-social" style="margin-top: 30px; margin-left: 15px;">
