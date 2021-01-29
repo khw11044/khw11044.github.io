@@ -221,8 +221,13 @@ Reference-style:
 
 누가 대신 해결해줬으면 좋겠네요..
 
-💡도움말 : GitHub 페이지는 safe모드 에서 실행되며 허용 된 플러그인 집합 만 허용 합니다 . GitHub 페이지에서 gem을 사용하려면 로컬에서 빌드하거나 CI (예 : travis , github workflow )를 사용하고 gh-pages브랜치에 배포해야합니다 .
+<br>
+
+💡**도움말** : GitHub 페이지는 safe모드 에서 실행되며 [허용 된 플러그인 집합](https://pages.github.com/versions/) 만 허용 합니다 . GitHub 페이지에서 gem을 사용하려면 로컬에서 빌드하거나 CI (예 : [travis](https://travis-ci.org/) , [github workflow](https://docs.github.com/en/actions/learn-github-actions) )를 사용하고 gh-pages브랜치에 배포해야합니다 .
 
 무제한 GitHub 페이지에 대한 추가 사항
 다음은 Jekyll 사이트 배포를위한 [jekyll-deploy-action](https://github.com/jeffreytse/jekyll-deploy-action) 이라는 GitHub 작업 입니다.👍
 다음은 Travis를 사용하여 참조를 위해 GitHub 페이지를 구축하고 배포 하는 [Jekyll 사이트](https://github.com/jeffreytse/jekyll-jeffreytse-blog) 입니다.
+
+
+아...또 몇시간했는데 해결 못했다...ㅠ
