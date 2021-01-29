@@ -18,7 +18,7 @@ layout: base
 
       <div class="author-body-description" style="margin-left: 200px; margin-top: 40px;" >
         <span style = " font-size:1.4em;  color: rgb(0, 0, 0);"><strong>{{ author.name | markdownify }}</strong></span>
-        {{ author.about | markdownify }}
+        <span style = "font-size:0.5em; color: rgb(141, 141, 141);"><b>{{ author.about | markdownify }}
     </div>
     {% endcapture %}
     {% assign content = content | replace:"<!--author-->", author_x %}
