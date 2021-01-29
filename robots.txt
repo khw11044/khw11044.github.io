@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://khw11044.github.io/sitemap.xml

@@ -1,0 +1,27 @@
+{% if page.noindex or page.no_index or page.sitemap == false %}
+  <meta name="robots" content="noindex">
+{% endif %}
+
+{% unless page.redirect %}
+  {% if plugins contains 'jekyll-seo-tag' %}
+    {% include head/seo-tag.html %}
+  {% else %}
+    {% include head/seo-fallback.html %}
+  {% endif %}
+
+  {% if site.keywords.size > 0 or page.keywords.size > 0 %}
+    <meta name="keywords" content="{{ page.keywords | default:site.keywords | join:',' }}">
+  {% endif %}
+{% else %}
+  <meta http-equiv="refresh" content="0; url={{ page.redirect.to }}">
+  <title>{{ site.data.strings.redirecting | default:"Redirecting..." }}</title>
+{% endunless %}
+
+<!-- tipuesearch -->
+<link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+{% if page.tipue_search_active %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+<script src="/assets/tipuesearch/tipuesearch.min.js"></script>
+{% endif %}

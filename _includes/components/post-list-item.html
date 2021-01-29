@@ -1,0 +1,9 @@
+{% assign post = include.post %}
+{% assign format = include.format | default:site.data.date_formats.related_post | default:"%Y년 %m월 %d일" %}
+
+<li class="h6">
+  <div>
+    <a href="{{ post.url | relative_url }}" class="flip-title"><span>{{ post.title }} </span></a>
+    <time style="display: inline-block; width: 10rem" class="faded fine" datetime="{{ post.date | date_to_xmlschema }}">_{{ post.date | date:format }}</time>
+  </div>
+</li>

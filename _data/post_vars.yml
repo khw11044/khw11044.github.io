@@ -1,0 +1,15 @@
+ps:
+  imgpath:              /assets/img/problem-solving
+
+cs:
+  imgpath:              /assets/img/docs/computer-science
+os:
+  imgpath:              /assets/img/docs/computer-science/operating-system
+network:
+  imgpath:              /assets/img/docs/computer-science/network
+
+guitar:
+  imgpath:              /assets/img/log/guitar
+
+java:
+  imgpath:              /assets/img/docs/java

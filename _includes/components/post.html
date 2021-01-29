@@ -1,0 +1,76 @@
+{% assign post             = include.post             %}
+{% assign no_link_title    = include.no_link_title    %}
+{% assign no_excerpt       = include.no_excerpt       %}
+{% assign hide_image       = include.hide_image       %}
+{% assign hide_description = include.hide_description %}
+
+<!--제목-->
+<article id="post{{ post.id | replace:'/','-' }}" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title flip-project-title">
+      {% unless no_link_title %}<a href="{{ post.url | relative_url }}" class="flip-title">{% endunless %}
+        {{ post.bigtitle }}
+      {% unless no_link_title %}</a>{% endunless %}
+    </h1>
+    <!--부제목-->
+    <h2 class="post-title flip-project-shubtitle">
+      {% unless no_link_title %}<a href="{{ post.url | relative_url }}" class="flip-subtitle">{% endunless %}
+        {{ post.subtitle }}
+      {% unless no_link_title %}</a>{% endunless %}
+    </h2>
+    <div class="post-date">
+      {% assign category_start     = "카테고리 : "     | default:" in " %}
+      {% assign tag_start          = "  tag #"          | default:" - " %}
+      {% assign category_separator = site.data.strings.category_separator | default:" >> " %}
+      {% assign tag_separator      = " #"     | default:". "  %}
+      {% include components/tag-list.html tags=post.categories meta=site.featured_categories start_with=category_start separator=category_separator %}
+      {% include components/tag-list.html tags=post.tags meta=site.featured_tags start_with=tag_start separator=tag_separator %}
+      <br>
+      <!--년월일-->
+      {% assign post_format = "%Y년 %m월 %d일 글" | default:"%Y %m %d" %}
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date:post_format }}</time>
+    </div>
+    {% assign alt = false %}
+    {% unless hide_image %}{% if post.image %}
+      {% unless no_link_title %}<a href="{{ post.url | relative_url }}" class="no-hover no-print-link {% unless post.hide_image %}flip-project{% endunless %}" tabindex="-1">{% endunless %}
+        <div class="lead aspect-ratio sixteen-nine flip-project-img">
+          {% include_cached components/hy-img.html img=post.image alt=post.title width=864 height=486 %}
+        </div>
+      {% unless no_link_title %}</a>{% endunless %}
+      {% assign alt = '' %}
+    {% endif %}{% endunless %}
+
+    {% include components/message.html text=post.description hide=hide_description alt=alt %}
+    <!--상단버튼-->
+    {% include page-button.html %}
+      <div style="text-align:right; text-align: center">
+          <a href="https://hits.seeyoufarm.com/{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}"
+            target="_blank">
+            <img
+            src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}&count_bg=%23293786&title_bg=%23555555&icon=bilibili.svg&icon_color=%23E7E7E7&title=.&edge_flat=false"/>
+          </a>
+      </div>
+  </header>
+  <div class="markdown-body">
+  {% if no_excerpt %}
+    {{ post.content }}
+  {% else %}
+    {{ post.excerpt }}
+  <!--하단버튼-->
+  <div class="bottom_related" style="margin-top: 15rem;">
+    {% include page-button.html %}
+  </div>
+  </div>
+
+    {% capture post_title %}<a class="heading flip-title" href="{{ post.url | relative_url }}">{{ post.title }}</a>{% endcapture %}
+    {% assign text = site.data.strings.continue_reading | default:"Continue reading <!--post_title-->" %}
+    <!--footer-->
+    <footer>
+      <p class="read-more">
+        {{ text | replace:"<!--post_title-->", post_title }}
+      </p>
+
+    </footer>
+  {% endif %}
+</div>
+</article>

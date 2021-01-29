@@ -1,0 +1,4 @@
+a.external::after, a[href*="://"]:not(.no-mark-external):not(.no-mark)::after, a.no-push-state:not(.no-mark-external):not(.no-mark)::after {
+    content: '';
+    content: none;
+}
