@@ -341,13 +341,6 @@ graph TD;
     C-->D;
 ~~~
 
-{% mermaid %}
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-{% endmermaid %}
 
 + 한번 사용한 노드는 이후에도 변수명처럼 재활용할 수 있습니다.
 
