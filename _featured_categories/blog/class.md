@@ -10,4 +10,5 @@ addons:
   - related
   - comments
 list: true
+order: 3
 ---

@@ -1,14 +1,14 @@
 ---
 layout: post
 category: blog
-bigtitle: ML/DL
+bigtitle: Papers
 description: >
-  Machine Learning, Deep Learning 공부 내용
+  논문읽기, 논문 공부
 related_posts:
   -
 addons:
   - related
   - comments
 list: true
-order: 4
+order: 5
 ---
