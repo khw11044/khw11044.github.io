@@ -158,7 +158,7 @@ wang의 논문
 
 - 이 모델은 직접 raw spectrogram을 예측하지만, 이는 speech signal과 text 사이에 alignment를 학습하기 위해서는 매우 불필요하다.(이 작업은 실제로 seq2seq를 사용하는 동기이다)
 
-- 이러한 불필요한 중복성(redundancy) 때문에, 모델에서 seq2seq 디코딩과 waveform 합성을 위해 다른 타겟을 사용한다.
+- 이러한 불필요한 중복성(redundancy) 때문에, 모델에서 seq2seq 디코딩과 waveform 합성을 위해 다른 타겟을 사용한다.(이 작업은 실제로 seq2seq를 사용하는 동기이다)
 
 - 수정되거나 훈련될수 있는 inversion process에 대한 prosody(운율) 정보와 sufficient intelligibility를 제공하는 한, seq2seq 타겟은 매우 압축될 수 있다.
 
