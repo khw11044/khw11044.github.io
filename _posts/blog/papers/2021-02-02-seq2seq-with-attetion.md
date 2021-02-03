@@ -58,11 +58,14 @@ How are you ? = 잘 지내?
 
 결과적으로 최종 RNN cell의 state는 'I love you'라는 information을 함축하고 있다. 이 벡터를 Context(문맥) vector라고 한다.
 
-문맥 벡터로 부터 번역을 하게된다.
-시작을 하게되므로 <start> 신호를 받게된다.
-<end>라는 신호를 받을때 까지 번역을 해준다.
+
+문맥 벡터로 부터 번역을 하게된다.  
+시작을 하게되므로 <start> 신호를 받게된다.  
+<end>라는 신호를 받을때 까지 번역을 해준다.  
+
 
 이러한 방법을 'Encoder-Decoder' 아키텍쳐라고 부르고 때로는 Sequence-to-Sequence 모델이라고 부른다.
+
 
 Encoder가 하는 주 역할은 각 단어를 순차적으로 받음으로서 최종적으로 Context vector를 만드는데 있다.
 
