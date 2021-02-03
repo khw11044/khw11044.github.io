@@ -107,7 +107,7 @@ wang의 논문
 
 - CBHG는 시퀀스에서 표현(representations)을 추출하는 강력한 모듈이다.
 
-- 입력 시퀀스(input sequence)는 먼저 $K$ sets의 1-D convolutional filters를 통과한다. 여기서 k번째 세트는 k너비(width)를 가지는 $C_k$(convolution filter)이다$(k = 1, 2,...,K)$.
+- 입력 시퀀스(input sequence)는 먼저 $$K$$ sets의 1-D convolutional filters를 통과한다. 여기서 k번째 세트는 k너비(width)를 가지는 $$C_k$$(convolution filter)이다$$(k = 1, 2,...,K)$$.
 
 - 이러한 필터는 로컬 및 (unigrams, bigrams, up to K-grams 모델링과 유사한)contextual information(문맥정보)를 명시적으로 모델링한다.
 
