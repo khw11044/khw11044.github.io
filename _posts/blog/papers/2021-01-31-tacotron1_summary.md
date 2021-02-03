@@ -326,8 +326,7 @@ wang의 논문
 
 - 이 모델은 단순히 랜덤초기화와 함께 처음부터 학습될 수 있다.
 
-- 최근 학습된 text normalization이 text normalization을 불필요하게 만들지라고 간단한 text normalization을 사용하였다.
-
+- 학습된 text normalization에서의 최근 발전이 미래에는 text normalization을 불필요하게 할수 있겠지만, 이 모델에서는 simple text normalization을 사용하였다.
 
 - 우리는 아직 우리의 모델을 많은 측면에서 더 조사해야한다. 많은 초기 모델을 바꾸지 않은 상태다.
 
