@@ -116,7 +116,7 @@ Decoder의 역할은 Context vector로 부터 기계번역을 시작하는 역�
 
 그렇게 하여 첫번째 문맥 벡터(context vector)를 만든다.
 cv1는 context vector를 의미한다.
-<start> 신호와 함께 RNN cell에 넣어준다.
+\<start\> 신호와 함께 RNN cell에 넣어준다.
 
 ![fig8](/assets/img/Blog/papers/attention08.JPG)
 
