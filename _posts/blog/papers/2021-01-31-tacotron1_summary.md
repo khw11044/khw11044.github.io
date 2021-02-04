@@ -143,7 +143,7 @@ wang의 논문
 
 - CBHG기반 Encoder가 overfitting을 줄일뿐만 아니라 standard multi-layer RNN encoder보다 덜 잘못발음한다는것을 발견했다.
 
-> Table 1: Hyper-parameters와 network architectures. “conv-k-c-ReLU”는 ReLu activation과 함께 width $k$와 $c$ output channels이 있는 1-D convolution을 의미한다.
+> Table 1: Hyper-parameters와 network architectures. “conv-k-c-ReLU”는 ReLu activation과 함께 width $$k$$와 $$c$$ output channels이 있는 1-D convolution을 의미한다.
 
 ![tacotron1_03](/assets/img/Blog/papers/tacotron1_03.JPG)
 
