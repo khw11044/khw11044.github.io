@@ -192,7 +192,7 @@ wang의 논문
 
 - 학습하는 동안은 항상 모든 r-번째 ground truth frame을 decoder에 입력한다.
 
-- 입력 프레임은 incoder에서 사용되었던 prenet을 통과한다.
+- 입력 프레임은 encoder에서 사용되었던 prenet을 통과한다.
 
 - scheduled sampling과 같은 테크닉을 사용하지 않기 때문에 pre-net에서 dropout은 모델을 일반화하는데 중요한 역할을 한다. 그것은 출력 분포의 다양한 양상을 해결하기 위해 noise source를 공급한다.
 
