@@ -641,6 +641,7 @@ _   underscore
 | 차원 확인 | .ndim | .dim()|
 | 크기 확인 | .shape | .size()|
 
+> 🖍 Tip: 한 행에서 Ctrl 누르고 위,아래 화살표를 누르면 그 행을 위아래로 이동시킬수 있다.
 ---
 
 ## 12 Expander control

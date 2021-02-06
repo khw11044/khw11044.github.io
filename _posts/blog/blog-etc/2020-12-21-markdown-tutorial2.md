@@ -17,7 +17,7 @@ related_posts:
 
 ---
 
-# 마크다운 문법정리2_수학수식 katex
+# 마크다운 문법정리2_수학수식, 특수문자
 
 ## 개요
 > 내가 보기위한 마크다운 `Markdown` 작성법2 수식  
@@ -158,7 +158,7 @@ big, Big, bigg, Bigg 문자를 사용하면 수동으로 괄호 사이즈를 조
 $$\Bigg( \bigg( \Big( \big( ( ) \big) \Big) \bigg) \Bigg)$$
 
 ```
-$\Bigg( \bigg( \Big( \big( ( ) \big) \Big) \bigg) \Bigg)$
+$$\Bigg( \bigg( \Big( \big( ( ) \big) \Big) \bigg) \Bigg)$$
 ```
 
 ### 4위첨자 지수 / Power
@@ -167,50 +167,50 @@ $\Bigg( \bigg( \Big( \big( ( ) \big) \Big) \bigg) \Bigg)$
 $$2^2=4$$
 
 ```
-$2^2=4$
+$$2^2=4$$
 ```
 
 ### 5아래첨자 / Indices
 각 아이템의 아래첨자는 _ 문자로 표기합니다. _문자는 이후에 극한, 시그마, 적분표기 처럼 아래에 표기해야 하는 수식에서도 활용됩니다.
 
-$a_1, a_2, a_3$
+$$a_1, a_2, a_3$$
 
 ```
-$a_1, a_2, a_3$
+$$a_1, a_2, a_3$$
 ```
 
 ### 6dots
 점을 출력하는 방법을 알아보겠습니다.
 수와 수 사이에 값이 존재하는 상황에서 생략적 표기로 점을 많이 사용합니다.
 
-$\dots$
+$$\dots$$
 
 ```
-$\dots$
+$$\dots$$
 ```
 
 가운데를 기준으로 점을 표기합니다.
 
-$\cdots$
+$$\cdots$$
 
 ```
-$\cdots$
+$$\cdots$$
 ```
 
 새로로 점을 표기하는 방법입니다. 세로형태의 행렬, 매트릭스 내부에서 활용합니다.
 
-$\vdots$
+$$\vdots$$
 
 ```
-$\vdots$
+$$\vdots$$
 ```
 
 대각선을 점을 표시하는 방법입니다. 행렬, 매트릭스를 표기할 때 대각선방향에 활용합니다.
 
-$\ddots$
+$$\ddots$$
 
 ```
-$\ddots$
+$$\ddots$$
 ```
 
 ### 7루트(거듭제곱근) / Root
@@ -219,7 +219,7 @@ $\ddots$
 $$\sqrt{2}$$
 
 ```
-$\sqrt{2}$
+$$\sqrt{2}$$
 ```
 
 ### 8펙토리얼 / Factorial
@@ -228,14 +228,14 @@ $\sqrt{2}$
 3!은 (3,2,1),(3,1,2)(2,1,3)(2,3,1),(1,2,3)(1,3,2) 총 6개의 경우의 수가 존재합니다.
 3x2x1=6 으로 계산했을때 결과와 경우의 수는 같습니다.
 
-$n!$
+$$n!$$
 
 $$n! = 1 \times 2 \times 3 \times \ldots n$$
 
 ~~~
-$n!$
+$$n!$$
 
-$n! = 1 \times 2 \times 3 \times \ldots n$
+$$n! = 1 \times 2 \times 3 \times \ldots n$$
 ~~~
 
 펙토리얼을 Product 표기법을 사용해서 표현하면 아래와 같습니다.
@@ -243,7 +243,7 @@ $n! = 1 \times 2 \times 3 \times \ldots n$
 $$n! = \prod_{k=1}^n k$$
 
 ~~~
-$n! = \prod_{k=1}^n k$
+$$n! = \prod_{k=1}^n k$$
 ~~~
 
 
@@ -288,28 +288,28 @@ $$\cos (2\theta) = \cos^2 \theta - \sin^2 \theta$$
 ~~~
 
 #### 파이 / Pi
-$\pi$
+$$\pi$$
 
-$\Pi$
+$$\Pi$$
 
-$\phi$
+$$\phi$$
 
 ~~~
-$\pi$
+$$\pi$$
 
-$\Pi$
+$$\Pi$$
 
-$\phi$
+$$\phi$$
 ~~~
 
 
 #### 각도
 90도
 
-$90^\circ$
+$$90^\circ$$
 
 ~~~
-$90^\circ$
+$$90^\circ$$
 ~~~
 
 ### 11극한, limit
@@ -332,30 +332,30 @@ $$\displaystyle\sum_{i=1}^{10} t_i$$
 
 ### 13로그 / log
 
-$\log_b a$
+$$\log_b a$$
 
 ```
-$\log_b a$
+$$\log_b a$$
 ```
 
 ### 14미분 / differential
 
-$\dv{Q}{t} = \dv{s}{t}$
+$$\dv{Q}{t} = \dv{s}{t}$$
 
 ```
-$\dv{Q}{t} = \dv{s}{t}$
+$$\dv{Q}{t} = \dv{s}{t}$$
 ```
 
 
 ### 15적분 / integral
-$\int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x$
+$$\int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x$$
 
-$\int\limits_a^b$
+$$\int\limits_a^b$$
 
 ~~~
-$\int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x$
+$$\int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x$$
 
-$\int\limits_a^b$
+$$\int\limits_a^b$$
 ~~~
 
 ### 16행렬 / list
@@ -380,30 +380,30 @@ $$A_{m,n} =
 ~~~
 
 ### 17벡터, 스칼라 / Vector, Scalar
-$\overrightarrow{AB}$
+$$\overrightarrow{AB}$$
 
-$\overline{AB}$
+$$\overline{AB}$$
 
 ~~~
-$\overrightarrow{AB}$
+$$\overrightarrow{AB}$$
 
-$\overline{AB}$
+$$\overline{AB}$$
 ~~~
 
 ### 18선그리기
 
-$\setlength{\unitlength}{3cm}
+$$\setlength{\unitlength}{3cm}
 \begin{picture}(1,1)
 \put(0,0){\line(1,0){1}}
 \put(0,0){\line(0,1){1}}
-\end{picture}$
+\end{picture}$$
 
 ~~~
-$\setlength{\unitlength}{3cm}
+$$\setlength{\unitlength}{3cm}
 \begin{picture}(1,1)
 \put(0,0){\line(1,0){1}}
 \put(0,0){\line(0,1){1}}
-\end{picture}$
+\end{picture}$$
 ~~~
 
 ### 좌표그리기
@@ -457,7 +457,83 @@ $$\setlength{\unitlength}{0.75mm}
 \end{picture}$$
 
 ### 논문에 자주 나오는 기호
-- 오메가 : $\omega$
+
+**특수문자**
+
+| 이름 | 명령어 | 반환 | | 이름 | 명령어 | 반환|
+| ---- | ------ | ---- | -- | --- | --- | --- |
+| 알파 | \alpha | $$\alpha$$ | | 크사이  | \xi  | $$\xi$$ |
+| 베타 | \beta | $$\beta$$ | |  오미크론 | o  | $$o$$ |
+| 감마 | \gamma | $$\gamma$$ | | 파이 | \pi  | $$\pi$$ |
+| 델타 | \delta | $$\delta$$ | | 로 | \rho | $$\rho$$ |
+| 엡실론 | \epsilon | $$\epsilon$$ | | 시그마 | \sigma | $$\sigma$$ |
+| 제타 | \zeta | $$\zeta$$ | | 타우  | \tau  | $$\tau$$ |
+| 에타 | \eta | $$\eta$$ | | 입실론  | \upsilon  | $$\upsilon$$ |
+| 세타 | \theta | $$\theta$$ | | 파이  | \phi | $$\phi$$ |
+| 이오타 | \iota | $$\iota$$ | | 카이  | \chi | $$\chi$$ |
+| 카파 | \kappa | $$\kappa$$ | | 오메가  | \omega | $$\omega$$ |
+| 람다 | \lambda | $$\lambda$$ | | 뉴  | \nu | $$\nu$$ |
+| 뮤 | \mu | $$\mu$$ | |   |   | |
+
+
+
+**관계연산자**
+
+| 이름 | 명령어 | 반환 | | 이름 | 명령어 | 반환|
+| ---- | ------ | ---- | -- | --- | --- | --- |
+| 합동 | \equiv | $$\equiv$$ | | 근사  | \approx | $$\approx$$ |
+| 비례 | \propto | $$\propto$$ | | 같고 근사  | \simeq | $$\simeq$$ |
+| 닮음 | \sim | $$\sim$$ | | 같지 않음  | \neq | $$\neq$$ |
+| 작거나 같음 | \leq | $$\leq$$ | | 크거나 같음  | \geq  | $$\geq$$ |
+| 매우작음 | \ll | $$\ll$$ | | 매우 큼 | \gg  | $$\gg$$ |
+
+
+**논리기호**
+
+| 이름 | 명령어 | 반환 | | 이름 | 명령어 | 반환|
+| ---- | ------ | ---- | -- | --- | --- | --- |
+| 불릿 | \bullet | $$\bullet$$ | | 부정 | \neq  | $$\neq$$ |
+| wedge | \wedge | $$\wedge$$ | | vee | \vee | $$\vee$$ |
+| 논리합 | \oplus | $$\oplus$$ | | 어떤 | \exists | $$\exists$$ |
+| 오른쪽 </br>화살표 | \rightarrow | $$\rightarrow$$ | | 왼쪽 </br>화살표 | \leftarrow  | $$\leftarrow$$ |
+| 왼쪽 </br>큰화살표 | \Leftarrow | $$\Leftarrow$$ | | 오른쪽 </br>큰화살표 | \Rightarrow | $$\Rightarrow$$ |
+| 양쪽 </br>큰화살표 | \Leftrightarrow | $$\Leftrightarrow$$ | | 양쪽 </br>화살표  | \leftarrow | $$\leftarrow$$ |
+| 모든 | \forall | $$\forall$$ | |   |   |  |
+
+
+**집합기호**
+
+| 이름 | 명령어 | 반환 | | 이름 | 명령어 | 반환|
+| ---- | ------ | ---- | -- | --- | --- | --- |
+| 교집합 | \cap | $$\cap$$ | | 합집합 | \cup | $$\cup$$ |
+| 상위집합 | \supset | $$\supset$$ | | 진상위집합 | \supseteq | $$\supseteq$$ |
+| 하위집합 | \subset | $$\subset$$ | | 진하위집 | \subseteq | $$\subseteq$$ |
+| 부분집합아님 | \not\subset | $$\not\subset$$ | | 공집합 | \emptyset, \varnothing | $$\emptyset$$ $$\varnothing$$ |
+| 원소 | \in | $$\in$$ | | 원소아님  | \notin  | $$\notin$$ |
+
+
+**기타**
+
+| 이름 | 명령어 | 반환 | | 이름 | 명령어 | 반환|
+| ---- | ------ | ---- | -- | --- | --- | --- |
+| hat | \hat{x} | $$\hat{x}$$ | | widehat  | \widehat{x} | $$\widehat{x}$$ |
+| 물결 | \tilde{x} | $$\tilde{x}$$ | | wide물결 | \widetilde{x} | $$\widetilde{x}$$ |
+| bar | \bar{x} | $$\bar{x}$$ | | overline | \overline{x} | $$\overline{x}$$ |
+| check | \check{x} | $$\check{x}$$ | | acute | \acute{x} | $$\acute{x}$$ |
+| grave | \grave{x} | $$\grave{x}$$ | | dot | \dot{x} | $$\dot{x}$$ |
+| ddot | \ddot{x} | $$\ddot{x}$$ | | breve | \breve{x} | $$\breve{x}$$ |
+| vec | \vec{x} | $$\vec{x}$$ | |   |   |  |
+| 수직 | \perp | $$\perp$$ | | 평행 | \parallel | $$\parallel$$ |
+| 부분집합아님 | \not\subset | $$\not\subset$$ | | 공집합 | \emptyset | $$\emptyset$$ |
+| 가운데 점 | \cdot | $$\cdot$$ | | ... | \dots | $$\dots$$ |
+| 가운데 점들 | \cdots | $$\cdots$$ | | 세로점들 | \vdots | $$\vdots$$ |
+| 나누기 | \div | $$\div$$ | | 물결표 | \sim | $$\sim$$ |
+| 플마,마플 | \pm, \mp | $$\pm$$ $$\mp$$ | | 겹물결표 | \approx | $$\approx$$ |
+| prime | \prime | $$\prime$$ | | 무한대 | \infty | $$\infty$$ |
+| 적분 | \int | $$\int$$ | | 편미분 | \partial | $$\partial$$ |
+| 한칸띄어 | x \, y | $$x\,y$$ | | 두칸 | x\;y  | $$x \; y$$ |
+| 네칸띄어 | x \quad y | $$x \quad y$$ | | 여덟칸띄어 | x \qquad y  | $$x \qquad y$$ |
+
 
 #### LaTex 참고자료
 아래 링크를 참고하시면 더 많은 LaTex정보를 보실 수 있습니다.
