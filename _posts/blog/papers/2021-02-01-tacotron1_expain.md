@@ -10,6 +10,10 @@ tags:
     - TextToSpeech
 comments: true
 published: true
+related_posts:
+    - _posts/blog/githubpage/2021-01-31-tacotron1_summary.md
+    - _posts/blog/githubpage/2020-02-02-seq2seq-with-attention.md
+    - _posts/blog/githubpage/2020-02-05-tacotron2.md
 ---
 
 # Tacotron: Towards End-to-End Speech Synthesis 자세한 설명

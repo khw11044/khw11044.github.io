@@ -10,9 +10,18 @@ tags:
     - TextToSpeech
 comments: true
 published: true
+related_posts:
+    - _posts/blog/githubpage/2021-02-01-tacotron1_expain.md
+    - _posts/blog/githubpage/2020-02-02-seq2seq-with-attention.md
+    - _posts/blog/githubpage/2020-02-05-tacotron2.md
 ---
 
 # Tacotron: Towards End-to-End Speech Synthesis 요약, 정리
+
+colab에서 수행 코드
+
+> [colab에서 수행 코드 ](https://github.com/khw11044/Tacotron-in-colab)
+
 
 ## ABSTRACT(초록)
 

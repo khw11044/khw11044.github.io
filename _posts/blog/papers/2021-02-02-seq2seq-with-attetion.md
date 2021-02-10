@@ -11,6 +11,10 @@ tags:
     - MACHINE TRANSLATION
 comments: true
 published: true
+related_posts:
+    - _posts/blog/githubpage/2021-02-01-tacotron1_expain.md
+    - _posts/blog/githubpage/2021-02-01-tacotron1_summary.md
+    - _posts/blog/githubpage/2020-02-05-tacotron2.md
 ---
 
 # NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE
