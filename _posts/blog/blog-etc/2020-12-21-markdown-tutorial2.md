@@ -25,6 +25,10 @@ related_posts:
 ### katex 기호 모음
 > [katex 기호 모음](https://jjycjnmath.tistory.com/117)
 
+
+* toc
+{:toc}
+
 # Math
 ---
 
@@ -124,7 +128,7 @@ LaTex에서 괄호를 사용하는 방법을 배워보겠습니다.
 $$(1+2)$$
 
 ```
-$(1+2)$
+$$(1+2)$$
 ```
 
 #### 중괄호
@@ -132,7 +136,7 @@ $(1+2)$
 $$\{1+2\}$$
 
 ```
-$\{1+2\}$
+$$\{1+2\}$$
 ```
 
 #### 대괄호
@@ -140,7 +144,7 @@ $\{1+2\}$
 $$[1+2]$$
 
 ```
-$[1+2]$
+$$[1+2]$$
 ```
 
 #### 자동 괄호 리사이즈
@@ -149,7 +153,7 @@ $[1+2]$
 $$\left(\frac{2}{3}\right)$$
 
 ```
-$\left(\frac{2}{3}\right)$
+$$\left(\frac{2}{3}\right)$$
 ```
 
 #### 수동 괄호 리사이즈
@@ -495,9 +499,9 @@ $$\setlength{\unitlength}{0.75mm}
 | 불릿 | \bullet | $$\bullet$$ | | 부정 | \neq  | $$\neq$$ |
 | wedge | \wedge | $$\wedge$$ | | vee | \vee | $$\vee$$ |
 | 논리합 | \oplus | $$\oplus$$ | | 어떤 | \exists | $$\exists$$ |
-| 오른쪽 </br>화살표 | \rightarrow | $$\rightarrow$$ | | 왼쪽 </br>화살표 | \leftarrow  | $$\leftarrow$$ |
-| 왼쪽 </br>큰화살표 | \Leftarrow | $$\Leftarrow$$ | | 오른쪽 </br>큰화살표 | \Rightarrow | $$\Rightarrow$$ |
-| 양쪽 </br>큰화살표 | \Leftrightarrow | $$\Leftrightarrow$$ | | 양쪽 </br>화살표  | \leftarrow | $$\leftarrow$$ |
+| 오른쪽 </br>화살표 | \rightarrow | $$\rightarrow$$ | | 왼쪽 <\br>화살표 | \leftarrow  | $$\leftarrow$$ |
+| 왼쪽 <\br>큰화살표 | \Leftarrow | $$\Leftarrow$$ | | 오른쪽 <\br>큰화살표 | \Rightarrow | $$\Rightarrow$$ |
+| 양쪽 <\br>큰화살표 | \Leftrightarrow | $$\Leftrightarrow$$ | | 양쪽 <\br>화살표  | \leftarrow | $$\leftarrow$$ |
 | 모든 | \forall | $$\forall$$ | |   |   |  |
 
 
