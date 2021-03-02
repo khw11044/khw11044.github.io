@@ -25,6 +25,7 @@ related_posts:
 ### katex 기호 모음
 > [katex 기호 모음](https://jjycjnmath.tistory.com/117)
 
+> [여기 다 있음](https://ko.wikipedia.org/wiki/%EC%9C%84%ED%82%A4%EB%B0%B1%EA%B3%BC:TeX_%EB%AC%B8%EB%B2%95)
 
 * toc
 {:toc}
@@ -342,7 +343,7 @@ $$\log_b a$$
 $$\log_b a$$
 ```
 
-### 14미분 / differential
+### 14 미분 / differential
 
 $$\dv{Q}{t} = \dv{s}{t}$$
 
@@ -351,7 +352,7 @@ $$\dv{Q}{t} = \dv{s}{t}$$
 ```
 
 
-### 15적분 / integral
+### 15 적분 / integral
 $$\int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x$$
 
 $$\int\limits_a^b$$
@@ -362,9 +363,8 @@ $$\int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x$$
 $$\int\limits_a^b$$
 ~~~
 
-### 16행렬 / list
+### 16 행렬 / matrix
 
-### 배열 / matrix
 $$A_{m,n} =
  \begin{pmatrix}
   a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
@@ -383,7 +383,19 @@ $$A_{m,n} =
  \end{pmatrix}$$
 ~~~
 
-### 17벡터, 스칼라 / Vector, Scalar
+$ \begin{bmatrix}
+a & b \\\\
+c & d
+\end{bmatrix}$
+
+~~~
+$ \begin{bmatrix}
+a & b \\\\
+c & d
+\end{bmatrix}$
+~~~
+
+### 17 벡터, 스칼라 / Vector, Scalar
 $$\overrightarrow{AB}$$
 
 $$\overline{AB}$$
