@@ -526,7 +526,7 @@ $$\setlength{\unitlength}{0.75mm}
 | check | \check{x} | $$\check{x}$$ | | acute | \acute{x} | $$\acute{x}$$ |
 | grave | \grave{x} | $$\grave{x}$$ | | dot | \dot{x} | $$\dot{x}$$ |
 | ddot | \ddot{x} | $$\ddot{x}$$ | | breve | \breve{x} | $$\breve{x}$$ |
-| vec | \vec{x} | $$\vec{x}$$ | |   |   |  |
+| vec | \vec{x} | $$\vec{x}$$ | | 델,나블라  | \nabla  | $$\nabla$$ |
 | 수직 | \perp | $$\perp$$ | | 평행 | \parallel | $$\parallel$$ |
 | 부분집합아님 | \not\subset | $$\not\subset$$ | | 공집합 | \emptyset | $$\emptyset$$ |
 | 가운데 점 | \cdot | $$\cdot$$ | | ... | \dots | $$\dots$$ |
