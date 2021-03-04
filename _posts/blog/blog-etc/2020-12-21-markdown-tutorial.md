@@ -773,8 +773,7 @@ $f(x) = x^2$
 
 <code>hello</code>
 
-<mark>hello</mark>
-
+<mark>hello</mark>  
 
 <under>hello</under>
 ---
