@@ -14,6 +14,9 @@ published: true
 
 # Pose Guided Person Image Genration
 
+Liqian Ma, Xu Jia2, Qianru Sun, Bernt Schiele, Tinne Tuytelaars, Luc Van Gool
+
+28 Jan 2018
 
 ## Abstract
 
