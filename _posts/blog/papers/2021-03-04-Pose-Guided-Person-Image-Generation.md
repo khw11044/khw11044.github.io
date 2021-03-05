@@ -130,17 +130,17 @@ The overall framework of the proposed Pose Guided Person Generation Network (PG<
 
 ### 3.1 Stage-I: Pose integration
 
-At stage-I, we integrate a conditioning person image _I<sub>A</sub>_ with a target pose _P<sub>B</sub>_ to generate a coarse result $\hat{I}_B$ that captures the global structure of the human body in the target image $I_B$.
+At stage-I, we integrate a conditioning person image _I<sub>A</sub>_ with a target pose _P<sub>B</sub>_ to generate a coarse result $$\hat{I}_B$$ that captures the global structure of the human body in the target image $$I_B$$.
 
 **Pose embedding**. To avoid expensive annotation of poses, we apply a state-of-the-art pose estimator [2] to obtain approximate human body poses.
 The pose estimator generates the coordinates of 18 keypoints.  
 Using those directly as input to our model would require the model to learn to map each keypoint to a position on the human body.
 
-Therefore, we encode pose $P_B$ as 18 heatmaps. Each heatmap is filled with 1 in a radius of 4 pixels around the corresponding keypoints and 0 elsewhere (see Figure 3, target pose).  
-We concatenate $I_A$ and $P_B$ as input to our model. In this way, we can directly use convolutional layers to integrate the two kinds of information.
+Therefore, we encode pose $$P_B$$ as 18 heatmaps. Each heatmap is filled with 1 in a radius of 4 pixels around the corresponding keypoints and 0 elsewhere (see Figure 3, target pose).  
+We concatenate $$I_A$$ and $$P_B$$ as input to our model. In this way, we can directly use convolutional layers to integrate the two kinds of information.
 
 **Generator G1**. As generator at stage I, we adopt a U-Net-like architecture [20], i.e., convolutional autoencoder with skip connections as is shown in Figure 2.  
-Specifically, we first use several stacked convolutional layers to integrate $I_A$ and $P_B$ from small local neighborhoods to larger ones so that appearance information can be integrated and transferred to neighboring body parts.
+Specifically, we first use several stacked convolutional layers to integrate $$I_A$$ and $$P_B$$ from small local neighborhoods to larger ones so that appearance information can be integrated and transferred to neighboring body parts.
 
 Then, a fully connected layer is used such that information between distant body parts can also exchange
 information.  
@@ -150,7 +150,7 @@ The result of the first stage is denoted as $\hat{I}$<sub>B1</sub>. In the U-Net
 In addition, we find that using residual blocks as basic component improves the generation performance.  
 In particular we propose to simplify the original residual block [7] and have only two consecutive conv-relu inside a residual block.
 
-**Pose mask loss**. To compare the generation $\hat{I}$<sub>B1</sub> with the target image $I_B$, we adopt L1 distance as the generation loss of stage-I.
+**Pose mask loss**. To compare the generation $$\hat{I}$$<sub>B1</sub> with the target image $$I_B$$, we adopt L1 distance as the generation loss of stage-I.
 
 However, since we only have a condition image and a target pose as input, it is difficult for the model to generate what the background would look like if the target image has a different background from the condition image.
 
@@ -162,7 +162,7 @@ $$L_{G1}=||G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad(1)$$
 ![Figure_3](/assets/img/Blog/papers/Pose-Guided-Person-Image-Generation/3.JPG)
 
 The pose mask $M_B$ is set to 1 for foreground and 0 for background and is computed by connecting human body parts and applying a set of morphological operations such that it is able to approximately cover the whole human body in the target image, see the example in Figure 3.  
-The output of $G_1$ is blurry because the L1 loss encourages the result to be an average of all possible cases [10].
+The output of $$G_1$$ is blurry because the L1 loss encourages the result to be an average of all possible cases [10].
 
 However, $G_1$ does capture the global structural information specified by the target pose, as shown in Figure 2, as well as other low-frequency information such as the color of clothes.  
 Details of body appearance, i.e. the high-frequency information, will be refined at the second stage through adversarial training.
