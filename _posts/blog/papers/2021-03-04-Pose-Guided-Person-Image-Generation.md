@@ -146,7 +146,7 @@ Then, a fully connected layer is used such that information between distant body
 information.  
 After that, the decoder is composed of a set of stacked convolutional layers which are symmetric to the encoder to generate an image.
 
-The result of the first stage is denoted as $\hat{I}$<sub>B1</sub>. In the U-Net, skip connections between encoder and decoder help propagate image information directly from input to output.  
+The result of the first stage is denoted as $$\hat{I}$$<sub>B1</sub>. In the U-Net, skip connections between encoder and decoder help propagate image information directly from input to output.  
 In addition, we find that using residual blocks as basic component improves the generation performance.  
 In particular we propose to simplify the original residual block [7] and have only two consecutive conv-relu inside a residual block.
 
@@ -164,7 +164,7 @@ $$L_{G1}=||G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad(1)$$
 The pose mask $M_B$ is set to 1 for foreground and 0 for background and is computed by connecting human body parts and applying a set of morphological operations such that it is able to approximately cover the whole human body in the target image, see the example in Figure 3.  
 The output of $$G_1$$ is blurry because the L1 loss encourages the result to be an average of all possible cases [10].
 
-However, $G_1$ does capture the global structural information specified by the target pose, as shown in Figure 2, as well as other low-frequency information such as the color of clothes.  
+However, $$G_1$$ does capture the global structural information specified by the target pose, as shown in Figure 2, as well as other low-frequency information such as the color of clothes.  
 Details of body appearance, i.e. the high-frequency information, will be refined at the second stage through adversarial training.
 
 ### 3.2 Stage-II: Image refinement
@@ -174,7 +174,7 @@ We use a variant of conditional DCGAN [21] as our base model and condition it on
 
 **Generator G2**. Considering that the initial result and the target image are already structurally similar, we propose that the generator G2 at the second stage aims to generate an appearance difference map that brings the initial result closer to the target image.
 
-The difference map is computed using a U-Net similar to the first stage but with the initial result $\hat{I}_{B1}$ and condition image $I_A$ as input instead.  
+The difference map is computed using a U-Net similar to the first stage but with the initial result $$\hat{I}_{B1}$$ and condition image $$I_A$$ as input instead.  
 The difference lies in that the fully-connected layer is removed from the U-Net.
 This helps to preserve more details from the input because a fully-connected layer compresses a lot of information contained in the input.
 
@@ -183,19 +183,19 @@ In particular, the training already starts from a reasonable result. The overall
 
 **Discriminator D**. In traditional GANs, the discriminator distinguishes between real groundtruth images and fake generated images (which is generated from random noise).
 
-However, in our conditional network, G2 takes the condition image $I_A$ instead of a random noise as input.
+However, in our conditional network, G2 takes the condition image $$I_A$$ instead of a random noise as input.
 Therefore, real images are the ones which not only are natural but also satisfy a specific requirement.
-Otherwise, G2 will be mislead to directly output $I_A$ which is natural by itself instead of refining the coarse result of the first stage $\hat{I}_{B1}$.
+Otherwise, G2 will be mislead to directly output $$I_A$$ which is natural by itself instead of refining the coarse result of the first stage $$\hat{I}_{B1}$$.
 
-To address this issue, we pair the G2 output with the condition image to make the discriminator D to recognize the pairs’ fakery, i.e., ($\hat{I}_{B2}$, $I_A$) vs ($I_B$, $I_A$). This is diagrammed in
-Figure 2. The pairwise input encourages D to learn the distinction between $I_{B2}$ and $I_B$ instead of only the distinction between synthesized and natural images.
+To address this issue, we pair the G2 output with the condition image to make the discriminator D to recognize the pairs’ fakery, i.e., ($$\hat{I}_{B2}$$, $$I_A$$) vs ($$I_B$$, $$I_A$$). This is diagrammed in
+Figure 2. The pairwise input encourages D to learn the distinction between $$I_{B2}$$ and $$I_B$$ instead of only the distinction between synthesized and natural images.
 
 Another difference from traditional GANs is that noise is not necessary anymore since the generator is conditioned on an image $I_A$, which is similar to [17]. Therefore, we have the following loss function for the discriminator D and the generator G2 respectively,
 
 $$L^D_{adv} = L_{bce}(D(I_A,I_B),1) + L_{bce}(D(I_A,G2(I_A, \hat{I}_{B1})),0),\qquad \qquad (2)$$
 $$L^G_{adv} = L_{bce}(D(I_A,G2(I_A,\hat{I}_{B1})),1), \qquad \qquad (3)$$
 
-where $\lambda$ is the weight of L1 loss. It controls how close the generation looks like the target image at low frequencies. When $\lambda$ is small, the adversarial loss dominates the training and it is more likely to generate artifacts; when $\lambda$ is big, the the generator with a basic L1 loss dominates the training, making the whole model generate blurry results<sup>2</sup>.
+where $$\lambda$$ is the weight of L1 loss. It controls how close the generation looks like the target image at low frequencies. When $$\lambda$$ is small, the adversarial loss dominates the training and it is more likely to generate artifacts; when $$\lambda$$ is big, the the generator with a basic L1 loss dominates the training, making the whole model generate blurry results<sup>2</sup>.
 
 In the training process of our DCGAN, we alternatively optimize discriminator D and generator G2.
 
@@ -224,9 +224,9 @@ The DeepFashion (In-shop Clothes Retrieval Benchmark) dataset [16] consists of 5
 
 We also experiment on a more challenging re-identification dataset Market-1501 [37] containing 32,668 images of 1,501 persons captured from six disjoint surveillance cameras. Persons in this dataset vary in pose, illumination, viewpoint and background, which makes the person generation task more challenging. All images have size 12864 and are split into train/test sets of 12,936/19,732 following [37]. In the train set, we have 439,420 pairs each of which is composed of two images of the same person but different poses. We randomly select 12,800 pairs from the test set for testing.
 
-**Implementation details** On both datasets, we use the Adam [13] optimizer with $\beta1 = 0.5$ and
-$\beta2 = 0.999$. The initial learning rate is set to $2e^{-5}$. On DeepFashion, we set the number of convolution blocks $N = 6$. Models are trained with a minibatch of size 8 for 30k and 20k iterations
-respectively at stage-I and stage-II. On Market-1501, we set the number of convolution blocks $N = 5$.
+**Implementation details** On both datasets, we use the Adam [13] optimizer with $$\beta1 = 0.5$$ and
+$$\beta2 = 0.999$$. The initial learning rate is set to $$2e^{-5}$$. On DeepFashion, we set the number of convolution blocks $$N = 6$$. Models are trained with a minibatch of size 8 for 30k and 20k iterations
+respectively at stage-I and stage-II. On Market-1501, we set the number of convolution blocks $$N = 5$$.
 Models are trained with a minibatch of size 16 for 22k and 14k iterations respectively at stage-I and
 stage-II. For data augmentation, we do left-right flip for both datasets<sup>3</sup>.
 
