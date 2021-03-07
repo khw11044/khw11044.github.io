@@ -35,34 +35,77 @@ Liqian Ma, Xu Jia2, Qianru Sun, Bernt Schiele, Tinne Tuytelaars, Luc Van Gool
 Generating realistic-looking images is of great value for many applications such as face editing, movie making and image retrieval based on synthesized images. Consequently, a wide range of methods have been proposed including Variational Autoencoders (VAE) [14], Generative Adversarial Networks (GANs) [6] and Autoregressive models (e.g., PixelRNN [30]).
 Recently, GAN models have been particularly popular due to their principle ability to generate sharp images through adversarial training.
 For example in [21, 5, 1], GANs are leveraged to generate faces and natural scene images and several methods are proposed to stabilize the training process and to improve the quality of generation.
+~~~
+사실적으로 보이는 이미지를 생성하는 것은 합성된 이미지를 기반으로 얼굴 편집, 영화 제작, 이미지 검색과 같은 많은 애플리케이션에 매우 중요하다. 결과적으로 Variational Autoencoders (VAE)[14], GAN(Generative Adversarial Network)[6] 및  Autoregressive models (e.g., PixelRNN [30])을 포함한 광범위한 방법이 제안되었다.
+최근 GAN 모델은 적대적 훈련을 통해 sharp images를 생성하는 principle ability으로 인해 특히 인기를 끌고 있다.
+예를 들어 [21, 5, 1]에서 GAN을 활용하여 얼굴 및 자연 장면 이미지를 생성하고 훈련 프로세스를 안정화하고 생성 품질을 개선하기 위해 몇 가지 방법을 제안한다.
+~~~
 
 From an application perspective, users typically have a particular intention in mind such as changing the background, an object’s category, its color or viewpoint.
+~~~
+응용 프로그램의 관점에서, 사용자는 일반적으로 배경, 객체 범주, 색상 또는 관점 변경과 같은 특정한 의도를 염두에 둔다.
+~~~
 
-<under>The key idea of our approach is to guide the generation process explicitly by an appropriate representation of that intention to enable direct control over the generation process.</under>
+<under>The key idea of our approach is to guide the generation process explicitly by an appropriate representation of that intention to enable direct control over the generation process.
+More specifically, we propose to generate an image by conditioning it on both a reference image and a specified pose.</under>  
+~~~
+우리의 접근 방식의 핵심 아이디어는 generation process를 직접 제어할 수 있도록 해당 의도를 적절히 표현하여 명시적으로 생성 프로세스를 안내하는 것이다.
+보다 구체적으로, 우리는 기준 이미지와 지정된 포즈 모두를 조건화하여 이미지를 생성할 것을 제안한다.
+~~~
 
-<under>More specifically, we propose to generate an image by conditioning it on both a reference image and a specified pose.</under>  
 With a reference image as condition, the model has sufficient information about the appearance of the desired object in advance.  
 The guidance given by the intended pose is both explicit and flexible. So in principle this approach can manipulate any object to an arbitrary pose.  
 In this work, we focus on transferring a person from a given pose to an intended pose.  
 There are many interesting applications derived from this task.
 For example, in movie making, we can directly manipulate a character’s human body to a desired pose or, for human pose estimation, we can generate training data for rare but important poses.
+~~~
+reference image를 조건으로 하여, 모델은 원하는 객체의 모양에 대한 충분한 정보를 사전에 갖는다.
+의도된 pose에 의해 제공되는 guidance는 명확하고 유연하다. 원칙적으로 이 접근 방식은 임의의 pose로 어떤 물체를 조작할 수 있다.
+이 작업에서, 우리는 주어진 자세에서 의도된 pose로 사람을 옮기는 데 초점을 맞춘다.
+이 작업에서 파생된 많은 흥미로운 응용 프로그램이 있다.
+예를 들어, 영화 제작에서 우리는 캐릭터의 인체를 원하는 포즈로 직접 조작하거나, human pose estimation을 위해 드물지만 중요한 포즈에 대한 훈련 데이터를 생성할 수 있다.
+~~~
 
-
-Transferring a person from one pose to another is a challenging task. A few examples can be seen in Figure 1.  
+Transferring a person from one pose to another is a challenging task.  
+A few examples can be seen in Figure 1.  
 It is difficult for a complete end-to-end framework to do this because it has to generate both correct poses and detailed appearance simultaneously.  
 Therefore, we adopt a divide-and conquer strategy, dividing the problem into two stages which focus on learning global human body structure and appearance details respectively similar to [35, 9, 3, 19].  
+~~~
+한 자세에서 다른 자세로 사람을 옮기는 것은 어려운 일이다.  
+몇 가지 예는 Figure 1에서 볼 수 있다.
+correct poses와 detailed appearance을 동시에 생성해야 하기 때문에 완전한 end-to-end framework가 이를 수행하기는 어렵다.
+따라서, 우리는 문제를 [35, 9, 3, 19]와 유사한 global human body structure와 appearance details을 학습하는 데 중점을 둔 두 단계로 나누는 divide-and conquer strategy을 채택한다.
+~~~
 
-
-At stage-I, we explore different ways to model pose information. A variant of U-Net is employed to integrate the target pose with the person image.  
+At stage-I, we explore different ways to model pose information.  
+A variant of U-Net is employed to integrate the target pose with the person image.  
 It outputs a coarse generation result that captures the global structure of the human body in the target image.  
 A masked L1 loss is proposed to suppress the influence of background change between condition image and target image.
 However, it would generate blurry result due to the use of L1.
+~~~
+I 단계에서, 우리는 포즈 정보를 모델링하는 다양한 방법을 탐구한다.  
+target pose와 person image를 통합하기 위해 변형된 U-Net이 사용된다.
+target image에서 global structure of the human body를 캡처하는 coarse generation result를 출력한다.
+condition image과 target image 사이의 배경 변화의 영향을 억제하기 위해 masked L1 loss가 제안된다.
+그러나 L1의 사용으로 인해 blurry result가 발생할 수 있다.
+~~~
 
 At stage-II, a variant of Deep Convolutional GAN (DCGAN) model is used to further refine the initial generation result.  
-The model learns to fill in more appearance details via adversarial training and generates sharper images. Different from the common use of GANs which directly learns to generate an image from scratch, in this work we train a GAN to generate a difference map between the initial generation result and the target person image. The training converges faster since it is an easier task.
+The model learns to fill in more appearance details via adversarial training and generates sharper images.  
+Different from the common use of GANs which directly learns to generate an image from scratch, in this work we train a GAN to generate a difference map between the initial generation result and the target person image. The training converges faster since it is an easier task.
+~~~
+단계 II에서, 초기 생성 결과를 더욱 세분화하기 위해 Deep Convolutional GAN(DCGAN) 모델의 변형이 사용된다.
+이 모델은 적대적 훈련을 통해 더 많은 appearance details을 채우는 방법을 배우고 더 선명한 이미지를 생성한다.  
+처음부터 이미지 생성을 직접 학습하는 GAN의 일반적인 사용과는 달리, 본 연구에서는 초기 생성 결과와 target person image 간에 차이 맵을 생성하도록 GAN을 훈련시킨다. 이 훈련이 더 쉬운 일이기 때문에 더 빨리 수렴된다.
+~~~
 
 Besides, we add a masked L1 loss to regularize the training of the generator such that it will not generate an image with many artifacts.  
 Experiments on two dataset, a low-resolution person re-identification dataset and a high-resolution fashion photo dataset, demonstrate the effectiveness of the proposed method.
+~~~
+또한 많은 artifacts로 이미지를 생성하지 않도록 generator의 training을 정규화하기 위해 masked L1 loss를 추가한다.
+저해상도 인물 재식별 데이터 세트와 고해상도 패션 사진 데이터 세트라는 두 가지 데이터 세트에 대한 실험은 제안된 방법의 효과를 입증한다.
+~~~
+
 
 ![Figure_1](/assets/img/Blog/papers/Pose-Guided-Person-Image-Generation/1.JPG)
 
@@ -74,63 +117,148 @@ ii) Several ways are explored to integrate pose information with a person image.
 
 iii) To address the challenging task of pose transfer, we divide the problem into two stages, with the stage-I focusing on global structure of the human body and the stage-II on filling in appearance details based on the first stage result.
 
+~~~
+i) 우리는 reference image와 의도된 포즈에서 이미지 생성을 조절하는 새로운 작업을 제안한다. 이 작업은 사람 이미지를 arbitrary pose로 조작하는 것이다.
+
+ii) pose information을 사람 이미지와 통합하기 위한 여러 가지 방법을 탐구한다. 모델이 background information 대신 human body appearance을 전달하는 데 초점을 맞추도록 하기 위해 novel mask loss가 제안된다.
+
+iii) pose transfer이라는 어려운 과제를 해결하기 위해,  
+global structure of the human body에 집중하는 단계 I 그리고 1단계 결과에 기반한 appearance details을 채우는 단계 II와 함께 문제를 두 단계로 나눈다.
+~~~
+
 ## 2 Related works
 
 Recently there have been a lot of works on generative image modeling with deep learning techniques.  
 These works fall into two categories.  
-The first line of works follow an unsupervised setting.
+~~~
+최근에는 딥 러닝 기술을 사용한 생성 이미지 모델링에 대한 연구가 많이 이루어지고 있다.
+이 작업들은 두 가지 범주로 나뉜다.
+~~~
 
-One popular method under this setting is variational autoencoders proposed by Kingma and Welling [14]
-and Rezende et al. [25], which apply a re-parameterization trick to maximize the lower bound of the
-data likelihood.
+
+#### 1
+The first line of works follow an unsupervised setting.
+~~~
+작업들의 첫 번째 라인은 unsupervised setting을 따른다.
+~~~
+
+One popular method under this setting is variational autoencoders proposed by Kingma and Welling [14] and Rezende et al. [25], which apply a re-parameterization trick to maximize the lower bound of the data likelihood.
+~~~
+이 설정에서 인기 있는 한 가지 방법은 Kingma와 Welling[14] 및 Rezende 등이 제안한 variational autoencoders이다. [25] - data likelihood의 lower bound를 최대화하기 위해 re-parameterization trick을 적용한다.
+~~~
 
 Another branch of methods are autogressive models [28, 30, 29] which compute the product of conditional distributions of pixels in a pixel-by-pixel manner as the joint distribution of pixels in an image.
+~~~
+또 다른 방법의 branch는 autogressive models[28, 30, 29]로, 픽셀 단위로 '픽셀의 conditional distributions(조건부 분포)의 곱'을 '이미지의 픽셀의 joint distribution(결합 분포)'로 계산한다.
+~~~
 
 The most popular methods are generative adversarial networks (GAN) [6], which simultaneously learn a generator to generate samples and a discriminator to discriminate generated samples from real ones.
+~~~
+가장 널리 사용되는 방법은 generative adversarial networks (GAN)[6]로, 샘플을 생성하기 위한 generator와 생성된 샘플을 실제와 구별하기 위한 discriminator를 동시에 학습한다.
+~~~
 
 Many works show that GANs can generate sharp images because of using the adversarial loss instead of L1 loss.  
 In this work, we also use the adversarial loss in our framework in order to generate high-frequency details in images.
+~~~
+많은 연구는 GAN이 L1 loss 대신 adversarial loss을 사용하기 때문에 sharp images를 생성할 수 있음을 보여준다.
+본 연구에서는 이미지에서 high-frequency details를 생성하기 위해 프레임워크의 adversarial loss를 사용한다.
+~~~
 
 ![Figure_2](/assets/img/Blog/papers/Pose-Guided-Person-Image-Generation/2.JPG)
 
-The second group of works generate images conditioned on either category or attribute labels, texts or
-images.
+#### 2
+
+The second group of works generate images conditioned on either category or attribute labels, texts or images.
+~~~
+두 번째 작업 그룹은 범주 또는 속성 레이블, 텍스트 또는 이미지에 따라 조건화된 이미지를 생성한다.
+~~~
 
 Yan et al. [32] proposed a Conditional Variational Autoencoder (CVAE) to achieve attribute conditioned image generation.
+~~~
+Yan등은 [32] 특성 조건화 이미지 생성을 달성하기 위해 Conditional Variational Autoencoder (CVAE)를 제안하였다.
+~~~
 
 Mirza and Osindero [18] proposed to condition both generator and discriminator of GAN on side information to perform category conditioned image generation.
+~~~
+Mirza와 Osindero[18]는 범주 조건화 이미지 생성을 수행하기 위해 GAN의 generator와 discriminator를 side information에 조건화하는 것을 제안했다
+~~~
 
 Lassner et al. [15] generated full-body people in clothing, by conditioning on the fine-grained body part segments.
+~~~
+Lassner등은 [15] 세분화된 신체 부위(fine-grained body part) segments를 조절하여 옷을 입은 전신 사람을 생성했다.
+~~~
 
 Reed et al. proposed to generate bird image conditioned on text descriptions by adding textual information to both generator and discriminator [24] and further explored the use of additional location, keypoints or segmentation information to generate images [22, 23].
+~~~
+Reed 등은 generator와 discriminator에 textual information를 추가하여 text 설명이 조건화된 bird image를 생성하는 것을 제안했고 [24] 이미지를 생성하기 위해 추가 위치, keypoints 또는 segmentation 정보의 사용을 추가로 탐구했다[22, 23].
+~~~
 
 With only these visual cues as condition and in contrast to our explicit condition on the intended pose, the control exerted over the image generation process is still abstract.  
 Several works further conditioned image generation not only on labels and texts but also on images.
+~~~
+이러한 시각적 단서만 조건이고 의도된 포즈에 대한 우리의 명시적 조건과 대조적으로, 이미지 생성 프로세스에 대해 발휘되는 제어는 여전히 추상적이다.
+여러 작업은 레이블과 텍스트뿐만 아니라 이미지에서도 조건화된 이미지 생성을 추가로 수행한다.
+~~~
 
 Researchers [34, 33, 11, 8] addressed the task of face image generation conditioned on a reference image and a specific face viewpoint.
+~~~
+연구자들은 [34, 33, 11, 8] reference image와 specific face viewpoint에 따라 조건화된 얼굴 이미지 생성 과제를 다루었다.
+~~~
 
 Chen et al. [4] tackled the unseen view inference as a tensor completion problem, and use latent factors to impute the pose in unseen views.
+~~~
+첸 등은 [4] unseen view inference을 tensor completion problem로 다루었고, latent factors을 사용하여 unseen views에서 pose를 귀속시킨다.
+~~~
 
 Zhao et al. [36] explored generating multi-view cloth images from only a single view input, which is most similar to our task.
+~~~
+Zhao 등은 [36] single view input에서만 multi-view cloth images를 생성하는 방법을 탐구했는데, 이는 우리의 작업과 가장 유사하다.
+~~~
 
 However, a wide range of poses is consistent with any given viewpoint making the conditioning less expressive than in our work.
-
+~~~
+그러나, 광범위한 포즈는 주어진 관점과 일관되어 조건화가 우리의 작업보다 덜 표현적이다.
+~~~
 In this work, we make use of pose information in a more explicit and flexible way, that is, using poses in the format of keypoints to model diverse human body appearance.
+~~~
+본 연구에서, 우리는 pose information를 보다 명확하고 유연한 방법으로, 즉 다양한 human body appearance을 모델링하기 위해 키포인트 형식의 포즈를 사용한다.
+~~~
 
 It should be noted that instead of doing expensive pose annotation, we use a state-of-the-art pose estimation approach to obtain the desired human body keypoints.
+~~~
+expensive pose annotation을 수행하는 대신, 원하는 인체 키 포인트를 얻기 위해 최신 ose estimation 접근법을 사용한다는 점에 유의해야 한다.
+~~~
 
 ## 3 Method
 
 Our task is to simultaneously transfer the appearance of a person from a given pose to a desired pose and keep important appearance details of the identity.
+~~~
+우리의 임무는 주어진 자세에서 원하는 포즈로 사람의 외모를 동시에 이전하고 신원의 중요한 appearance details을 유지하는 것이다.
+~~~
 
 As it is challenging to implement this as an end to-end model, we propose a two-stage approach to address this task, with each stage focusing on one aspect.
+~~~
+이것을 end to-end model로 구현하는 것이 어렵기 때문에, 우리는 각 단계가 한 가지 측면에 중점을 두고 이 과제를 해결하기 위한 2단계 접근법을 제안한다.
+~~~
 
-For the first stage we propose and analyze several model variants and for the second stage we use a variant of a conditional DCGAN to fill in more appearance details.  
+For the first stage we propose and analyze several model variants and  
+for the second stage we use a variant of a conditional DCGAN to fill in more appearance details.  
 The overall framework of the proposed Pose Guided Person Generation Network (PG<sup>2</sup>) is shown in Figure 2.
+~~~
+첫 번째 단계에서는 여러 모델 변형을 제안하고 분석하고   
+두 번째 단계에서는 conditional DCGAN의 변형을 사용하여 더 많은 appearance details를 채운다.
+제안된 Pose Guided Person Generation Network (PG<sup>2</sup>)의 전체적인 프레임워크는 Figure 2에 나와 있다.
+~~~
 
 ### 3.1 Stage-I: Pose integration
 
 At stage-I, we integrate a conditioning person image _I<sub>A</sub>_ with a target pose _P<sub>B</sub>_ to generate a coarse result $$\hat{I}_B$$ that captures the global structure of the human body in the target image $$I_B$$.
+
+<pre>
+<code>
+I 단계에서, 우리는 conditioning person image _I<sub>A</sub>_ 와  target pose _P<sub>B</sub>_ 를 통합한다; target image $$I_B$$에서 global structure of the human body를 캡처하는 coarse result $$\hat{I}_B$$를 생성하기 위해서
+</code>
+</pre>
 
 **Pose embedding**. To avoid expensive annotation of poses, we apply a state-of-the-art pose estimator [2] to obtain approximate human body poses.
 The pose estimator generates the coordinates of 18 keypoints.  
