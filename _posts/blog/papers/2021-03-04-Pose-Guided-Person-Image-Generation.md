@@ -262,113 +262,214 @@ At stage-I, we integrate a conditioning person image _I<sub>A</sub>_ with a targ
 The pose estimator generates the coordinates of 18 keypoints.  
 Using those directly as input to our model would require the model to learn to map each keypoint to a position on the human body.
 
-Therefore, we encode pose $$P_B$$ as 18 heatmaps. Each heatmap is filled with 1 in a radius of 4 pixels around the corresponding keypoints and 0 elsewhere (see Figure 3, target pose).  
+> **Pose embedding**. expensive annotation of poses을 피하기 위해 최신 pose estimator[2]를 적용하여 대략적인 human body poses를 얻는다.  
+pose estimator는 18개의 keypoints의 좌표를 생성한다.  
+이러한 정보를 모델에 직접 입력으로 사용하려면 모델이 각 keypoint를 인체의 위치에 매핑하는 방법을 학습해야 한다.
+
+Therefore, we encode pose $$P_B$$ as 18 heatmaps.  
+Each heatmap is filled with 1 in a radius of 4 pixels around the corresponding keypoints and 0 elsewhere (see Figure 3, target pose).  
 We concatenate $$I_A$$ and $$P_B$$ as input to our model. In this way, we can directly use convolutional layers to integrate the two kinds of information.
+
+>따라서, 우리는 포즈 $$P_B$$를 18개의 heatmap으로 인코딩한다.
+각 heatmap은 해당 keypoints 주변의 반경 4픽셀은 1로 채워지고 다른 곳에서는 0으로 채워진다(Figure 3, target pose 참조).  
+우리는 $$I_A$$와 $$P_B$$를 모델에 입력으로 연결한다. 이러한 방식으로, 우리는 두 종류의 정보를 통합하기 위해 직접 convolutional layers를 사용할 수 있다.
 
 **Generator G1**. As generator at stage I, we adopt a U-Net-like architecture [20], i.e., convolutional autoencoder with skip connections as is shown in Figure 2.  
 Specifically, we first use several stacked convolutional layers to integrate $$I_A$$ and $$P_B$$ from small local neighborhoods to larger ones so that appearance information can be integrated and transferred to neighboring body parts.
 
-Then, a fully connected layer is used such that information between distant body parts can also exchange
-information.  
+>**Generator G1**. 1단계에서 generator로 우리는 U-Net과 유사한 architecture[20], 즉 Figure 2와 같이 skip connections이 있는 convolutional autoencoder를 채택한다.  
+구체적으로, 우리는 먼저 appearance information이 통합되고 neighboring body parts로 이동될수 있게 하기 위해서 small local neighborhoods에서 larger local neighborhoods까지 $$I_A$$ 와 $$P_B$$가 통합시키기 위해서 몇몇개로 쌓인 convolutional layers를 사용한다.
+
+Then, a fully connected layer is used such that information between distant body parts can also exchange information.  
 After that, the decoder is composed of a set of stacked convolutional layers which are symmetric to the encoder to generate an image.
 
-The result of the first stage is denoted as $$\hat{I}$$<sub>B1</sub>. In the U-Net, skip connections between encoder and decoder help propagate image information directly from input to output.  
+>그런 다음, 정보를 교환할 수 있는 distant body parts 사이의 정보와 같은 곳에 fully connected layer가 사용된다.
+그런 후에, 디코더는 인코더에 이미지를 생성하는 데 대칭이 쌓여 나선형의. 층들의 세트로 구성됩니다.
+
+The result of the first stage is denoted as $$\hat{I}$$<sub>B1</sub>.  
+In the U-Net, skip connections between encoder and decoder help propagate image information directly from input to output.  
 In addition, we find that using residual blocks as basic component improves the generation performance.  
 In particular we propose to simplify the original residual block [7] and have only two consecutive conv-relu inside a residual block.
 
+> 첫 번째 단계의 결과는 $$\hat{I}$$<sub>B1</sub>로 표시된다.  
+U-Net에서 encoder와 decoder 간의 skip connections은 이미지 정보를 입력에서 출력으로 직접 전파하는 데 도움이 된다.
+또한, 우리는 residual blocks을 basic component로 사용하는 것이 generation performance을 향상시킨다는 것을 발견했다.
+특히 original residual block[7]을 단순화하고 residual block 내부에 2개의 consecutive conv-relu만 가질 것을 제안한다.
+
 **Pose mask loss**. To compare the generation $$\hat{I}$$<sub>B1</sub> with the target image $$I_B$$, we adopt L1 distance as the generation loss of stage-I.
+> **Pose mask loss**. generation $$\hat{I}$$<sub>B1</sub>와 target image $$I_B$$를 비교하기 위해, 우리는 1단계의 generation loss로서 L1 distance를 채택하였다.
 
 However, since we only have a condition image and a target pose as input, it is difficult for the model to generate what the background would look like if the target image has a different background from the condition image.
+> 그러나, 우리는 입력으로 condition image와 target pose만 가지고 있기 때문에, 모델이 target image가 condition image와 다른 배경을 가진 경우 배경처럼 보이는 것을 생성하는 것은 어렵다.
 
 Thus, in order to alleviate the influence of background changes, we add another term that adds a pose mask $M_B$ to the L1 loss such that the human body is given more weight than the background.
-The formulation of pose mask loss is given in Eq. 1 with $\odot$ denoting the pixels-wise multiplication:
+> 따라서 배경 변화의 영향을 완화하기 위해, L1 loss에 pose mask $M_B$를 추가하여 human body에 배경보다 더 많은 weight가 주어지도록 하는 또하나의 term를 추가한다.
 
-$$L_{G1}=||G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad(1)$$
+The formulation of pose mask loss is given in Eq. 1 with $\odot$ denoting the pixels-wise multiplication:
+$$L_{G1}=||G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad \qquad \qquad \qquad \qquad(1)$$
 
 ![Figure_3](/assets/img/Blog/papers/Pose-Guided-Person-Image-Generation/3.JPG)
 
 The pose mask $M_B$ is set to 1 for foreground and 0 for background and is computed by connecting human body parts and applying a set of morphological operations such that it is able to approximately cover the whole human body in the target image, see the example in Figure 3.  
 The output of $$G_1$$ is blurry because the L1 loss encourages the result to be an average of all possible cases [10].
+> pose mask $M_B$는 foreground의 경우는 1로, background의 경우 0으로 설정되며, human body parts을 연결하고 target image에서 전체 human body를 대략적으로 커버할 수 있도록 일련의 morphological operations(형태학적 계산)을 적용하여 계산된다(Figure 3참조).
+L1 loss로 인해 result가 가능한 모든 경우의 평균이 될 수 있기 때문에 $$G_1$$의 출력은 흐릿하다[10].
 
 However, $$G_1$$ does capture the global structural information specified by the target pose, as shown in Figure 2, as well as other low-frequency information such as the color of clothes.  
 Details of body appearance, i.e. the high-frequency information, will be refined at the second stage through adversarial training.
+> $$G_1$$은 Figure 2에서 보는것처럼, 옷의 색상과 같은 다른 low-frequency information뿐만 아니라 target pose에 의해 명시된 global structural information을 capture한다.  
+body appearance, 즉 high-frequency information는 적대적 훈련을 통해 두 번째 단계에서 다듬어질 것이다.
 
 ### 3.2 Stage-II: Image refinement
 
-Since the model at the first stage has already synthesized an image which is coarse but close to the target image in pose and basic color, at the second stage, we would like the model to focus on generating more details by correcting what is wrong or missing in the initial result.  
+Since the model at the first stage has already synthesized an image which is coarse but close to the target image in pose and basic color,  
+at the second stage, we would like the model to focus on generating more details by correcting what is wrong or missing in the initial result.  
 We use a variant of conditional DCGAN [21] as our base model and condition it on the stage-I generation result.
+~~~
+첫 번째 단계의 모델은 이미 coarse하지만 target image의 pose와 basic color에 가까운 이미지를 합성했다,  
+두 번째 단계에서는 모델이 초기 결과에서 잘못되거나 누락된 부분을 수정하여 더 많은 details을 생성하는 데 초점을 맞춘다.
+우리는 conditional DCGAN[21]의 변형을 기본 모델로 사용하고 이를 단계 I 생성 결과에서 조건화한다.
+~~~
+
 
 **Generator G2**. Considering that the initial result and the target image are already structurally similar, we propose that the generator G2 at the second stage aims to generate an appearance difference map that brings the initial result closer to the target image.
+> **Generator G2*** 초기 결과와 target image가 이미 구조적으로 유사하다는 점을 고려하여, 두 번째 단계에서 generator G2는 초기 결과를 target image에 더 가깝게 만드는 appearance difference map 생성을 목표로 할 것을 제안한다.
 
 The difference map is computed using a U-Net similar to the first stage but with the initial result $$\hat{I}_{B1}$$ and condition image $$I_A$$ as input instead.  
 The difference lies in that the fully-connected layer is removed from the U-Net.
 This helps to preserve more details from the input because a fully-connected layer compresses a lot of information contained in the input.
+> difference map은 첫 번째 단계와 유사하지만 대신 initial result $$\hat{I}_{B1}$$와 condition image $$I_A$$를 입력으로하는 U-Net을 사용하여 계산된다.
+차이점은 fully-connected layer가 U-Net에서 제거된다는 데 있다.
+이렇게 하면 fully-connected layer가 입력에 포함된 많은 정보를 압축하기 때문에 입력에서 더 많은 details를 보존할 수 있다.
 
 The use of difference maps speeds up the convergence of model training since the model focuses on learning the missing appearance details instead of synthesizing the target image from scratch.  
 In particular, the training already starts from a reasonable result. The overall architecture of G2 can be seen in Figure 2.
+> 모델이 처음부터 target image를 합성하는 대신 누락된 appearance details를 학습하는 데 중점을 두기 때문에 difference maps을 사용하면 모델 training의 수렴 속도가 빨라진다.
+특히 training은 이미 합리적인 결과에서 출발한다. G2의 전체적인 구조는 Figure 2에서 볼 수 있다.
 
 **Discriminator D**. In traditional GANs, the discriminator distinguishes between real groundtruth images and fake generated images (which is generated from random noise).
+> **Discriminator D**. 기존 GAN에서 discriminator는 groundtruth images와 fake generated images(랜덤 노이즈에서 생성됨)를 구별한다.
 
 However, in our conditional network, G2 takes the condition image $$I_A$$ instead of a random noise as input.
 Therefore, real images are the ones which not only are natural but also satisfy a specific requirement.
 Otherwise, G2 will be mislead to directly output $$I_A$$ which is natural by itself instead of refining the coarse result of the first stage $$\hat{I}_{B1}$$.
+> 그러나, 우리의 conditional network에서 G2는 random noise 대신 condition image $$I_A$$를 입력으로 받는다.
+따라서, real images는 자연적일 뿐만 아니라 특정 요구 사항을 충족하는 이미지이다.
+그렇지 않으면, G2는 첫 번째 단계 $$\hat{I}_{B1}$$의 coarse result를 다듬는 대신 그것 스스로 자연스러운 $$I_A$$를 직접 출력하도록 잘못 이끌것이다.
 
-To address this issue, we pair the G2 output with the condition image to make the discriminator D to recognize the pairs’ fakery, i.e., ($$\hat{I}_{B2}$$, $$I_A$$) vs ($$I_B$$, $$I_A$$). This is diagrammed in
-Figure 2. The pairwise input encourages D to learn the distinction between $$I_{B2}$$ and $$I_B$$ instead of only the distinction between synthesized and natural images.
+To address this issue, we pair the G2 output with the condition image to make the discriminator D to recognize the pairs’ fakery, i.e., ($$\hat{I}_{B2}$$, $$I_A$$) vs ($$I_B$$, $$I_A$$).  
+This is diagrammed in Figure 2. The pairwise input encourages D to learn the distinction between $$I_{B2}$$ and $$I_B$$ instead of only the distinction between synthesized and natural images.
+> 이 문제를 해결하려면, the discriminator D가 pairs’ fakery를 인지하게 만들기 위해서 G2 output와 condition image를 pair로 한다. ($$\hat{I}_{B2}$$, $$I_A$$) vs ($$I_B$$, $$I_A$$)
+이것은 Figure 2에 다이어그램되어 있다. pairwise input은 D가 합성된 이미지와 자연적 이미지의 구별만 하지 않고 $$I_{B2}$$와 $$I_B$$의 구별을 학습하도록한다.
 
-Another difference from traditional GANs is that noise is not necessary anymore since the generator is conditioned on an image $I_A$, which is similar to [17]. Therefore, we have the following loss function for the discriminator D and the generator G2 respectively,
+Another difference from traditional GANs is that noise is not necessary anymore since the generator is conditioned on an image $$I_A$$, which is similar to [17]. Therefore, we have the following loss function for the discriminator D and the generator G2 respectively,
+> 전통적 GAN과 또 다른 점은 유사한 이미지 $$I_A$$에서 generator가 조건화 되었기 때문에 더이상 noise가 필수적이지 않다는 것이다. 따라서 우리는 discriminator D와 generator G2에 대해 각각 다음과 같은 loss function을 가지고 있다.
 
 $$L^D_{adv} = L_{bce}(D(I_A,I_B),1) + L_{bce}(D(I_A,G2(I_A, \hat{I}_{B1})),0),\qquad \qquad (2)$$
 $$L^G_{adv} = L_{bce}(D(I_A,G2(I_A,\hat{I}_{B1})),1), \qquad \qquad (3)$$
 
+
 where $$\lambda$$ is the weight of L1 loss. It controls how close the generation looks like the target image at low frequencies. When $$\lambda$$ is small, the adversarial loss dominates the training and it is more likely to generate artifacts; when $$\lambda$$ is big, the the generator with a basic L1 loss dominates the training, making the whole model generate blurry results<sup>2</sup>.
+> 여기서 $$\lambda$$는 L1 loss의 weight이다. 이 기능은 저주파수에서 얼마나 generation이 target image처럼 보이는지를 제어한다. $$\lambda$$가 작으면, adversarial loss이 훈련을 지배하고 artifacts를 생성할 가능성이 더 높다. $\lambda$가 크면, basic L1 loss가 있는 generator가 훈련을 지배하여, 전체 모델이 blurry results를 생성한다.
 
 In the training process of our DCGAN, we alternatively optimize discriminator D and generator G2.
-
 As shown in the left part of Figure 2, generator G2 takes the first stage result and the condition image as input and aims to refine the image to confuse the discriminator. The discriminator learns to classify the pair of condition image and the generated image as fake while classifying the pair including the target image as real.
+> DCGAN의 training process에서 우리는 discriminator D와 generator G2를 대안으로 최적화한다.
+Figure 2의 왼쪽 부분에 표시된 것처럼, generator G2는 1단계 결과와 condition image를 입력으로 사용하고 iscriminator를 혼동하도록 이미지를 미세화하는 것을 목표로 한다. discriminator는 target image를 포함하여 pair를 실제 이미지로 분류하는 동안 condition image와 generated image의 pair를 가짜로 분류하는 방법을 학습한다.
 
 ### 3.3 Network architecture
 
 We summarize the network architecture of the proposed model PG2.  
+> 우리는 제안된 모델 PG2의 네트워크 아키텍처를 요약한다.
+
 At stage-I, the encoder of G1 consists of $N$ residual blocks and one fully-connected layer, where $N$ depends on the size of input.  
 Each residual block consists of two convolution layers with stride=1 followed by one sub-sampling convolution layer with stride=2 except the last block.   
+> 1단계에서 G1의 encoder는 $$N$$개의 residual blocks과 하나의 fully-connected layer으로 구성되며, 여기서 $$N$$은 입력 크기에 따라 달라진다.
+각 residual block은 stread=1인 2개의 convolution layers와 마지막 블록을 제외한 stread=2인 1개의 sub-sampling convolution layer로 구성된다.
+
 At stage-II, the encoder of G2 has a fully convolutional architecture including N-2 convolution blocks.  
 Each block consists of two convolution layers with stride=1 and one sub-sampling convolution layer with stride=2.  
 Decoders in both G1 and G2 are symmetric to corresponding encoders. Besides, there are shortcut connections between decoders and encoders, which can be seen in Figure 2.  
 In G1 and G2, no batch normalization or dropout are applied.  
 All convolution layers consist of 3x3 filters and the number of filters are increased linearly with each block.  
+> 단계 II에서 G2의 encoder는 N-2 convolution blocks을 포함한 fully convolutional architecture를 가지고 있다.
+각 블록은 stread=1인 2개의 convolution layers와 stread=2인 1개의 sub-sampling convolution layer로 구성된다.
+G1과 G2의 Decoders는 모두 해당 encoders와 대칭이다. 또한, Figure 2에서 볼 수 있는 decoders와 encoders 사이에 shortcut connections이 있다.
+G1과 G2에서는 batch normalization 또는 dropout이 적용되지 않는다.
+모든 convolution layers는 3x3 필터로 구성되며 필터 수는 각 블록에 따라 선형적으로 증가한다.
+
 We apply rectified linear unit (ReLU) to each layer except the fully connected layer and the output convolution layer.  
 For the discriminator, we adopt the same network architecture as DCGAN [21] except the size of the input convolution layer due to different image resolutions.
+> 우리는 fully connected layer와 output convolution layer를 제외한 각 레이어에 rectified linear unit (ReLU)를 적용한다.
+discriminator의 경우 이미지 해상도가 달라 input convolution layer의 크기를 제외한 DCGAN[21]과 동일한 네트워크 아키텍처를 채택한다.
 
 ## 4 Experiments
 
-We evaluate the proposed PG<sup>2</sup> network on two person datasets (Market-1501 [37] and DeepFashion [16]), which contain person images with diverse poses. We present quantitative and qualitative results for three main aspects of PG<sup>2</sup>: different pose embeddings; pose mask loss vs. standard L1 loss; and two-stage model vs. one-stage model. We also compare with the most related work [36].
+We evaluate the proposed PG<sup>2</sup> network on two person datasets (Market-1501 [37] and DeepFashion [16]), which contain person images with diverse poses.  
+We present quantitative and qualitative results for three main aspects of PG<sup>2</sup>: different pose embeddings; pose mask loss vs. standard L1 loss; and two-stage model vs. one-stage model. We also compare with the most related work [36].
+> 우리는 다양한 포즈를 가진 사람 이미지를 포함하는 두 개인 데이터 세트(Market-1501[37] 및 DeepFashion[16])에서 제안된 PG<sup>2</sup> 네트워크를 평가한다.  
+PG<sup>2</sup>의 세 가지 주요 측면에 대한 양적 및 질적 결과를 제시한다: different pose embeddings; pose mask loss vs standard L1 loss; 그리고 two-stage model vs. one-stage model. 우리는 또한 가장 관련성이 높은[36] 작업과 비교한다.
 
 ### 4.1 Datasets
 
 The DeepFashion (In-shop Clothes Retrieval Benchmark) dataset [16] consists of 52,712 in-shop clothes images, and 200,000 cross-pose/scale pairs. All images are in high-resolution of 256x256. In the train set, we have 146,680 pairs each of which is composed of two images of the same person but different poses. We randomly select 12,800 pairs from the test set for testing.
+> DeepFashion(In-shop Clothes Retrieval Benchmark) 데이터 세트[16]는 52,712개의 상점 내 의류 이미지와 200,000개의 크로스 포즈/스케일 쌍으로 구성된다. 모든 이미지는 256x256의 고해상도입니다. train set에는 146,680쌍이 있으며, 각각은 동일하지만 다른 포즈의 두 이미지로 구성되어 있다. 우리는 테스트를 위해 test set에서 12,800쌍을 무작위로 선택한다.
 
-We also experiment on a more challenging re-identification dataset Market-1501 [37] containing 32,668 images of 1,501 persons captured from six disjoint surveillance cameras. Persons in this dataset vary in pose, illumination, viewpoint and background, which makes the person generation task more challenging. All images have size 12864 and are split into train/test sets of 12,936/19,732 following [37]. In the train set, we have 439,420 pairs each of which is composed of two images of the same person but different poses. We randomly select 12,800 pairs from the test set for testing.
+We also experiment on a more challenging re-identification dataset Market-1501 [37] containing 32,668 images of 1,501 persons captured from six disjoint surveillance cameras. Persons in this dataset vary in pose, illumination, viewpoint and background, which makes the person generation task more challenging. All images have size 128x64 and are split into train/test sets of 12,936/19,732 following [37]. In the train set, we have 439,420 pairs each of which is composed of two images of the same person but different poses. We randomly select 12,800 pairs from the test set for testing.
+> 우리는 또한 6개의 분리된 감시 카메라에서 캡처된 1,501명의 32,668개의 이미지를 포함하는 보다 어려운 재식별 데이터 세트 Market-1501[37]에 대해 실험한다. 이 데이터 세트의 사람은 자세, 조명, 관점 및 배경이 다양하며, 이는 사람 생성 작업을 더 어렵게 만든다. 모든 이미지의 크기는 12864이고 [37]에 이어 12,936/19,732의 train/test sets로 분할된다. train set에는 439,420쌍이 있으며, 각 쌍은 동일하지만 다른 포즈의 두 이미지로 구성된다. 우리는 테스트를 위해 test set에서 12,800쌍을 무작위로 선택한다.
 
-**Implementation details** On both datasets, we use the Adam [13] optimizer with $$\beta1 = 0.5$$ and
-$$\beta2 = 0.999$$. The initial learning rate is set to $$2e^{-5}$$. On DeepFashion, we set the number of convolution blocks $$N = 6$$. Models are trained with a minibatch of size 8 for 30k and 20k iterations
-respectively at stage-I and stage-II. On Market-1501, we set the number of convolution blocks $$N = 5$$.
+**Implementation details** On both datasets, we use the Adam [13] optimizer with $$\beta1 = 0.5$$ and $$\beta2 = 0.999$$.  
+The initial learning rate is set to $$2e^{-5}$$.  
+On DeepFashion, we set the number of convolution blocks $$N = 6$$. Models are trained with a minibatch of size 8 for 30k and 20k iterations respectively at stage-I and stage-II.  
+On Market-1501, we set the number of convolution blocks $$N = 5$$.  
 Models are trained with a minibatch of size 16 for 22k and 14k iterations respectively at stage-I and
-stage-II. For data augmentation, we do left-right flip for both datasets<sup>3</sup>.
+stage-II.  
+For data augmentation, we do left-right flip for both datasets<sup>3</sup>.
+> **Implementation details** 두 데이터 세트 모두에서 $$\beta1 = 0.5$$ 및 $$\beta2 = 0.999$$와 함께 Adam [13] optimizer를 사용한다.
+초기 learning rate는 $$2e^{-5}$$로 설정된다.  
+DeepFashion에서, 우리는 convolution blocks의 수를 $$N = 6$$로 설정한다. 모델은 1단계와 2단계에서 각각 30k와 20k iterations에 대해 8 size의 미니 배치로 훈련된다.  
+Market-1501에서, 우리는 convolution blocks의 수를 $$N = 5$$로 설정했다.
+모델은 1단계와 2단계에서 각각 22k 및 14k iterations에 대해 16 size의 미니 배치로 훈련된다.  
+data augmentation을 위해, datasets<sup>3</sup> 모두에 대해 left-right flip을 수행한다.
 
 ### 4.2 Qualitiative results
 
 As mentioned above, we investigate three aspects of our proposed PG<sup>2</sup> network. Different pose embeddings and losses are compared within stage-I and then we demonstrate the advantage of our two-stage model over a one-stage model.
+> 위에서 언급한 대로, 우리는 제안된 PG<sup>2</sup> 네트워크의 세 가지 측면을 조사한다. I 단계 내에서 서로 다른 pose embeddings과 손실을 비교한 다음 우리는 1단계 모델에 비해 2단계 모델의 장점을 보여준다.
 
-**Different pose embeddings.** To evaluate our proposed pose embedding method, we implement two alternative methods. For the first, coordinate embedding (CE), we pass the keypoint coordinates through two fully connected layers and concatenate the embedded feature vector with the image embedding vector at the bottleneck fully connected layer. For the second, called heatmap embedding (HME), we feed the 18 keypoint heatmaps to an independent encoder and extract the fully connected layer feature to concatenate with image embedding vector at the bottleneck fully connected layer.
+**Different pose embeddings.** To evaluate our proposed pose embedding method, we implement two alternative methods.  
+For the first, coordinate embedding (CE), we pass the keypoint coordinates through two fully connected layers and concatenate the embedded feature vector with the image embedding vector at the bottleneck fully connected layer.  
+For the second, called heatmap embedding (HME), we feed the 18 keypoint heatmaps to an independent encoder and extract the fully connected layer feature to concatenate with image embedding vector at the bottleneck fully connected layer.
+> **Different pose embeddings.** 제안된 pose embedding 방법을 평가하기 위해, 두 가지 대체 방법을 구현한다.  
+첫 번째, coordinate embedding (CE)에 대해, 우리는 두 개의 fully connected layers를 통해 keypoint coordinates를 전달하고 bottleneck fully connected layer의 image embedding vector와 embedded feature vector를 연결한다.  
+두 번째로, heatmap embedding (HME)이라고 불리는, 우리는 18 keypoint heatmaps을 독립 encoder에 공급하고 fully connected layer feature을 추출하여 bottleneck fully connected layer의 image embedding vector와 연결시킨다.
 
-Columns 4, 5 and 6 of Figure 4 show qualitative results of the different pose embedding methods when used in stage-I, that is of G1 with CE (G1-CE-L1), with HME (G1-HME-L1) and our G1 (G1-L1). All three use standard L1 loss. We can see that G1-L1 is able to synthesize reasonable looking images that capture the global structure of a person, such as pose and color.  
+Columns 4, 5 and 6 of Figure 4 show qualitative results of the different pose embedding methods when used in stage-I, that is of G1 with CE (G1-CE-L1), with HME (G1-HME-L1) and our G1 (G1-L1).  
+All three use standard L1 loss. We can see that G1-L1 is able to synthesize reasonable looking images that capture the global structure of a person, such as pose and color.
+> Figure 4의 4, 5, 6번 열에는 1단계일때 CE(G1-CE-L1), HME(G1-HME-L1), 우리의 G1(G1-L1)를 사용하는 다양한 pose embedding methods의 qualitative results를 보여준다.  
+세 가지 모두 standard L1 loss을 사용한다. 우리는 G1-L1이 pose나 색과 같은 global structure of a person를 포착하는 합리적인 외모의 이미지를 합성할 수 있음을 알 수 있다.
+
 However, the other two embedding methods G1-CE-L1 and G1-HME-L1 are quite blurry and the color is wrong.  
-Moreover, results of G1-CE-L1 all get wrong poses. This can be explained by the additional difficulty to map the keypoint coordinates to appropriate image locations making training more challenging. Our proposed pose embedding using 18 channels of pose heatmaps is able to guide the generation process effectively, leading to correctly generated poses.  
+Moreover, results of G1-CE-L1 all get wrong poses. This can be explained by the additional difficulty to map the keypoint coordinates to appropriate image locations making training more challenging.  
+Our proposed pose embedding using 18 channels of pose heatmaps is able to guide the generation process effectively, leading to correctly generated poses.  
 Interestingly, G1-L1 can even generate reasonable face details like eyes and mouth, as shown by the DeepFashion samples.
+> 그러나 다른 두 가지 embedding methods G1-CE-L1과 G1-HME-L1은 상당히 흐릿하고 색상이 잘못되었다.
+게다가, G1-CE-L1의 결과는 모두 잘못된 자세를 취한다. 이는 키포인트 좌표를 적절한 이미지 위치에 매핑하여 교육을 더 어렵게 만드는 추가적인 어려움으로 설명될 수 있다.  
+pose heatmaps의 18 channels을 사용하여 제안된 pose embedding은 generation process를 효과적으로 안내하여 올바르게 생성된 poses로 이어질 수 있다.
+흥미롭게도, G1-L1은 DeepFashion 샘플에서 볼 수 있듯이 눈과 입과 같은 합리적인 얼굴 디테일을 생성할 수 있다.
 
-**Pose mask loss vs. L1 loss.** Comparing the results of G1 trained with L1 loss (G1-L1) and G1 trained with poseMaskLoss (G1-poseMaskLoss) for the Market-1501 dataset, we find that pose mask loss indeed brings improvement to the performance (columns 6 and 7 in Figure 4). By focusing the image generation on the human body, the synthesized image gets sharper and the color looks nicer.  
-We can see that for person ID 164, the person’s upper body generated by G1-L1 is more noisy in color than the one generated by G1-poseMaskLoss. For person ID 23 and 346, the method with pose mask loss generates more clear boundaries for shoulder and head. These comparisons validate that our pose mask loss effectively alleviates the influence of noisy backgrounds and guides the generator to focus on the pose transfer of the human body. The two losses generate similar results for the DeepFashion samples because the background is much simpler.
+**Pose mask loss vs. L1 loss.** Comparing the results of G1 trained with L1 loss (G1-L1) and G1 trained with poseMaskLoss (G1-poseMaskLoss) for the Market-1501 dataset, we find that pose mask loss indeed brings improvement to the performance (columns 6 and 7 in Figure 4).  
+By focusing the image generation on the human body, the synthesized image gets sharper and the color looks nicer.  
+We can see that for person ID 164, the person’s upper body generated by G1-L1 is more noisy in color than the one generated by G1-poseMaskLoss.  
+For person ID 23 and 346, the method with pose mask loss generates more clear boundaries for shoulder and head.  
+These comparisons validate that our pose mask loss effectively alleviates the influence of noisy backgrounds and guides the generator to focus on the pose transfer of the human body.  
+The two losses generate similar results for the DeepFashion samples because the background is much simpler.
+> **Pose mask loss vs. L1 loss.** Market-1501 dataset에 대해 L1 loss (G1-L1)로 훈련된 G1과 poseMaskLoss (G1-poseMaskLoss)로 훈련된 G1의 결과를 비교하면, 실제로 pose mask loss이 성능을 향상시킨다는 것을 알 수 있다(Figure 4의 6과 7열).  
+이미지 생성을 human body에 집중함으로써, 합성된 이미지가 더 선명해지고 색이 더 좋아 보입니다.  
+우리는 person ID 164의 경우, G1-L1에 의해 생성된 사람의 상체는 G1-poseMaskLoss에 의해 생성된 상체보다 색상이 더 noisy한 것을 알 수 있다.  
+person ID 23과 346의 경우, pose mask loss 방법은 어깨와 머리에 대한 더 명확한 경계를 생성한다.  
+이러한 비교는 우리의 pose mask loss이 noisy backgrounds의 영향을 효과적으로 완화시키고 generator가 human body의 포즈 전달에 초점을 맞추도록 유도한다는 것을 검증한다.  
+이 두 손실은 배경이 훨씬 단순하기 때문에 Deep Fashion 샘플에 대해 유사한 결과를 생성한다.
 
 **Two-stage vs. one-stage.** In addition, we demonstrate the advantage of our two-stage model over a one-stage model. For this we use G1 as generator but train it in an adversarial way to directly generate a new image given a condition image and a target pose as input. This one-stage model is denoted as G1+D and our full model is denoted as G1+G2+D. From Figure 4, we can see that our full model is able to generate photo-realistic results, which contain more details than the one-stage model.  
 For example, for DeepFashion samples, more details in the face and the clothes are transferred to the generated images. For person ID 245, the shorts on the result of G1+D have lighter color and more blurry boundary than G1+G2+D. For person ID 346, the two-stage model is able to generate both the right color and textures for the clothes, while the one-stage model is only able to generate the right color. On Market-1501 samples, the quality of the images generated by both methods decreases because of the more challenging setting.  
