@@ -244,21 +244,19 @@ As it is challenging to implement this as an end to-end model, we propose a two-
 For the first stage we propose and analyze several model variants and  
 for the second stage we use a variant of a conditional DCGAN to fill in more appearance details.  
 The overall framework of the proposed Pose Guided Person Generation Network (PG<sup>2</sup>) is shown in Figure 2.
-~~~
-첫 번째 단계에서는 여러 모델 변형을 제안하고 분석하고   
+
+>첫 번째 단계에서는 여러 모델 변형을 제안하고 분석하고   
 두 번째 단계에서는 conditional DCGAN의 변형을 사용하여 더 많은 appearance details를 채운다.
 제안된 Pose Guided Person Generation Network (PG<sup>2</sup>)의 전체적인 프레임워크는 Figure 2에 나와 있다.
-~~~
+
 
 ### 3.1 Stage-I: Pose integration
 
 At stage-I, we integrate a conditioning person image _I<sub>A</sub>_ with a target pose _P<sub>B</sub>_ to generate a coarse result $$\hat{I}_B$$ that captures the global structure of the human body in the target image $$I_B$$.
 
-<pre>
-<code>
-I 단계에서, 우리는 conditioning person image _I<sub>A</sub>_ 와  target pose _P<sub>B</sub>_ 를 통합한다; target image $$I_B$$에서 global structure of the human body를 캡처하는 coarse result $$\hat{I}_B$$를 생성하기 위해서
-</code>
-</pre>
+
+>I 단계에서, 우리는 conditioning person image _I<sub>A</sub>_ 와  target pose _P<sub>B</sub>_ 를 통합한다; target image $$I_B$$에서 global structure of the human body를 캡처하는 coarse result $$\hat{I}_B$$를 생성하기 위해서
+
 
 **Pose embedding**. To avoid expensive annotation of poses, we apply a state-of-the-art pose estimator [2] to obtain approximate human body poses.
 The pose estimator generates the coordinates of 18 keypoints.  
