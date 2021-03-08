@@ -241,7 +241,7 @@ It should be noted that instead of doing expensive pose annotation, we use a sta
 
 Our task is to simultaneously transfer the appearance of a person from a given pose to a desired pose and keep important appearance details of the identity.
 
->우리의 임무는 주어진 자세에서 원하는 포즈로 사람의 외모를 동시에 이전하고 신원의 중요한 appearance details을 유지하는 것이다.
+>우리의 임무는 주어진 포즈에서 원하는 포즈로 사람의 외모를 동시에 이전하고 신원의 중요한 appearance details을 유지하는 것이다.
 
 
 As it is challenging to implement this as an end to-end model, we propose a two-stage approach to address this task, with each stage focusing on one aspect.
