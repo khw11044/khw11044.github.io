@@ -317,7 +317,7 @@ Thus, in order to alleviate the influence of background changes, we add another 
 > 따라서 배경 변화의 영향을 완화하기 위해, L1 loss에 pose mask $$M_B$$를 추가하여 human body에 배경보다 더 많은 weight가 주어지도록 하는 또하나의 term를 추가한다.
 
 The formulation of pose mask loss is given in Eq. 1 with $$\odot$$ denoting the pixels-wise multiplication:
-$$L_{G1}=||G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad (1)$$
+$$L_{G1}=||(G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad (1)$$
 
 ![Figure_3](/assets/img/Blog/papers/Pose-Guided-Person-Image-Generation/3.JPG)
 
