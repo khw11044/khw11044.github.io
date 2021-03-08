@@ -20,14 +20,22 @@ Liqian Ma, Xu Jia2, Qianru Sun, Bernt Schiele, Tinne Tuytelaars, Luc Van Gool
 
 ## Abstract
 
-본 논문은 그 사람의 이미지와 새로운 포즈를 기반으로 임의의 포즈로 사람 이미지를 합성할 수 있는 새로운 PG<sup>2</sup> (Pose Guided Person Generation Network)를 제안한다.
+This paper proposes the novel Pose Guided Person Generation Network (PG2)
+that allows to synthesize person images in arbitrary poses, based on an image of that person and a novel pose.
 
-우리의 generation framework PG<sup>2</sup>는 포즈 정보를 명시적으로 활용하고 pose integration과 image refinement의 두 가지 주요 단계로 구성된다.
+>본 논문은 그 사람의 이미지와 새로운 포즈를 기반으로 임의의 포즈로 사람 이미지를 합성할 수 있는 새로운 PG<sup>2</sup> (Pose Guided Person Generation Network)를 제안한다.
 
-첫 번째 단계에서 condition image와 target pose는 U-Net과 유사한 네트워크로 공급되어 target pose를 가진 사람의 coarse(조잡한) image이지만 초기 이미지를 생성한다.
+Our generation framework PG2 utilizes the pose information explicitly and consists of two key stages: pose integration and image refinement.
 
-그런 다음 두 번째 단계는 U-Net 같은 generator를 적대적 방법(adversarial way)으로 훈련하여 초기 결과와 흐릿한 결과를 개선한다.
+> 우리의 generation framework PG<sup>2</sup>는 포즈 정보를 명시적으로 활용하고 pose integration과 image refinement의 두 가지 주요 단계로 구성된다.
 
+In the first stage the condition image and the target pose are fed into a U-Net-like network to generate an initial but coarse image of the person with the target pose.  
+
+>첫 번째 단계에서 condition image와 target pose는 U-Net과 유사한 네트워크로 공급되어 target pose를 가진 사람의 coarse(조잡한) image이지만 초기 이미지를 생성한다.
+
+The second stage then refines the initial and blurry result by training a U-Net-like generator in an adversarial way. Extensive experimental results on both 128x64 re-identification images and 256x256 fashion photos show that our model generates high-quality person images with convincing details.
+
+>그런 다음 두 번째 단계는 U-Net 같은 generator를 적대적 방법(adversarial way)으로 훈련하여 초기 결과와 흐릿한 결과를 개선한다.  
 128x64 재식별 이미지와 256x256 패션 사진에 대한 광범위한 실험 결과는 우리 모델이 설득력 있는 디테일로 고품질 사람 이미지를 생성한다는 것을 보여준다.
 
 ## 1 Introduction
