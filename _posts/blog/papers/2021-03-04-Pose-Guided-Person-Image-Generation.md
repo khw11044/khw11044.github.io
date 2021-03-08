@@ -51,7 +51,7 @@ For example in [21, 5, 1], GANs are leveraged to generate faces and natural scen
 
 From an application perspective, users typically have a particular intention in mind such as changing the background, an object’s category, its color or viewpoint.
 
->응용 프로그램의 관점에서, 사용자는 일반적으로 배경, 객체 범주, 색상 또는 관점 변경과 같은 특정한 의도를 염두에 둔다.
+>응용 프로그램의 관점에서, 사용자는 일반적으로 배경, 객체 범주, 색상 또는 viewpoint 변경과 같은 특정한 의도를 염두에 둔다.
 
 
 <under>The key idea of our approach is to guide the generation process explicitly by an appropriate representation of that intention to enable direct control over the generation process.
@@ -68,7 +68,7 @@ There are many interesting applications derived from this task.
 For example, in movie making, we can directly manipulate a character’s human body to a desired pose or, for human pose estimation, we can generate training data for rare but important poses.
 
 >reference image를 조건으로 하여, 모델은 원하는 객체의 모양에 대한 충분한 정보를 사전에 갖는다.
-의도된 pose에 의해 제공되는 guidance는 명확하고 유연하다. 원칙적으로 이 접근 방식은 임의의 pose로 어떤 물체를 조작할 수 있다.
+의도된 pose에 의해 제공되는 guidance는 명확하고 유연하다. 원칙적으로 이 접근 방식은 임의의 pose로 어떤 객체도 조작할 수 있다.
 이 작업에서, 우리는 주어진 자세에서 의도된 pose로 사람을 옮기는 데 초점을 맞춘다.
 이 작업에서 파생된 많은 흥미로운 응용 프로그램이 있다.
 예를 들어, 영화 제작에서 우리는 캐릭터의 인체를 원하는 포즈로 직접 조작하거나, human pose estimation을 위해 드물지만 중요한 포즈에 대한 훈련 데이터를 생성할 수 있다.
@@ -234,7 +234,7 @@ In this work, we make use of pose information in a more explicit and flexible wa
 
 It should be noted that instead of doing expensive pose annotation, we use a state-of-the-art pose estimation approach to obtain the desired human body keypoints.
 
->expensive pose annotation을 수행하는 대신, 원하는 인체 키 포인트를 얻기 위해 최신 ose estimation 접근법을 사용한다는 점에 유의해야 한다.
+>expensive pose annotation을 수행하는 대신, 원하는 인체 키 포인트를 얻기 위해 최신 pose estimation 접근법을 사용한다는 점에 유의해야 한다.
 
 
 ## 3 Method
