@@ -321,10 +321,10 @@ $$L_{G1}=||(G1(I_A,P_B) - I_B) \odot (1+M_B)||_1, \qquad \qquad \qquad \qquad \q
 
 ![Figure_3](/assets/img/Blog/papers/Pose-Guided-Person-Image-Generation/3.JPG)
 
-The pose mask $M_B$ is set to 1 for foreground and 0 for background and is computed by connecting human body parts and applying a set of morphological operations such that it is able to approximately cover the whole human body in the target image, see the example in Figure 3.  
+The pose mask $$M_B$$ is set to 1 for foreground and 0 for background and is computed by connecting human body parts and applying a set of morphological operations such that it is able to approximately cover the whole human body in the target image, see the example in Figure 3.  
 The output of $$G_1$$ is blurry because the L1 loss encourages the result to be an average of all possible cases [10].
 
-> pose mask $M_B$는 foreground의 경우는 1로, background의 경우 0으로 설정되며, human body parts을 연결하고 target image에서 전체 human body를 대략적으로 커버할 수 있도록 일련의 morphological operations(형태학적 계산)을 적용하여 계산된다(Figure 3참조).
+> pose mask $$M_B$$는 foreground의 경우는 1로, background의 경우 0으로 설정되며, human body parts을 연결하고 target image에서 전체 human body를 대략적으로 커버할 수 있도록 일련의 morphological operations(형태학적 계산)을 적용하여 계산된다(Figure 3참조).
 L1 loss로 인해 result가 가능한 모든 경우의 평균이 될 수 있기 때문에 $$G_1$$의 출력은 흐릿하다[10].
 
 However, $$G_1$$ does capture the global structural information specified by the target pose, as shown in Figure 2, as well as other low-frequency information such as the color of clothes.  
