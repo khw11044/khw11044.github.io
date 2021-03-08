@@ -339,11 +339,9 @@ Since the model at the first stage has already synthesized an image which is coa
 at the second stage, we would like the model to focus on generating more details by correcting what is wrong or missing in the initial result.  
 We use a variant of conditional DCGAN [21] as our base model and condition it on the stage-I generation result.
 
-~~~
-첫 번째 단계의 모델은 이미 coarse하지만 target image의 pose와 basic color에 가까운 이미지를 합성했다,  
+>첫 번째 단계의 모델은 이미 coarse하지만 target image의 pose와 basic color에 가까운 이미지를 합성했다,  
 두 번째 단계에서는 모델이 초기 결과에서 잘못되거나 누락된 부분을 수정하여 더 많은 details을 생성하는 데 초점을 맞춘다.
 우리는 conditional DCGAN[21]의 변형을 기본 모델로 사용하고 이를 단계 I 생성 결과에서 조건화한다.
-~~~
 
 
 **Generator G2**. Considering that the initial result and the target image are already structurally similar, we propose that the generator G2 at the second stage aims to generate an appearance difference map that brings the initial result closer to the target image.
