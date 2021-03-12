@@ -1,13 +1,13 @@
 ---
 layout: post
-bigtitle:  "Pose Guided Person Image Genration"
-subtitle:   "Pose Guided Person Image Genration"
+bigtitle:  "Pose Guided Person Image Generation"
+subtitle:   "Pose Guided Person Image Generation"
 categories:
     - blog
     - papers
 tags:
     - FashionAI
-    - Pose-Guided-Person-Image
+    - Pose-Guided-Person-Image-Generation
 comments: true
 published: true
 ---
