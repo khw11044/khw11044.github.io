@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  "PointPillars
+bigtitle:  "PointPillars"
 subtitle:   ": Fast Encoders for Object Detection from Point Clouds"
 categories:
     - blog
