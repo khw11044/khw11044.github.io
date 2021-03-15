@@ -64,6 +64,9 @@ Due to the discrete, unordered, and possibly sparse nature of point clouds, dete
 In order to leverage the expertise in 2D object detection, existing methods convert 3D point clouds either into 2D images by view projection [4]–[6], or into regular grids of voxels by quantization [7]–[10].  
 Although 2D object detection can be readily applied to the converted images or volumes, these methods suffer from loss of critical 3D information in the projection or quantization process.
 
+> point clouds의 이산적이고 순서가 없으며 sparse nature한 특성으로 인해 object instances를 탐지하는 것은 어렵고 RGB 이미지에서 object detection를 위해 설정된 [1]–[3]과 다른 학습 기법이 필요하다.
+2D object detection에 대한 전문 지식을 활용하기 위해, 기존 방법은 뷰 투영[4]–[6]에 의한 3D point clouds를 2D images로 변환하거나 [7]–[10]에 의한 voxels의 regular grids로 변환한다.
+2D 물체 감지는 변환된 이미지 또는 볼륨에 쉽게 적용될 수 있지만, 이러한 방법은 projection 또는 quantization process에서 loss of critical 3D information로 인해 어려움을 겪는다.
 
 With the progress of point set deep learning [11], [12], recent methods [13], [14] resort to learning features directly from raw point clouds.  
 For example, the seminal work of F-PointNet [13] first finds local points corresponding to pixels inside a 2D region proposal, and then uses PointNet [11] to segment from these local points the foreground ones; the amodal 3D box is finally estimated from the foreground points.  
