@@ -27,7 +27,7 @@ Github pages 블로그를 운영하는 중입니다.💻
 
 저에게 조금 관심이 생기셨다면 [CV](/public/CV.pdf)를 확인해주시면 감사하겠습니다! 😃
 
-> [강의보러가기](https://khw11044.github.io/etc/2021/01/09/saturday.html)
+> [강의보러가기](https://www.inflearn.com/course/%EA%B9%83%ED%97%88%EB%B8%8C-%EB%B8%94%EB%A1%9C%EA%B7%B8-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4)
 
 
 <div class="me">
