@@ -1,9 +1,9 @@
 ---
 layout: post
 category: papers
-bigtitle: etc
+bigtitle: paper-etc
 description: >
-  etc
+  paper-etc
 related_posts:
   -
 addons:

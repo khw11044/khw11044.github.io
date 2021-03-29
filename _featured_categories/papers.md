@@ -20,4 +20,4 @@ description: >
 
 [PointCloud]: /pointcloud/
 [FashionAI]: /fashionai/
-[Etc]: /etc/
+[Etc]: /paper-etc/
