@@ -5,7 +5,7 @@ subtitle:   "Pose Guided Person Image Synthesis in the Non-Iconic-Views"
 categories:
     - blog
     - papers
-    -fashionai
+    - fashionai
 tags:
     - FashionAI
     - Pose-Guided-Person-Image-Synthesis
