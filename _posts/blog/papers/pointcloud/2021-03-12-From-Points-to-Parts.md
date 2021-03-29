@@ -5,6 +5,7 @@ subtitle:   ": 3D Object Detection from Point Cloud with Part-aware and Part-agg
 categories:
     - blog
     - papers
+    - pointcloud
 tags:
     - point-cloud
     - detection

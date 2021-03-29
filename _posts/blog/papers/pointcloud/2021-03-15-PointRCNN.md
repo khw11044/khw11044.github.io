@@ -5,6 +5,7 @@ subtitle:   ": 3D Object Proposal Generation and Detection from Point Cloud"
 categories:
     - blog
     - papers
+    - pointcloud
 tags:
     - point-cloud
     - detection

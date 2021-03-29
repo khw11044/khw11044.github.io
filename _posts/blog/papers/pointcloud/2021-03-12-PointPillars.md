@@ -5,6 +5,7 @@ subtitle:   ": Fast Encoders for Object Detection from Point Clouds"
 categories:
     - blog
     - papers
+    - pointcloud
 tags:
     - point-cloud
     - detection

@@ -5,6 +5,7 @@ subtitle:   ": Sliding Frustums to Aggregate Local Point-Wise Features for Amoda
 categories:
     - blog
     - papers
+    - pointcloud
 tags:
     - point-cloud
     - detection

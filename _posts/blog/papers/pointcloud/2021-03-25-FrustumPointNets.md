@@ -5,6 +5,7 @@ subtitle:   "for 3D Object Detection from RGB-D Data"
 categories:
     - blog
     - papers
+    - pointcloud
 tags:
     - point-cloud
     - detection
