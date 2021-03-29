@@ -5,6 +5,7 @@ subtitle:   "Seq2Seq, Attetion, MACHINE TRANSLATION"
 categories:
     - blog
     - papers
+    - paper-etc
 tags:
     - Seq2Seq
     - Attetion

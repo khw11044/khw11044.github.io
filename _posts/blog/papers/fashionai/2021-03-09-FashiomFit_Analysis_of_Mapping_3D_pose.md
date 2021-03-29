@@ -5,6 +5,7 @@ subtitle:   "FashionFit: Analysis of Mapping 3D Pose and Neural Body Fit for Cus
 categories:
     - blog
     - papers
+    -fashionai
 tags:
     - FashionAI
     - FashionFit

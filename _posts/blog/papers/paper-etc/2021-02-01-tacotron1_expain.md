@@ -5,6 +5,7 @@ subtitle:   "Tacotron, text-to-speech 설명"
 categories:
     - blog
     - papers
+    - paper-etc
 tags:
     - Tacotron
     - TextToSpeech

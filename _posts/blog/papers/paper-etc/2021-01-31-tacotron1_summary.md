@@ -5,6 +5,7 @@ subtitle:   "Tacotron, text-to-speech"
 categories:
     - blog
     - papers
+    - paper-etc
 tags:
     - Tacotron
     - TextToSpeech
