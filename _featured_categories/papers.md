@@ -18,6 +18,6 @@ description: >
 * [Etc]{:.heading.flip-title} --- 기타
 
 
-[PointCloud]: /pointcloud/
-[FashionAI]: /fashionai/
-[Etc]: /etc/
+[PointCloud]: /papers/pointcloud/
+[FashionAI]: /papers/fashionai/
+[Etc]: /papers/etc/
