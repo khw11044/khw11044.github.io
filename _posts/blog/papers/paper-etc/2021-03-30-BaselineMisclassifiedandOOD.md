@@ -85,7 +85,7 @@ The PR curve plots the precision (tp=(tp+fp)) and recall (tp=(tp + fn)) against 
 The baseline detector has an AUPR approximately equal to the precision (Saito & Rehmsmeier, 2015), and a “perfect” classifier has an AUPR of 100%. Consequently, the base rate of the positive class greatly influences the AUPR, so for detection we must specify which class is positive.  
 In view of this, we show the AUPRs when we treat success/normal classes as positive, and then we show the areas when we treat the error/abnormal classes as positive.  
 We can treat the error/abnormal classes as positive by multiplying the scores by 􀀀1 and labeling them positive.  
-Note that treating error/abnormal classes as positive classes does not change the AU-ROC since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, AUROC = P(S > E) = P(-E > -S).
+Note that treating error/abnormal classes as positive classes does not change the AU-ROC since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, $$AUROC = P(S > E) = P(-E > -S)$$.
 
 We begin our experiments in Section 3 where we describe a simple baseline which uses the maximum probability from the softmax label distribution in neural network classifiers.  
 Then in Section 4 we describe a method that uses an additional, auxiliary model component trained to reconstruct the input.
