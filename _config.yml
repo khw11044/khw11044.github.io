@@ -343,6 +343,8 @@ exclude:
   - vendor
   - Gemfile
   - Gemfile.lock
+  - _includes
+  - _layouts
 include:
   - .well-known
   - LICENSE.md
