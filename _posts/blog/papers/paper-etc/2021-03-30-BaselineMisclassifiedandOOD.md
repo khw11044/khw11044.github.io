@@ -11,14 +11,16 @@ tags:
 comments: true
 published: true
 related_posts:
-    - _posts/blog/githubpage/2021-02-01-tacotron1_expain.md
-    - _posts/blog/githubpage/2021-02-01-tacotron1_summary.md
-    - _posts/blog/githubpage/2020-02-02-seq2seq-with-attention.md
 ---
 # A BASELINE FOR DETECTING MISCLASSIFIED AND OUT-OF-DISTRIBUTION EXAMPLES IN NEURAL NETWORKS
 
 ICLR 2017 [paper](https://arxiv.org/pdf/1610.02136.pdf)
 
+**Dan Hendrycks**  
+University of California, Berkeley
+
+**Kevin Gimpel**  
+Toyota Technological Institute at Chicago
 
 ## ABSTRACT
 

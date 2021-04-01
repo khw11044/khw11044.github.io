@@ -343,12 +343,7 @@ exclude:
   - vendor
   - Gemfile
   - Gemfile.lock
-  - _includes
-  - _layouts
-  - index.md
-  - posts.md
-  - about.md
-  - search.html
+
 include:
   - .well-known
   - LICENSE.md
