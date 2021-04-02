@@ -30,6 +30,12 @@ Correctly classified examples tend to have greater maximum softmax probabilities
 We assess performance by defining several tasks in computer vision, natural language processing, and automatic speech recognition, showing the effectiveness of this baseline across all.  
 We then show the baseline can sometimes be surpassed, demonstrating the room for future research on these underexplored detection tasks.
 
+> 우리는 example이 misclassified되었거나 out-of-distribution인 경우 detecting하는 두 가지 관련 문제를 고려한다.  
+우리는 softmax distributions의 probabilities을 활용하는 simple baseline을 제시한다.  
+올바르게 분류된 examples는 detection에서 erroneously classified와 out-of-distribution examples보다 maximum softmax probabilities이 더 큰 경향이 있다.  
+우리는 컴퓨터 비전, 자연어 처리 및 자동 음성 인식에서 여러 작업을 정의하고 성능을 평가하여 이 baseline의 전반적인 효과를 보여준다.  
+그런 다음 때로는 baseline이 능가할 수 있음을 보여 주며, 이러한 underexplored detection tasks에 대한 향후 연구의 여지를 보여준다.  
+
 ## INTRODUCTION
 
 When machine learning classifiers are employed in real-world tasks, they tend to fail when the training and test distributions differ.  
@@ -39,28 +45,60 @@ For example, a medical diagnosis model may consistently classify with high confi
 The resulting unflagged, erroneous diagnoses could blockade future machine learning technologies in medicine.  
 More generally and importantly, estimating when a model is in error is of great concern to AI Safety (Amodei et al., 2016).
 
+> machine learning classifiers가 real-world tasks에 사용될 때, 훈련과 테스트 distributions가 다를 때 실패하는 경향이 있다.  
+더 나쁜 것은, 이러한 classifiers가 비정상적으로 부정확한 상태에서 높은 신뢰도 예측을 제공함으로써 조용히 실패하는 경우가 많다는 것이다(Goodfellow et al., 2015; Amodei et al., 2016).  
+분류기가 잘못될 가능성이 있을 떄를 표시하지 않으면 채택을 제한하거나 심각한 사고를 유발할 수 있다.  
+예를 들어, 의료 진단 모델은 인간의 개입을 위한 어려운 examples를 flag해야 하지만 높은 신뢰도로 일관되게 분류할 수 있다.  
+그 결과로 unflagged된, 잘못된 진단은 의학에서 미래의 machine learning 기술을 차단할 수 있다.  
+보다 일반적으로 그리고 중요하게, 모델이 오류에 있는 시점을 추정하는 것이 AI Safety에 큰 관심사이다(Amodei et al., 2016).
+
 These high-confidence predictions are frequently produced by softmaxes because softmax probabilities are computed with the fast-growing exponential function.  
-Thus minor additions to the softmax inputs, i.e. the logits, can lead to substantial changes in the output distribution.   Since the softmax function is a smooth approximation of an indicator function, it is uncommon to see a uniform distribution outputted for out-of-distribution examples.  
+Thus minor additions to the softmax inputs, i.e. the logits, can lead to substantial changes in the output distribution.   
+Since the softmax function is a smooth approximation of an indicator function, it is uncommon to see a uniform distribution outputted for out-of-distribution examples.  
 Indeed, random Gaussian noise fed into an MNIST image classifier gives a “prediction confidence” or predicted class probability of 91%, as we show later.  
-Throughout our experiments we establish that the prediction probability from a softmax distribution has a poor direct correspondence to confidence.  
+Throughout our experiments we establish that the prediction probability from a softmax distribution has a poor direct correspondence to confidence.   
 This is consistent with a great deal of anecdotal evidence from researchers (Nguyen & O’Connor, 2015; Yu et al., 2010; Provost et al., 1998; Nguyen et al., 2015).
 
-However, in this work we also show the prediction probability of incorrect and out-of-distribution examples tends to be lower than the prediction probability for correct examples.  
+> softmax probabilities은 빠르게 증가하는 exponential function로 계산되기 때문에, 이러한 높은 신뢰도 예측은 softmaxes에 의해 자주 생성된다.  
+따라서 softmax inputs, 즉 logits에 대한 minor additions는 output distribution에 상당한 변화를 가져올 수 있다.   
+softmax function은 indicator function의 smooth 근사치이기 때문에, out-of-distribution examples에 대해 출력된 uniform distribution를 보는 것은 드문 일이다.  
+실제로, MNIST image classifier에 공급되는  random Gaussian noise는 나중에 우리가 보여주듯이 "예측 신뢰도" 또는 91%의 예측된 class probability를 제공한다.  
+실험을 통해 우리는 softmax distribution의 예측 확률이 confidence와 직접 일치하지 않음을 확인한다.  
+이는 연구자들의 많은 입증되지 않은 증거와 일치한다(Nguyen & O'Connor, 2015; Yu et al., 2010; Provost et al., 1998; Nguyen et al., 2015).
+
+However, in this work we also show the prediction probability of incorrect and out-of-distribution examples tends to be lower than the prediction probability for correct examples.   
 Therefore, capturing prediction probability statistics about correct or in-sample examples is often sufficient for detecting whether an example is in error or abnormal, even though the prediction probability viewed in isolation can be misleading.
 
-These prediction probabilities form our detection baseline, and we demonstrate its efficacy through various computer vision, natural language processing, and automatic speech recognition tasks.  
-While these prediction probabilities create a consistently useful baseline, at times they are less effective, revealing room for improvement.  
-To give ideas for future detection research, we contribute one method which outperforms the baseline on some (but not all) tasks.
+> 그러나 본 연구에서는 incorrect examples와 out-of-distribution examples의 예측 확률이 correct examples의 예측 확률보다 낮은 경향이 있음을 보여준다.  
+따라서, correct or in-sample examples에 대한 예측 확률 통계를 캡처하는 것은 example이 error인지 abnormal인지 여부를 detecting하는 데 충분하지만, isolation하여 보는 예측 확률은 misleading할수 있다.
+
+These prediction probabilities form our detection baseline, and we demonstrate its efficacy through various computer vision, natural language processing, and automatic speech recognition tasks.   
+While these prediction probabilities create a consistently useful baseline, at times they are less effective, revealing room for improvement.   
+To give ideas for future detection research, we contribute one method which outperforms the baseline on some (but not all) tasks.   
 This new method evaluates the quality of a neural network’s input reconstruction to determine if an example is abnormal.
 
-In addition to the baseline methods, another contribution of this work is the designation of standard tasks and evaluation metrics for assessing the automatic detection of errors and out-of-distribution examples.  
-We use a large number of well-studied tasks across three research areas, using standard neural network architectures that perform well on them.  
-For out-of-distribution detection, we provide ways to supply the out-of-distribution examples at test time like using images from different datasets and realistically distorting inputs.  
-We hope that other researchers will pursue these tasks in future work and surpass the performance of our baselines.
+> 이러한 예측 확률은 우리의 detection baseline을 형성하며, 다양한 컴퓨터 비전, 자연어 처리, 자동 음성 인식 작업을 통해 그 효과를 입증한다.  
+이러한 예측 확률은 지속적으로 유용한 baseline을 생성하지만 때로는 덜 효과적이어서 개선의 여지가 있다.    
+향후 detection research를 위한 아이디어를 제공하기 위해, 우리는 일부 (전부는 아니지만) 작업의 baseline을 능가하는 한 가지 방법을 제안한다.  
+이 새로운 방법은 신경망의 input reconstruction의 quality를 평가하여 example가 abnormal인지 여부를 결정한다.
+
+In addition to the baseline methods, another contribution of this work is the designation of standard tasks and evaluation metrics for assessing the automatic detection of errors and out-of-distribution examples.   
+We use a large number of well-studied tasks across three research areas, using standard neural network architectures that perform well on them.   
+For out-of-distribution detection, we provide ways to supply the out-of-distribution examples at test time like using images from different datasets and realistically distorting inputs.   
+We hope that other researchers will pursue these tasks in future work and surpass the performance of our baselines.  
+
+> baseline methods 외에도, 이 작업의 또 다른 contribution은 errors의 automatic detection과  out-of-distribution examples를 평가하기 위한 standard tasks 및 evaluation metrics의 designation이다.  
+우리는 세 가지 연구 분야에 걸쳐 잘 연구된 많은 tasks을 사용하는데, 그 tasks에 잘 작용하는 standard neural network architectures를 사용한다.  
+out-of-distribution detection를 위해, 우리는 다른 datasets의 이미지를 사용하고 입력을 현실적으로 왜곡하는 것과 같은 test time에 out-of-distribution examples를 제공할 수 있는 방법을 제공한다.   
+우리는 다른 연구자들이 향후 작업에서 이러한 과제를 추구하고 우리의 baselines의 performance를 능가하기를 바란다.
 
 In summary, while softmax classifier probabilities are not directly useful as confidence estimates, estimating model confidence is not as bleak as previously believed.  
 Simple statistics derived from softmax distributions provide a surprisingly effective way to determine whether an example is misclassified or from a different distribution from the training data, as demonstrated by our experimental results spanning computer vision, natural language processing, and speech recognition tasks.  
 This creates a strong baseline for detecting errors and out-of-distribution examples which we hope future research surpasses.
+
+> 요약하자면, softmax classifier probabilities는 신뢰 추정치만큼 직접적으로 유용하지는 않지만, 모델 신뢰 추정은 이전에 믿었던 것만큼 암울하지 않다.  
+softmax distributions에서 파생된 Simple statistics는 컴퓨터 비전, 자연어 처리 및 음성 인식 작업에 걸친 우리의 실험 결과에서 입증된 바와 같이, example이 misclassified되었는지 또는 training data와 다른 distribution에서 나온 것인지를 결정하는 놀랄 만큼 효과적인 방법을 제공한다.  
+이것은 우리가 향후 연구가 능가하기를 희망하는 errors와 out-of-distribution examples를 detecting하는 strong baseline을 만든다.
 
 ## 2 PROBLEM FORMULATION AND EVALUATION
 
