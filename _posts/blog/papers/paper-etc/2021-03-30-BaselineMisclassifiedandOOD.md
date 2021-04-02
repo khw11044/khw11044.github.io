@@ -139,21 +139,32 @@ ROC curve은 true positive rate (tpr = tp=(tp + fn))과 false positive rate (fpr
 따라서 random positive example detector는 50% AUROC에 해당하고 “perfect” classifier는 100%에 해당한다.
 
 The AUROC sidesteps the issue of threshold selection, as does the Area Under the Precision-Recall curve (AUPR) which is sometimes deemed more informative (Manning & Schutze, 1999).   
-This is because the AUROC is not ideal when the positive class and negative class have greatly differing base rates, and the AUPR adjusts for these different positive and negative base rates. For this reason, the AUPR is our second evaluation metric.  
+This is because the AUROC is not ideal when the positive class and negative class have greatly differing base rates, and the AUPR adjusts for these different positive and negative base rates.  
+For this reason, the AUPR is our second evaluation metric.  
 The PR curve plots the precision (tp=(tp+fp)) and recall (tp=(tp + fn)) against each other.   
-The baseline detector has an AUPR approximately equal to the precision (Saito & Rehmsmeier, 2015), and a “perfect” classifier has an AUPR of 100%. Consequently, the base rate of the positive class greatly influences the AUPR, so for detection we must specify which class is positive.  
+The baseline detector has an AUPR approximately equal to the precision (Saito & Rehmsmeier, 2015), and a “perfect” classifier has an AUPR of 100%.  
+Consequently, the base rate of the positive class greatly influences the AUPR, so for detection we must specify which class is positive.  
 
-> AUROC는 때로 더 유익하다고 여겨지는 정밀도-호출 곡선 아래의 영역(AUPR)과 마찬가지로 임계 선택 문제를 회피한다(Maning & Schutze, 1999).   
-왜냐하면 AUROC는 양성 등급과 음성 등급이 크게 다를 때 이상적이지 않고, AUPR은 이러한 서로 다른 양성 및 음성 기준 속도에 대해 조정되기 때문이다. 이러한 이유로, AUPR은 우리의 두 번째 평가 지표이다.  
-PR 곡선은 서로에 대한 정밀도(tp=(tp+fp)와 리콜(tp=(tp+fn))을 표시합니다.   
-기준 검출기의 AUPR은 정밀도와 거의 동일하다(사이토 & 렘스마이어, 2015). "완벽한" 분류기의 AUPR은 100%이다. 결과적으로, 양성 클래스의 기본 속도는 AUPR에 크게 영향을 미치므로, 탐지를 위해 양성 클래스를 지정해야 한다.
+> AUROC는 때로 더 유익하다고 여겨지는 Area Under the Precision-Recall curve (AUPR)과 마찬가지로 threshold selection 문제를 회피한다(Maning & Schutze, 1999).   
+왜냐하면 AUROC는 positive class과 negative class이 크게 다른 base rates 가질 때 이상적이지 않고, AUPR은 이러한 서로 다른 positive 및 negative base rates에 대해 조정되기 때문이다.  
+이러한 이유로, AUPR은 우리의 두 번째 evaluation metric이다.   
+PR curve는 서로에 대한 precision(tp=(tp+fp)와 recall(tp=(tp+fn))을 plots한다.    
+baseline detector의 AUPR은 precision와 거의 동일하고(Saito & Rehmsmeier, 2015), “perfect” classifier의 AUPR은 100%이다.   
+결과적으로, positive class의 base rate는 AUPR에 크게 영향을 미치므로, detection를 위해 class가 positive임을 지정해야 한다.
 
 In view of this, we show the AUPRs when we treat success/normal classes as positive, and then we show the areas when we treat the error/abnormal classes as positive.  
 We can treat the error/abnormal classes as positive by multiplying the scores by -1 and labeling them positive.  
 Note that treating error/abnormal classes as positive classes does not change the $$AU-ROC$$ since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, $$AUROC = P(S > E) = P(-E > -S)$$.
 
+> 이러한 관점에서, 우리는 success/normal classes를 positive으로 취급할 때, AUPR을 보여준 다음 error/abnormal classes를 positive으로 취급할 때, 영역을 보여준다.  
+우리는 점수를 -1로 곱하고 positive로 표시함으로써 error/abnormal classes를 positive의 classes로 처리할 수 있다.  
+S가 successfully classified value에 대한 score이고 E가 erroneously classified value에 대한 score인 경우, $$AUROC = P(S > E) = P(-E > -S)$$ 이기 때문에 error/abnormal classes를 positive classes로 처리해도 $$AU-ROC$$는 변경되지 않는다.
+
 We begin our experiments in Section 3 where we describe a simple baseline which uses the maximum probability from the softmax label distribution in neural network classifiers.  
 Then in Section 4 we describe a method that uses an additional, auxiliary model component trained to reconstruct the input.
+
+> 우리는 Section 3에서 실험을 시작하여 neural network classifiers에서 softmax label distribution의 maximum probability을 사용하는 simple baseline을 설명한다.  
+그런 다음 Section 4에서는 입력을 재구성하기 위해 훈련된 additional, auxiliary model component를 사용하는 방법을 설명한다.
 
 ## 3 SOFTMAX PREDICTION PROBABILITY AS A BASELINE
 
@@ -161,15 +172,31 @@ In what follows we retrieve the maximum/predicted class probability from a softm
 Specifically, we separate correctly and incorrectly classified test set examples and, for each example, compute the softmax probability of the predicted class, i.e., the maximum softmax probability.  
 From these two groups we obtain the area under PR and ROC curves.  
 These areas summarize the performance of a binary classifier discriminating with values/scores (in this case, maximum probabilities from the softmaxes) across different thresholds.  
-This description treats correctly classified examples as the positive class, denoted “Success” or “Succ” in our tables. In “Error” or “Err” we treat the the incorrectly classified examples as the positive class; to do this we label incorrectly classified examples as positive and take the negatives of the softmax probabilities of the predicted classes as the scores.
+This description treats correctly classified examples as the positive class, denoted “Success” or “Succ” in our tables.  
+In “Error” or “Err” we treat the the incorrectly classified examples as the positive class; to do this we label incorrectly classified examples as positive and take the negatives of the softmax probabilities of the predicted classes as the scores.
+
+> 이어지는 내용에서 우리는 softmax distribution에서 maximum/predicted class probability을 retrieve하고 example이 erroneously classified 또는 out-of-distribution인지 detect한다.  
+구체적으로, 우리는 correctly classified test set examples과 incorrectly classified test set examples를 분리하고, 각 example에 대해 predicted class의 softmax probability, 즉 maximum softmax probability을 계산한다.  
+이 두 그룹에서 PR 및 ROC curves 아래의 영역을 얻는다.  
+이러한 영역은 서로 다른 thresholds에 걸쳐 values/scores(이 경우 maximum probabilities from the softmaxes)를 구별하는 binary classifier의 성능을 summarize한다.  
+이 설명은 correctly classified examples를 표에서 “Success” or “Succ”로 표시된, positive class로 취급한다.  
+“Error” or “Err”에서 우리는 incorrectly classified example들을 positive class로 취급한다; 이를 위해 우리는 incorrectly classified example들을 positive로 label하고  predicted classes의 softmax probabilities의 negatives을 scores로 받아들인다.  
 
 For “In,” we treat the in-distribution, correctly classified test set examples as positive and use the softmax probability for the predicted class as a score, while for “Out” we treat the out-of-distribution examples as positive and use the negative of the aforementioned probability.  
 Since the AUPRs for Success, Error, In, Out classifiers depend on the rate of positive examples, we list what area a random detector would achieve with “Base” values.  
 Also in the upcoming results we list the mean predicted class probability of wrongly classified examples (Pred Prob Wrong (mean)) to demonstrate that the softmax prediction probability is a misleading confidence proxy when viewed in isolation.  
 The “Pred. Prob (mean)” columns show this same shortcoming but for out-of-distribution examples.
 
+> "In"의 경우, 우리는 in-distribution, correctly classified test set examples를 positive로 처리하고 predicted class에 대한 softmax probability을 score로 사용하는 반면, "Out"의 경우 out-of-distribution examples를 positive로 처리하고 앞서 언급한 probability의 negative를 사용한다.   
+Success, Error, In, Out classifiers의 AUPR은 positive examples의 rate에 따라 달라지기 때문에, 우리는 random detector가 “Base” values으로 어떤 영역을 달성할지를 열거한다.   
+또한 다음 결과에서는 wrongly classified examples의  mean predicted class probability(Pred Prob Wrong (mean))을 나열하여 softmax prediction probability가 분리되어 볼 때 misleading confidence proxy임을 보여준다.   
+“Pred. Prob (mean)” columns은 동일한 shortcoming을 나타내지만 out-of-distribution examples를 나타냅니다.
+
 Table labels aside, we begin experimentation with datasets from vision then consider tasks in natural language processing and automatic speech recognition.  
 In all of the following experiments, the AUROCs differ from the random baselines with high statistical significance according to the Wilcoxon rank-sum test.
+
+> Table labels과는 별도로, 우리는 vision에서 datasets를 사용한 실험을 시작한 다음 자연어 처리 및 자동 음성 인식의 작업을 고려한다.   
+다음 모든 실험에서, AUROCs는 Wilcoxon rank-sum test에 따라 통계적 의미(중요성,의의)가 높은 random baselines과 다르다.
 
 ### 3.1 COMPUTER VISION
 
