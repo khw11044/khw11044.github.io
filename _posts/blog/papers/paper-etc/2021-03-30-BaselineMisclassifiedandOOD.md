@@ -202,31 +202,67 @@ In all of the following experiments, the AUROCs differ from the random baselines
 
 In the following computer vision tasks, we use three datasets: MNIST, CIFAR-10, and CIFAR- 100 (Krizhevsky, 2009).  
 MNIST is a dataset of handwritten digits, consisting of 60000 training and 10000 testing examples.  
-Meanwhile, CIFAR-10 has colored images belonging to 10 different classes, with 50000 training and 10000 testing examples. CIFAR-100 is more difficult, as it has 100 different classes with 50000 training and 10000 testing examples.
+Meanwhile, CIFAR-10 has colored images belonging to 10 different classes, with 50000 training and 10000 testing examples.  
+CIFAR-100 is more difficult, as it has 100 different classes with 50000 training and 10000 testing examples.
+
+> 다음 computer vision tasks에서는 MNIST, CIFAR-10 및 CIFAR-100 (Krizhevsky, 2009)의 세 가지 datasets를 사용한다.  
+MNIST는 60000개의 training과 10000개의  testing examples로 구성된 손으로 쓴 숫자의 데이터 세트이다.  
+한편 CIFAR-10은 10개의 다른 classes에 속하는 컬러 이미지를 가지고 있으며, 5000개의 training과 10000개의 testing examples가 있다.  
+CIFAR-100은 50000개의 training과 10000개의 testing examples가 있는 100개의 다른 classes을 가지고 있기 때문에 더 어렵다.
 
 In Table 1, we see that correctly classified and incorrectly classified examples are sufficiently distinct and thus allow reliable discrimination.  
 Note that the area under the curves degrade with image recognizer test error.
 
+> 표 1에서, 우리는 correctly classified되고 incorrectly classified examples들이 충분히 구별되므로 reliable discrimination을 허용함을 볼수 있다.  
+image recognizer test error로 인해 curves 아래의 영역이 저하된다.
+
 Next, let us consider using softmax distributions to determine whether an example is in- or out-of-distribution.  
 We use all test set examples as the in-distribution (positive) examples.  
 For out-of-distribution (negative) examples, we use realistic images and noise.  
-For CIFAR-10 and CIFAR-100, we use realistic images from the Scene UNderstanding dataset (SUN), which consists of 397 different scenes (Xiao et al., 2010).  
+For CIFAR-10 and CIFAR-100, we use realistic images from the 'Scene UNderstanding dataset (SUN)', which consists of 397 different scenes (Xiao et al., 2010).  
 For MNIST, we use grayscale realistic images from three sources.  
 Omniglot (Lake et al., 2015) images are handwritten characters rather than the handwritten digits in MNIST.  
 Next, notMNIST (Bulatov, 2011) consists of typeface characters.  
-Last of the realistic images, CIFAR-10bw are black and white rescaled CIFAR-10 images. The synthetic “Gaussian” data is random normal noise, and “Uniform” data is random uniform noise.  
+Last of the realistic images, CIFAR-10bw are black and white rescaled CIFAR-10 images.  
+The synthetic “Gaussian” data is random normal noise, and “Uniform” data is random uniform noise.  
 Images are resized when necessary.
+
+> 다음으로, softmax distributions를 사용하여 example이 in-of-distribution 인지 out-of-distribution 여부를 결정하는 것을 고려해본다.  
+in-distribution (positive) examples로 모든 test set examples를 사용한다.  
+out-of-distribution (negative) examples의 경우 현실적인 이미지와 노이즈를 사용한다.  
+CIFAR-10 및 CIFAR-100의 경우, 397개의 다른 장면으로 구성된 'Scene UNderstanding dataset (SUN)'의 실제 이미지를 사용한다(샤오 외, 2010).  
+MNIST의 경우, 세 가지 소스의 grayscale 실제 이미지를 사용한다.  
+Omniglot (Lake et al., 2015) 이미지는 MNIST에서 handwritten 숫자 대신 handwritten 문자이다.  
+다음으로, notMNIST (Bulatov, 2011) typeface characters로 구성된다.  
+마지막 실제 이미지인 CIFAR-10bw는 검은색과 흰색으로 재조정된 CIFAR-10 이미지이다.  
+synthetic “Gaussian” data는 random normal noise이며 “Uniform” data는 random uniform noise이다.  
+필요한 경우 이미지의 크기가 조정된다.
 
 ![Table1](/assets/img/Blog/papers/Baselinefordetectigmisclassifiedandood/Table1.JPG)
 
 ![Table2](/assets/img/Blog/papers/Baselinefordetectigmisclassifiedandood/Table2.JPG)
 
-The results are shown in Table 2. Notice that the mean predicted/maximum class probabilities (Pred. Prob (mean)) are above 75%, but if the prediction probability alone is translated to confidence, the softmax distribution should be more uniform for CIFAR-100.   This again shows softmax probabilities should not be viewed as a direct representation of confidence.  
+The results are shown in Table 2.  
+Notice that the mean predicted/maximum class probabilities (Pred. Prob (mean)) are above 75%, but if the prediction probability alone is translated to confidence, the softmax distribution should be more uniform for CIFAR-100.   
+This again shows softmax probabilities should not be viewed as a direct representation of confidence.  
 Fortunately, out-of-distribution examples sufficiently differ in the prediction probabilities from in-distribution examples, allowing for successful detection and generally high area under PR and ROC curves.
 
-For reproducibility, let us specify the model architectures. The MNIST classifier is a three-layer, 256 neuron-wide, fully-connected network trained for 30 epochs with Adam (Kingma & Ba, 2015).  
-It uses a GELU nonlinearity (Hendrycks & Gimpel, 2016b), $$x\Phi(x)$$, where $$\Phi(x)$$ is the CDF of the
-standard normal distribution. We initialize our weights according to (Hendrycks & Gimpel, 2016c), as it is suited for arbitrary nonlinearities. For CIFAR-10 and CIFAR-100, we train a 40-4 wide residual network (Zagoruyko & Komodakis, 2016) for 50 epochs with stochastic gradient descent using restarts (Loshchilov & Hutter, 2016), the GELU nonlinearity, and standard mirroring and cropping data augmentation.
+> 결과는 Table 2에 나와 있다.  
+평mean predicted/maximum class probabilities (Pred. Prob (mean))는 75% 이상이지만 prediction probability만 confidence로 변환되면 CIFAR-100에 대해 softmax distribution가 더 uniform해야 한다.   
+이것은 softmax probabilities을 confidence의 직접적인 표현으로 간주해서는 안 된다는 것을 다시 보여준다.  
+다행히 out-of-distribution examples는 in-distribution examples와 예측 확률이 충분히 다르므로 성공적인 검출이 가능하고 일반적으로 PR 및 ROC 곡선에서 높은 area을 가질 수 있다.
+
+For reproducibility, let us specify the model architectures.  
+The MNIST classifier is a three-layer, 256 neuron-wide, fully-connected network trained for 30 epochs with Adam (Kingma & Ba, 2015).  
+It uses a GELU nonlinearity (Hendrycks & Gimpel, 2016b), $$x\Phi(x)$$, where $$\Phi(x)$$ is the CDF of the standard normal distribution.  
+We initialize our weights according to (Hendrycks & Gimpel, 2016c), as it is suited for arbitrary nonlinearities.  
+For CIFAR-10 and CIFAR-100, we train a 40-4 wide residual network (Zagoruyko & Komodakis, 2016) for 50 epochs with stochastic gradient descent using restarts (Loshchilov & Hutter, 2016), the GELU nonlinearity, and standard mirroring and cropping data augmentation.
+
+> 재현성을 위해 모델 아키텍처를 지정.  
+MNIST classifier는 three-layer, 256 neuron-wide, fully-connected, Adam, 30 epochs로 훈련된 network(Kingma & Ba, 2015)이다.   
+GELU nonlinearity (Hendrycks & Gimpel, 2016b), $$x\Phi(x)$$를 사용한다. 여기서 $$\Phi(x)$$는 CDF of the standard normal distribution이다.  
+임의의 비선형성에 적합하므로 (Hendryks & Gimpel, 2016c)에 따라 가중치를 초기화한다.  
+CIFAR-10 및 CIFAR-100의 경우, restarts (Loshchilov & Hutter, 2016), GELU nonlinearity, standard mirroring 및 cropping data augmentation을 사용하여 stochastic gradient descent을 가진 50 epochs에 대해 40-4 wide residual network (Zagoruyko & Komodakis, 2016)를 훈련한다.
 
 ### 3.2 NATURAL LANGUAGE PROCESSING
 
