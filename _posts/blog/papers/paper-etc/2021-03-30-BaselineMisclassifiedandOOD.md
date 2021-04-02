@@ -154,11 +154,11 @@ baseline detector의 AUPR은 precision와 거의 동일하고(Saito & Rehmsmeier
 
 In view of this, we show the AUPRs when we treat success/normal classes as positive, and then we show the areas when we treat the error/abnormal classes as positive.  
 We can treat the error/abnormal classes as positive by multiplying the scores by -1 and labeling them positive.  
-Note that treating error/abnormal classes as positive classes does not change the $$AU-ROC$$ since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, $$AUROC = P(S > E) = P(-E > -S)$$.
+Note that treating error/abnormal classes as positive classes does not change the $$AUROC$$ since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, $$AUROC = P(S > E) = P(-E > -S)$$.
 
 > 이러한 관점에서, 우리는 success/normal classes를 positive으로 취급할 때, AUPR을 보여준 다음 error/abnormal classes를 positive으로 취급할 때, 영역을 보여준다.  
 우리는 점수를 -1로 곱하고 positive로 표시함으로써 error/abnormal classes를 positive의 classes로 처리할 수 있다.  
-S가 successfully classified value에 대한 score이고 E가 erroneously classified value에 대한 score인 경우, $$AUROC = P(S > E) = P(-E > -S)$$ 이기 때문에 error/abnormal classes를 positive classes로 처리해도 $$AU-ROC$$는 변경되지 않는다.
+S가 successfully classified value에 대한 score이고 E가 erroneously classified value에 대한 score인 경우, $$AUROC = P(S > E) = P(-E > -S)$$ 이기 때문에 error/abnormal classes를 positive classes로 처리해도 $$AUROC$$는 변경되지 않는다.
 
 We begin our experiments in Section 3 where we describe a simple baseline which uses the maximum probability from the softmax label distribution in neural network classifiers.  
 Then in Section 4 we describe a method that uses an additional, auxiliary model component trained to reconstruct the input.
