@@ -104,28 +104,53 @@ softmax distributions에서 파생된 Simple statistics는 컴퓨터 비전, 자
 
 In this paper, we are interested in two related problems.  
 The first is **error and success prediction**:
-can we predict whether a trained classifier will make an error on a particular held-out test example; can we predict if it will correctly classify said example?  
+can we predict whether a trained classifier will make an error on a particular held-out test example; can we predict if it will correctly classify said example?   
 The second is **in- and out-of-distribution detection**:
-can we predict whether a test example is from a different distribution from the training data; can we predict if it is from within the same distribution?
+can we predict whether a test example is from a different distribution from the training data; can we predict if it is from within the same distribution?  
 Below we present a simple baseline for solving these two problems.  
 To evaluate our solution, we use two evaluation metrics.
 
-Before mentioning the two evaluation metrics, we first note that comparing detectors is not as straightforward as using accuracy. For detection we have two classes, and the detector outputs a score for both the positive and negative class.   
+> 본 논문에서는 두 가지 문제에 관심을 가지고 있다.  
+**첫 번째는 error와 success prediction:**  
+우리는 훈련된 classifier가 특정 지연 test example에서 error를 만들지 예측할 수 있는가; 우리는 classifier가 해당 example를 정확하게 분류할지 예측할 수 있는가?  
+**두 번째는 in- and out-of-distribution detection:**  
+test example이 training data와 다른 distribution에서 나온 것인지 예측할 수 있는가; same distribution에서 나온 것인지 예측할 수 있는가?  
+아래에서 우리는 이 두 가지 문제를 해결하기 위한 simple baseline을 제시한다.  
+solution을 평가하기 위해 우리는 두 가지 evaluation metrics를 사용한다.
+
+Before mentioning the two evaluation metrics, we first note that comparing detectors is not as straightforward as using accuracy.   
+For detection we have two classes, and the detector outputs a score for both the positive and negative class.   
 If the negative class is far more likely than the positive class, a model may always guess the negative class and obtain high accuracy, which can be misleading (Provost et al., 1998).   
-We must then specify a score threshold so that some positive examples are classified correctly, but this depends upon the trade-off between false negatives (fn) and false
-positives (fp).
+We must then specify a score threshold so that some positive examples are classified correctly, but this depends upon the trade-off between false negatives (fn) and false positives (fp).
+
+> 두 가지 evaluation metrics를 언급하기 전에, 먼저 detectors를 비교하는 것이 정확도를 사용하는 것만큼 간단하지 않다는 점에 주목한다.  
+detection를 위해 우리는 두 개의 클래스를 가지고 있으며, detector는 positive class와 negative class 모두에 대한 score를 출력한다.  
+negative class가 positive class보다 훨씬 가능성이 높은 경우, 모델은 항상 negative class를 추측하고 높은 정확도를 얻을 수 있으며, 이는 misleading할 수 있다(Provost et al., 1998).  
+그런 다음 일부 positive examples가 올바르게 분류되도록 score threshold을 지정해야 하지만, 이는 false negatives(fn)와  false positives(fp) 사이의 trade-off에 따라 달라진다.
 
 Faced with this issue, we employ the Area Under the Receiver Operating Characteristic curve (AUROC) metric, which is a threshold-independent performance evaluation (Davis & Goadrich, 2006).  
-The ROC curve is a graph showing the true positive rate $$(tpr = tp=(tp + fn))$$ and the false positive rate $$(fpr = fp=(fp + tn))$$ against each other.  
+The ROC curve is a graph showing the true positive rate (tpr = tp=(tp + fn)) and the false positive rate (fpr = fp=(fp + tn)) against each other.  
 Moreover, the AUROC can be interpreted as the probability that a positive example has a greater detector score/value than a negative example (Fawcett, 2005).  
 Consequently, a random positive example detector corresponds to a 50% AUROC, and a “perfect” classifier corresponds to 100%.
 
-The AUROC sidesteps the issue of threshold selection, as does the Area Under the Precision-Recall curve (AUPR) which is sometimes deemed more informative (Manning & Sch¨utze, 1999).   This is because the AUROC is not ideal when the positive class and negative class have greatly differing base rates, and the AUPR adjusts for these different positive and negative base rates. For this reason, the AUPR is our second evaluation metric.  
+> 이 문제에 직면하여, 우리는 threshold-independent performance evaluation인  Area Under the Receiver Operating Characteristic curve (AUROC) metric을 사용한다(Davis & Goadrich, 2006).
+ROC curve은 true positive rate (tpr = tp=(tp + fn))과 false positive rate (fpr = fp=(fp + tn))을 서로 비교하는 graph이다.
+또한 AUROC는 positive example가 negative example보다 detector score/value가 더 클 확률로 해석될 수 있다(Fawcett, 2005).
+따라서 random positive example detector는 50% AUROC에 해당하고 “perfect” classifier는 100%에 해당한다.
+
+The AUROC sidesteps the issue of threshold selection, as does the Area Under the Precision-Recall curve (AUPR) which is sometimes deemed more informative (Manning & Schutze, 1999).   
+This is because the AUROC is not ideal when the positive class and negative class have greatly differing base rates, and the AUPR adjusts for these different positive and negative base rates. For this reason, the AUPR is our second evaluation metric.  
 The PR curve plots the precision (tp=(tp+fp)) and recall (tp=(tp + fn)) against each other.   
 The baseline detector has an AUPR approximately equal to the precision (Saito & Rehmsmeier, 2015), and a “perfect” classifier has an AUPR of 100%. Consequently, the base rate of the positive class greatly influences the AUPR, so for detection we must specify which class is positive.  
+
+> AUROC는 때로 더 유익하다고 여겨지는 정밀도-호출 곡선 아래의 영역(AUPR)과 마찬가지로 임계 선택 문제를 회피한다(Maning & Schutze, 1999).   
+왜냐하면 AUROC는 양성 등급과 음성 등급이 크게 다를 때 이상적이지 않고, AUPR은 이러한 서로 다른 양성 및 음성 기준 속도에 대해 조정되기 때문이다. 이러한 이유로, AUPR은 우리의 두 번째 평가 지표이다.  
+PR 곡선은 서로에 대한 정밀도(tp=(tp+fp)와 리콜(tp=(tp+fn))을 표시합니다.   
+기준 검출기의 AUPR은 정밀도와 거의 동일하다(사이토 & 렘스마이어, 2015). "완벽한" 분류기의 AUPR은 100%이다. 결과적으로, 양성 클래스의 기본 속도는 AUPR에 크게 영향을 미치므로, 탐지를 위해 양성 클래스를 지정해야 한다.
+
 In view of this, we show the AUPRs when we treat success/normal classes as positive, and then we show the areas when we treat the error/abnormal classes as positive.  
-We can treat the error/abnormal classes as positive by multiplying the scores by 􀀀1 and labeling them positive.  
-Note that treating error/abnormal classes as positive classes does not change the AU-ROC since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, $$AUROC = P(S > E) = P(-E > -S)$$.
+We can treat the error/abnormal classes as positive by multiplying the scores by -1 and labeling them positive.  
+Note that treating error/abnormal classes as positive classes does not change the $$AU-ROC$$ since if S is a score for a successfully classified value, and E is the score for an erroneously classified value, $$AUROC = P(S > E) = P(-E > -S)$$.
 
 We begin our experiments in Section 3 where we describe a simple baseline which uses the maximum probability from the softmax label distribution in neural network classifiers.  
 Then in Section 4 we describe a method that uses an additional, auxiliary model component trained to reconstruct the input.
