@@ -426,13 +426,32 @@ GOAD는 모든 기본 방법을 능가한다.
 We examine the merits of two settings  
 i) the adversary knows the transformations used (non-random)  
 ii) the adversary uses another set of transformations.  
-To measure the benefit of the randomized transformations, we train three networks A, B, C. Networks A and B use exactly the same transformations but random parameter initialization prior to training.  
+To measure the benefit of the randomized transformations, we train three networks A, B, C.  
+Networks A and B use exactly the same transformations but random parameter initialization prior to training.  
 Network C is trained using other randomly selected transformations.  
 The adversary creates adversarial examples using PGD (Madry et al., 2017) based on network A (making anomalies appear like normal data).  
 On Cifar10, we randomly selected 8 transformations from the full set of 72 for A and B, another randomly selected 8 transformations are used for C.  
 We measure the increase of false classification rate on the adversarial examples using the three networks.  
 The average increase in performance of classifying transformation correctly on anomalies (causing lower anomaly scores) on the original network A was 12.8%, the transfer performance for B causes an increase by 5.0% on network B which shared the same set of transformation, and 3% on network C that used other rotations.  
 This shows the benefits of using random transformations.
+
+<details>
+<blockquote>
+**Adversarial Robustness**: attacker가 아키텍처와 normal training data를 알고 anomalies를 최소한으로 수정하여 normal로 보이도록 하는 공격 모델을 가정하자.   
+우리는 두 가지 설정의 장점을 조사한다.  
+i) adversary가 사용된 변환을 알고 있다(non-random).  
+ii) adversary는 다른 변환 집합을 사용한다.  
+무작위 변환의 이점을 측정하기 위해, 우리는 세 개의 networks A, B, C를 훈련시킨다.  
+Networks A와 B는 training 전에 정확히 동일한 변환을 사용하지만 random parameter initialization를 사용한다.   
+Network C는 other randomly selected transformations을 사용하여 train된다.  
+adversary는 Network A(anomalies를 normal data와 같이 표시)에 기반한 PGD(Madry et al., 2017)를 사용하여 adversarial examples를 생성한다.  
+Cifar10에서는 A와 B에 대한 72개의 전체 집합에서 8개의 변환을 무작위로 선택했으며, 다른 8개의 변환은 C에 사용된다.  
+우리는 세 개의 networks를 사용하여 adversarial examples에서 false classification rate의 증가를 측정한다.  
+original network A에서 anomalies(anomaly scores가 낮아짐)에서 변환을 올바르게 분류하는 평균 성능 증가는 12.8%, B에 대한 transfer performance는 동일한 변환 세트를 공유하는 network B에서 5.0%, other rotations을 사용한 network C에서 3%의 증가를 유발했다.  
+이것은 random transformations을 사용할 때의 이점을 보여준다.
+
+</blockquote>
+</details>
 
 ![Table1](/assets/img/Blog/papers/Classification-based/Table1.JPG)
 
