@@ -329,6 +329,8 @@ With this modification, the softmax prediction probabilities allow us to detect 
 
 ## 4 ABNORMALITY DETECTION WITH AUXILIARY DECODERS
 
+![Fig1](/assets/img/Blog/papers/Baselinefordetectigmisclassifiedandood/Fig1.JPG)
+
 Having seen that softmax prediction probabilities enable abnormality detection, we now show there is other information sometimes more useful for detection.  
 To demonstrate this, we exploit the learned internal representations of neural networks.  
 We start by training a normal classifier and append an auxiliary decoder which reconstructs the input, shown in Figure 1.  
