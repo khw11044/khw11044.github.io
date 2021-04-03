@@ -202,15 +202,15 @@ ii) fit the minimal hypersphere of radius $$R$$ and center $$c_0$$ around the fe
 
 > One-class classification methods은 $$C$$를  $$P(x \in X)$$로 직접 학습하려고 시도한다.  
 고전적인 접근 방식은 input space 또는  kernel space에서 classifier를 학습했다.  
-최근 Deep-SVDD(Ruff et al., 2018)는
-i) data를 isotropic feature space $$f(x)$$로 변환하고
+최근 Deep-SVDD(Ruff et al., 2018)는  
+i) data를 isotropic feature space $$f(x)$$로 변환하고  
 ii) normal training data의 features 주위에 radius $$R$$과 center $$c_0$$의 minimal hypersphere에 맞게 end-to-end로 학습한다.
 
-Test data is classified as anomalous if the following normality score is positive: $$||f(x) - c_0||^2 - R^2$$.
+Test data is classified as anomalous if the following normality score is positive: $$||f(x) - c_0||^2 - R^2$$.  
 Learning an effective feature space is not a simple task, as the trivial solution of $$f(x) = 0 \; \forall x$$ results in the smallest hypersphere, various tricks are used to avoid this possibility.
 
 > 다음 normality score는 positive인 경우 Test data는 anomalous으로 분류된다: $$||f(x) - c_0||^2 - R^2$$.  
-$$f(x) = 0 \; \forall x$$의 trivial solution이 가장 작은 hypersphere에서 발생하므로, 효과적인 feature space 학습은 간단한 task가 아니다. 이러한 가능성을 피하기 위해 다양한 트릭을 사용한다.
+$$f(x) = 0 \; \forall x$$의 trivial solution이 가장 작은 hypersphere에서 발생하므로, 효과적인 feature space 학습은 간단한 task가 아니다, 이러한 가능성을 피하기 위해 다양한 트릭을 사용한다.
 
 Geometric-transformation classification (GEOM), proposed by Golan & El-Yaniv (2018) first transforms the normal data subspace $$X$$ into $$M$$ subspaces $$X_1 .. X_M$$.  
 This is done by transforming each image $$x \in X$$ using $$M$$ different geometric transformations (rotation, reflection, translation) into $$T(x,1)..T(x,M)$$.  
@@ -220,7 +220,7 @@ As the training set consists of normal data only, each sample is $$x \in X$$ and
 The method attempts to estimate the following conditional probability:
 
 > Geometric-transformation classification (GEOM)는 먼저 normal data subspace $$X$$를 $$M$$ subspaces $$X_1 .. X_M$$로 변환한다.   
-X_M$$ 이는 $$M$$ geometric transformations (rotation, reflection, translation)을 사용하여 각 image $$x \in X$$를 $$T(x,1)..T(x,M)$$로 변환함으로써 이루어진다.   
+이는 $$M$$ different geometric transformations (rotation, reflection, translation)을 사용하여 각 image $$x \in X$$를 $$T(x,1)..T(x,M)$$로 변환함으로써 이루어진다.   
 이러한 변환은 이미지에 따라 다르긴 하지만 나중에 변환 class를 모든 affine 변환으로 확장하여 non-image data에 적용할 수 있게 할 것이다.  
 그들은 변환된 data point $$T(x,m)$$가 주어진 transformation label $$m$$ 을 예측할 수 있는 classifier를 학습하는 보조 작업을 설정했다.  
 training set는 normal data로만 구성되므로, 각 sample은 $$x \in X$$이고 변환된 sample은 $$\cup_m X_m$$이다.  
