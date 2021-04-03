@@ -76,9 +76,37 @@ This supervision is easy to obtain in many practical settings and is less diffic
 anomaly detector를 training한 후, 우리는 정상 및 비정상적인 예제를 모두 포함하는 test data에서 anomalies를 탐지한다.  
 이 supervision은 많은 실제 환경에서 얻기 쉽고 fully-unsupervised case보다 덜 어렵다.
 
-Many anomaly detection methods have been proposed over the last few decades. They can be broadly classified into reconstruction and statistically based methods.Recently, deep learning methods based on classification have achieved superior results. Most semi-supervised classificationbased methods attempt to solve anomaly detection directly, despite only having normal training data. One example is: Deep-SVDD (Ruff et al., 2018) - one-class classification using a learned deep space. Another type of classification-based methods is self-supervised i.e. methods that solve one or more classification-based auxiliary tasks on the normal training data, and this is shown to be useful for solving anomaly detection, the task of interest e.g. (Golan & El-Yaniv, 2018). Self-supervised classification-based methods have been proposed with the object of image anomaly detection, but we show that by generalizing the class of transformations they can apply to all data types.
+Many anomaly detection methods have been proposed over the last few decades.  
+They can be broadly classified into reconstruction and statistically based methods.
+Recently, deep learning methods based on classification have achieved superior results.  
+Most semi-supervised classification-based methods attempt to solve anomaly detection directly, despite only having normal training data.  
+One example is: Deep-SVDD (Ruff et al., 2018) - one-class classification using a learned deep space.  
+Another type of classification-based methods is self-supervised i.e. methods that solve one or more classification-based auxiliary tasks on the normal training data, and this is shown to be useful for solving anomaly detection, the task of interest e.g. (Golan & El-Yaniv, 2018).  
+Self-supervised classification-based methods have been proposed with the object of image anomaly detection, but we show that by generalizing the class of transformations they can apply to all data types.
 
-In this paper, we introduce a novel technique, GOAD, for anomaly detection which unifies current state-of-the-art methods that use normal training data only and are based on classification. Our method first transforms the data into M subspaces, and learns a feature space such that inter-class separation is larger than intra-class separation. For the learned features, the distance from the cluster center is correlated with the likelihood of anomaly. We use this criterion to determine if a new data point is normal or anomalous. We also generalize the class of transformation functions to include affine transformation which allows our method to generalize to non-image data. This is significant as tabular data is probably the most important for applications of anomaly detection. Our method is evaluated on anomaly detection on image and tabular datasets (cyber security and medical) and is shown to significantly improve over the state-of-the-art.
+> 지난 수십 년 동안 많은 anomaly detection 방법이 제안되었다.  
+이는 크게 reconstruction과 statistically 방법으로 분류할 수 있다.  
+최근 classification에 기반한 deep learning 방법이 우수한 결과를 얻었다.  
+대부분의 semi-supervised classification-based 방법은 정상적인 훈련 데이터만 가지고 있음에도 불구하고 anomaly detection를 직접 해결하려고 시도 한다.  
+한 가지 예는 다음과 같다: Deep-SVDD (Ruff et al., 2018) - learned deep space를 이용한 one-class classification.  
+classification-based 방법의 또 다른 유형은 self-supervised 즉, normal training data에 대한 하나 이상의 classification-based auxiliary tasks을 해결하는 방법이며 그것은 연구의 관심 task인, anomaly detection을 해결하는 데 유용한 것으로 나타났다(Golan & El-Yaniv, 2018).  
+Self-supervised classification-based methods는 image anomaly detection의 object로 제안되었지만, transformations의 class를 일반화함으로써 모든 데이터 유형에 적용할 수 있음을 보여준다.
+
+In this paper, we introduce a novel technique, GOAD, for anomaly detection which unifies current state-of-the-art methods that use normal training data only and are based on classification.  
+Our method first transforms the data into $$M$$ subspaces, and learns a feature space such that inter-class separation is larger than intra-class separation.  
+For the learned features, the distance from the cluster center is correlated with the likelihood of anomaly.  
+We use this criterion to determine if a new data point is normal or anomalous.  
+We also generalize the class of transformation functions to include affine transformation which allows our method to generalize to non-image data.  
+This is significant as tabular data is probably the most important for applications of anomaly detection.  
+Our method is evaluated on anomaly detection on image and tabular datasets (cyber security and medical) and is shown to significantly improve over the state-of-the-art.
+
+> 본 논문에서는 normal training data만 사용하고 classification를 기반으로 하는 현재의 state-of-the-art 방법을 통합하는 anomaly detection을 위한 새로운 기술인 GOAD를 소개한다.  
+우리의 방법은 먼저 data를 $$M$$ subspaces으로 변환하고 inter-class separation이 intra-class separation보다 더 큰 feature space을 학습한다.  
+학습된 features의 경우, cluster 중심으로부터의 거리는 likelihood of anomaly와 상관 관계가 있다.  
+이 기준을 사용하여 new data point이 정상인지 비정상인지 여부를 확인한다.  
+우리는 또한 transformation functions의 class를 일반화하여 우리의 방법을 non-image data로 일반화할 수 있는 affine transformation을 포함한다.  
+이는 표 형식의 데이터(tabular data)가 anomaly detection의 applications에 가장 중요할 수 있기 때문에 중요하다.  
+우리의 방법은 image 및 tabular datasets(사이버 보안 및 의료)에 대한 anomaly detection에 대해 평가되며 state-of-the-art보다 크게 개선된 것으로 나타났다.
 
 ### 1.1 PREVIOUS WORKS
 
