@@ -234,11 +234,11 @@ For anomalous data $$x \in R^L \backslash X$$, by construction of the subspace, 
 
 > anomalous data $$x \in R^L \backslash X$$에서, subspace의 construction에 의해, transformations $$T$$가 one-to-one이면, transformed sample이 적절한 subspace인  $$T(x,m) \in R^L \backslash X_m$$에 속하지 않는다.
 
-GEOM uses $$P(m|T(x,m))$$ as a score for determining if $$x$$ is anomalous i.e. that $$x \in R^L \backslash X$$.  
-GEOM gives samples with low probabilities $$P(m|T(x,m))$$ high anomaly scores.
+GEOM uses $$P(m\|T(x,m))$$ as a score for determining if $$x$$ is anomalous i.e. that $$x \in R^L \backslash X$$.  
+GEOM gives samples with low probabilities $$P(m\|T(x,m))$$ high anomaly scores.
 
-> GEOM은 $$x$$가 anomalous인지, 즉 $$x \in R^L \backslash X$$인지를 결정하기 위한 score로 $$P(m|T(x,m))$$를 사용한다.  
-GEOM은 낮은 probabilities $$P(m|T(x,m))$$ 높은 anomaly scores를 가진 samples을 제공한다.
+> GEOM은 $$x$$가 anomalous인지, 즉 $$x \in R^L \backslash X$$인지를 결정하기 위한 score로 $$P(m\|T(x,m))$$를 사용한다.  
+GEOM은 낮은 probabilities $$P(m\|T(x,m))$$ 높은 anomaly scores를 가진 samples을 제공한다.
 
 A significant issue with this methodology, is that the learned classifier $$P(m^{'}|T(x,m))$$ is only valid for samples $$x \in X$$ which were found in the training set.  
 For $$x \in R^L\backslash X$$ we should in fact have $$P(T(x,m) \in X_{m^{'}} ) = 0$$ for all $$m = 1..M$$ (as the transformed $$x$$ is not in any of the subsets).  
