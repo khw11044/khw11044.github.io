@@ -240,7 +240,6 @@ synthetic “Gaussian” data는 random normal noise이며 “Uniform” data는
 
 ![Table1](/assets/img/Blog/papers/Baselinefordetectigmisclassifiedandood/Table1.JPG)
 
-![Table2](/assets/img/Blog/papers/Baselinefordetectigmisclassifiedandood/Table2.JPG)
 
 The results are shown in Table 2.  
 Notice that the mean predicted/maximum class probabilities (Pred. Prob (mean)) are above 75%, but if the prediction probability alone is translated to confidence, the softmax distribution should be more uniform for CIFAR-100.   
