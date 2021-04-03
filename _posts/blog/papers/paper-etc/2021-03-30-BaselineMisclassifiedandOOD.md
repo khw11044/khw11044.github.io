@@ -32,7 +32,7 @@ We then show the baseline can sometimes be surpassed, demonstrating the room for
 
 > 우리는 example이 misclassified되었거나 out-of-distribution인 경우 detecting하는 두 가지 관련 문제를 고려한다.  
 우리는 softmax distributions의 probabilities을 활용하는 simple baseline을 제시한다.  
-올바르게 분류된 examples는 detection에서 erroneously classified와 out-of-distribution examples보다 maximum softmax probabilities이 더 큰 경향이 있다.  
+Correctly classified examples는 detection에서 erroneously classified와 out-of-distribution examples보다 maximum softmax probabilities이 더 큰 경향이 있다.  
 우리는 컴퓨터 비전, 자연어 처리 및 자동 음성 인식에서 여러 작업을 정의하고 성능을 평가하여 이 baseline의 전반적인 효과를 보여준다.  
 그런 다음 때로는 baseline이 능가할 수 있음을 보여 주며, 이러한 underexplored detection tasks에 대한 향후 연구의 여지를 보여준다.  
 
@@ -45,7 +45,7 @@ For example, a medical diagnosis model may consistently classify with high confi
 The resulting unflagged, erroneous diagnoses could blockade future machine learning technologies in medicine.  
 More generally and importantly, estimating when a model is in error is of great concern to AI Safety (Amodei et al., 2016).
 
-> machine learning classifiers가 real-world tasks에 사용될 때, 훈련과 테스트 distributions가 다를 때 실패하는 경향이 있다.  
+> machine learning classifiers가 real-world tasks에 사용될 때, training distributions과 test distributions가 다를 때 실패하는 경향이 있다.  
 더 나쁜 것은, 이러한 classifiers가 비정상적으로 부정확한 상태에서 높은 신뢰도 예측을 제공함으로써 조용히 실패하는 경우가 많다는 것이다(Goodfellow et al., 2015; Amodei et al., 2016).  
 분류기가 잘못될 가능성이 있을 떄를 표시하지 않으면 채택을 제한하거나 심각한 사고를 유발할 수 있다.  
 예를 들어, 의료 진단 모델은 인간의 개입을 위한 어려운 examples를 flag해야 하지만 높은 신뢰도로 일관되게 분류할 수 있다.  
