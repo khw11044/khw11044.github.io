@@ -47,7 +47,7 @@ More generally and importantly, estimating when a model is in error is of great 
 
 > machine learning classifiers가 real-world tasks에 사용될 때, training distributions과 test distributions가 다를 때 실패하는 경향이 있다.  
 더 나쁜 것은, 이러한 classifiers가 비정상적으로 부정확한 상태에서 높은 신뢰도 예측을 제공함으로써 조용히 실패하는 경우가 많다는 것이다(Goodfellow et al., 2015; Amodei et al., 2016).  
-분류기가 잘못될 가능성이 있을 떄를 표시하지 않으면 채택을 제한하거나 심각한 사고를 유발할 수 있다.  
+Classifiers가 잘못될 가능성이 있을 떄를 표시하지 않으면 채택이 제한되거나 심각한 사고를 유발할 수 있다.  
 예를 들어, 의료 진단 모델은 인간의 개입을 위한 어려운 examples를 flag해야 하지만 높은 신뢰도로 일관되게 분류할 수 있다.  
 그 결과로 unflagged된, 잘못된 진단은 의학에서 미래의 machine learning 기술을 차단할 수 있다.  
 보다 일반적으로 그리고 중요하게, 모델이 오류에 있는 시점을 추정하는 것이 AI Safety에 큰 관심사이다(Amodei et al., 2016).
