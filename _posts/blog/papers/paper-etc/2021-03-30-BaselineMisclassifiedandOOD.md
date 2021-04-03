@@ -213,7 +213,7 @@ CIFAR-100은 50000개의 training과 10000개의 testing examples가 있는 100�
 In Table 1, we see that correctly classified and incorrectly classified examples are sufficiently distinct and thus allow reliable discrimination.  
 Note that the area under the curves degrade with image recognizer test error.
 
-> 표 1에서, 우리는 correctly classified되고 incorrectly classified examples들이 충분히 구별되므로 reliable discrimination을 허용함을 볼수 있다.  
+> 표 1에서, 우리는 correctly classified examples들과 incorrectly classified examples들이 충분히 구별되므로 reliable discrimination을 허용함을 볼수 있다.  
 image recognizer test error로 인해 curves 아래의 영역이 저하된다.
 
 Next, let us consider using softmax distributions to determine whether an example is in- or out-of-distribution.  
