@@ -134,7 +134,7 @@ Moreover, the AUROC can be interpreted as the probability that a positive exampl
 Consequently, a random positive example detector corresponds to a 50% AUROC, and a “perfect” classifier corresponds to 100%.
 
 > 이 문제에 직면하여, 우리는 threshold-independent performance evaluation인  Area Under the Receiver Operating Characteristic curve (AUROC) metric을 사용한다(Davis & Goadrich, 2006).
-ROC curve은 true positive rate (tpr = tp=(tp + fn))과 false positive rate (fpr = fp=(fp + tn))을 서로 비교하는 graph이다.
+ROC curve은 true positive rate (tpr = tp/(tp + fn))과 false positive rate (fpr = fp/(fp + tn))을 서로 비교하는 graph이다.
 또한 AUROC는 positive example가 negative example보다 detector score/value가 더 클 확률로 해석될 수 있다(Fawcett, 2005).
 따라서 random positive example detector는 50% AUROC에 해당하고 “perfect” classifier는 100%에 해당한다.
 
