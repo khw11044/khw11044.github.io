@@ -97,7 +97,7 @@ Simple statistics derived from softmax distributions provide a surprisingly effe
 This creates a strong baseline for detecting errors and out-of-distribution examples which we hope future research surpasses.
 
 > 요약하자면, softmax classifier probabilities는 신뢰 추정치만큼 직접적으로 유용하지는 않지만, 모델 신뢰 추정은 이전에 믿었던 것만큼 암울하지 않다.  
-softmax distributions에서 파생된 Simple statistics는 컴퓨터 비전, 자연어 처리 및 음성 인식 작업에 걸친 우리의 실험 결과에서 입증된 바와 같이, example이 misclassified되었는지 또는 training data와 다른 distribution에서 나온 것인지를 결정하는 놀랄 만큼 효과적인 방법을 제공한다.  
+softmax distributions에서 파생된 Simple statistics는 ,컴퓨터 비전, 자연어 처리 및 음성 인식 작업에 걸친 우리의 실험 결과에서 입증된 바와 같이, example이 misclassified되었는지 또는 training data와 다른 distribution에서 나온 것인지를 결정하는 놀랄 만큼 효과적인 방법을 제공한다.  
 이것은 우리가 향후 연구가 능가하기를 희망하는 errors와 out-of-distribution examples를 detecting하는 strong baseline을 만든다.
 
 ## 2 PROBLEM FORMULATION AND EVALUATION
@@ -124,7 +124,7 @@ If the negative class is far more likely than the positive class, a model may al
 We must then specify a score threshold so that some positive examples are classified correctly, but this depends upon the trade-off between false negatives (fn) and false positives (fp).
 
 > 두 가지 evaluation metrics를 언급하기 전에, 먼저 detectors를 비교하는 것이 정확도를 사용하는 것만큼 간단하지 않다는 점에 주목한다.  
-detection를 위해 우리는 두 개의 클래스를 가지고 있으며, detector는 positive class와 negative class 모두에 대한 score를 출력한다.  
+detection을 위해 우리는 두 개의 클래스를 가지고 있으며, detector는 positive class와 negative class 모두에 대한 score를 출력한다.  
 negative class가 positive class보다 훨씬 가능성이 높은 경우, 모델은 항상 negative class를 추측하고 높은 정확도를 얻을 수 있으며, 이는 misleading할 수 있다(Provost et al., 1998).  
 그런 다음 일부 positive examples가 올바르게 분류되도록 score threshold을 지정해야 하지만, 이는 false negatives(fn)와  false positives(fp) 사이의 trade-off에 따라 달라진다.
 
