@@ -25,11 +25,27 @@ University of Modena and Reggio Emilia
 
 ## ABSTRACT
 
-Novelty detection is commonly referred to as the discrimination of observations that do not conform to a learned model of regularity. Despite its importance in different application settings, designing a novelty detector is utterly complex due to the unpredictable nature of novelties and its inaccessibility during the training procedure, factors which expose the unsupervised nature of the problem. In our proposal, we design a general framework where we equip a deep autoencoder with a parametric density estimator that learns the probability distribution underlying its latent rep- resentations through an autoregressive procedure. We show that a maximum likelihood objective, optimized in conjunction with the reconstruction of normal samples, effectively acts as a regularizer for the task at hand, by minimizing the differential entropy of the distribution spanned by latent vectors. In addition to providing a very general formulation, extensive experiments of our model on publicly avail- able datasets deliver on-par or superior performances if compared to state-of-the-art methods in one-class and video anomaly detection settings. Differently from prior works, our proposal does not make any assumption about the nature of the novelties, making our work readily applicable to diverse contexts.
+Novelty detection is commonly referred to as the discrimination of observations that do not conform to a learned model of regularity.  
+Despite its importance in different application settings, designing a novelty detector is utterly complex due to the unpredictable nature of novelties and its inaccessibility during the training procedure, factors which expose the unsupervised nature of the problem.  
+In our proposal, we design a general framework where we equip a deep autoencoder with a parametric density estimator that learns the probability distribution underlying its latent representations through an autoregressive procedure.
+
+> Novelty detection은 일반적으로 학습된 regularity 모델에 부합하지 않는 observations의 discrimination이라고 한다.  
+다른 application 설정에서 그것의 중요성에도 불구하고, novelty detector 설계는 novelties의 unpredictable 특성과 training 절차 동안 inaccessibility으로 인해 완전히 complex하며, 이는 문제의 unsupervised 특성을 드러내는 요인이다.  
+우리의 제안에서, 우리는 autoregressive procedure를 통해 latent representations에 기초하는 probability distribution를 학습하는 parametric density estimator를 deep autoencoder에 장착하는 general framework를 설계한다.  
+
+We show that a maximum likelihood objective, optimized in conjunction with the reconstruction of normal samples, effectively acts as a regularizer for the task at hand, by minimizing the differential entropy of the distribution spanned by latent vectors.  
+In addition to providing a very general formulation, extensive experiments of our model on publicly available datasets deliver on-par or superior performances if compared to state-of-the-art methods in one-class and video anomaly detection settings.  
+Differently from prior works, our proposal does not make any assumption about the nature of the novelties, making our work readily applicable to diverse contexts.
+
+> 우리는 정상 샘플의 reconstruction과 함께 최적화된 maximum likelihood 목표가 latent vectors에 의해 확장된 distribution의 differential entropy를 최소화함으로써 당면한 task에 대한 정규화 역할을 효과적으로 수행함을 보여준다.   
+매우 일반적인 공식을 제공할 뿐만 아니라, 공개적으로 사용 가능한 datasets에 대한 모델의 광범위한 실험은 단일 클래스 및 비디오 이상 탐지 설정의 state-of-the-art methods과 비교할 때 동등하거나 우수한 성능을 제공한다.   
+이전 연구와 달리, 우리의 제안은 novelties의 nature에 대한 어떠한 가정도 하지 않아 우리의 작업이 다양한 맥락에 쉽게 적용될 수 있게 한다.
 
 ## 1. Introduction
 
-Novelty detection is defined as the identification of samples which exhibit significantly different traits with respect to an underlying model of regularity, built from a collection of normal samples. The awareness of an autonomous system to recognize unknown events enables applications in several domains, ranging from video surveillance [7, 11], to defect detection [19] to medical imaging [35]. Moreover, the surprise inducted by unseen events is emerging as a crucial aspect in reinforcement learning settings, as an enabling factor in curiosity-driven exploration [31].
+Novelty detection is defined as the identification of samples which exhibit significantly different traits with respect to an underlying model of regularity, built from a collection of normal samples.  
+The awareness of an autonomous system to recognize unknown events enables applications in several domains, ranging from video surveillance [7, 11], to defect detection [19] to medical imaging [35].  
+Moreover, the surprise inducted by unseen events is emerging as a crucial aspect in reinforcement learning settings, as an enabling factor in curiosity-driven exploration [31].
 
 However, in this setting, the definition and labeling of novel examples are not possible. Accordingly, the literature agrees on approximating the ideal shape of the boundary separating normal and novel samples by modeling the intrinsic characteristics of the former. Therefore, prior works tackle such problem by following principles derived from the unsupervised learning paradigm [9, 34, 11, 23, 27]. Due to the lack of a supervision signal, the process of feature extraction and the rule for their normality assessment can only be guided by a proxy objective, assuming the latter will define an appropriate boundary for the application at hand.
 
