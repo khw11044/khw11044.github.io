@@ -112,11 +112,71 @@ Our method is evaluated on anomaly detection on image and tabular datasets (cybe
 
 Anomaly detection methods can be generally divided into the following categories:
 
-Reconstruction Methods: Some of the most common anomaly detection methods are reconstructionbased. The general idea behind such methods is that every normal sample should be reconstructed accurately using a limited set of basis functions, whereas anomalous data should suffer from larger reconstruction costs. The choice of features, basis and loss functions differentiates between the different methods. Some of the earliest methods use: nearest neighbors (Eskin et al., 2002), low-rank PCA (Jolliffe, 2011; Candes et al., 2011) or K-means (Hartigan &Wong, 1979) as the reconstruction basis. Most recently, neural networks were used (Sakurada & Yairi, 2014; Xia et al., 2015) for learning deep basis functions for reconstruction. Another set of recent methods (Schlegl et al., 2017; Deecke et al., 2018) use GANs to learn a reconstruction basis function. GANs suffer from mode-collapse and are difficult to invert, which limits the performance of such methods.
+**Reconstruction Methods:**   
+Some of the most common anomaly detection methods are reconstruction-based.   
+The general idea behind such methods is that every normal sample should be reconstructed accurately using a limited set of basis functions, whereas anomalous data should suffer from larger reconstruction costs.   
+The choice of features, basis and loss functions differentiates between the different methods.  
+Some of the earliest methods use: nearest neighbors (Eskin et al., 2002), low-rank PCA (Jolliffe, 2011; Candes et al., 2011) or K-means (Hartigan &Wong, 1979) as the reconstruction basis.   
+Most recently, neural networks were used (Sakurada & Yairi, 2014; Xia et al., 2015) for learning deep basis functions for reconstruction.  
+Another set of recent methods (Schlegl et al., 2017; Deecke et al., 2018) use GANs to learn a reconstruction basis function.  
+GANs suffer from mode-collapse and are difficult to invert, which limits the performance of such methods.
 
-Distributional Methods: Another set of commonly used methods are distribution-based. The main theme in such methods is to model the distribution of normal data. The expectation is that anomalous test data will have low likelihood under the probabilistic model while normal data will have higher likelihoods. Methods differ in the features used to describe the data and the probabilistic model used to estimate the normal distribution. Some early methods used Gaussian or Gaussian mixture models. Such models will only work if the data under the selected feature space satisfies the probabilistic assumptions implicied by the model. Another set of methods used non-parametric density estimate methods such as kernel density estimate (Parzen, 1962). Recently, deep learning methods (autoencoders or variational autoencoders) were used to learn deep features which are sometimes easier to model than raw features (Yang et al., 2017). DAGMM introduced by Zong et al. (2018) learn the probabilistic model jointly with the deep features therefore shaping the features space to better conform with the probabilistic assumption.
+> **Reconstruction Methods:**  
+가장 일반적인 anomaly detection 방법 중 일부는 재구성 기반이다.  
+이러한 방법의 일반적인 idea는 모든 normal sample은 제한된 기본 함수를 사용하여 정확하게 재구성해야 하는 반면 anomalous data는 더 큰 재구성 비용으로 인해 어려움을 겪어야 한다는 것이다.  
+features, basis 및 loss functions의 선택은 다른 방법을 구별한다.  
+가장 초기의 방법으로는 nearest neighbors, low-rank PCA 또는 K-means가 reconstruction basis로 사용된다.  
+가장 최근에는 reconstruction을 위한 deep basis functions를 학습하기 위해 신경망이 사용되었다.  
+최근의 또 다른 방법 세트는 reconstruction basis function를 학습하기 위해 GAN을 사용한다.  
+GAN은 mode-collapse로 어려움을 겪고 invert가 어려우며, 이는 그러한 방법의 성능을 제한한다.
 
-Classification-Based Methods: Another paradigm for anomaly detection is separation between space regions containing normal data from all other regions. An example of such approach is One-Class SVM (Scholkopf et al., 2000), which trains a classifier to perform this separation. Learning a good feature space for performing such separation is performed both by the classic kernel methods as well as by the recent deep learning approach (Ruff et al., 2018). One of the main challenges in unsupervised (or semi-supervised) learning is providing an objective for learning features that are relevant to the task of interest. One method for learning good representations in a self-supervised way is by training a neural network to solve an auxiliary task for which obtaining data is free or at least very inexpensive. Auxiliary tasks for learning high-quality image features include: video frame prediction (Mathieu et al., 2016), image colorization (Zhang et al., 2016; Larsson et al., 2016), puzzle solving (Noroozi & Favaro, 2016) - predicting the correct order of random permuted image patches. Recently, Gidaris et al. (2018) used a set of image processing transformations (rotation by 0; 90; 180; 270 degrees around the image axis, and predicted the true image orientation has been used to learn high-quality image features. Golan & El-Yaniv (2018), have used similar image-processing task prediction for detecting anomalies in images. This method has shown good performance on detecting images from anomalous classes. In this work, we overcome some of the limitations of previous classification-based methods and extend their applicability of self-supervised methods to general data types. We also show that our method is more robust to adversarial attacks.
+**Distributional Methods:**  
+Another set of commonly used methods are distribution-based.  
+The main theme in such methods is to model the distribution of normal data.  
+The expectation is that anomalous test data will have low likelihood under the probabilistic model while normal data will have higher likelihoods.  
+Methods differ in the features used to describe the data and the probabilistic model used to estimate the normal distribution.  
+Some early methods used Gaussian or Gaussian mixture models.  
+Such models will only work if the data under the selected feature space satisfies the probabilistic assumptions implicied by the model.  
+Another set of methods used non-parametric density estimate methods such as kernel density estimate (Parzen, 1962).  
+Recently, deep learning methods (autoencoders or variational autoencoders) were used to learn deep features which are sometimes easier to model than raw features (Yang et al., 2017).  
+DAGMM introduced by Zong et al. (2018) learn the probabilistic model jointly with the deep features therefore shaping the features space to better conform with the probabilistic assumption.
+
+> **Distributional Methods:**
+일반적으로 사용되는 또 다른 방법 집합은 분포 기반이다.  
+이러한 방법의 주요 주제는 normal data의 distribution을 model화하는 것이다.  
+anomalous test data는 probabilistic model에서 low likelihood를 갖는 반면 normal data는 higher likelihood를 가질 것으로 예상된다.  
+방법은 데이터를 설명하는 데 사용되는 특성과 정규 분포를 추정하는 데 사용되는 확률적 모델에 차이가 있다.  
+일부 초기 방법은 Gaussian 또는 Gaussian mixture models을 사용했다.   
+이러한 models은 선택된 feature space의 data가 model에 포함된 확률적 가정을 만족하는 경우에만 작동한다.  
+또 다른 방법 집합은 커널 밀도 추정(kernel density estimate)과 같은 비모수 밀도 추정(non-parametric density estimate)방법을 사용했다(Parzen, 1962).  
+최근에는 raw features보다 모델링하기 쉬운 deep features을 학습하기 위해 deep learning 방법(autoencoders 또는 variational autoencoders)이 사용되었다(Yang et al., 2017).  
+Zong 외 연구진(2018)이 소개한 DAGMM은  probabilistic model jointly with the deep features 학습하여 확률적 가정(probabilistic assumption)을 더 잘 준수하도록 features space을 형성한다.
+
+**Classification-Based Methods:**  
+Another paradigm for anomaly detection is separation between space regions containing normal data from all other regions.  
+An example of such approach is One-Class SVM (Scholkopf et al., 2000), which trains a classifier to perform this separation.  
+Learning a good feature space for performing such separation is performed both by the classic kernel methods as well as by the recent deep learning approach (Ruff et al., 2018).  
+One of the main challenges in unsupervised (or semi-supervised) learning is providing an objective for learning features that are relevant to the task of interest.  
+One method for learning good representations in a self-supervised way is by training a neural network to solve an auxiliary task for which obtaining data is free or at least very inexpensive.  
+Auxiliary tasks for learning high-quality image features include: video frame prediction (Mathieu et al., 2016), image colorization (Zhang et al., 2016; Larsson et al., 2016), puzzle solving (Noroozi & Favaro, 2016) - predicting the correct order of random permuted image patches.  
+Recently, Gidaris et al. (2018) used a set of image processing transformations rotation by 0, 90, 180, 270 degrees around the image axis, and predicted the true image orientation has been used to learn high-quality image features.  
+Golan & El-Yaniv (2018), have used similar image-processing task prediction for detecting anomalies in images.  
+This method has shown good performance on detecting images from anomalous classes.  
+In this work, we overcome some of the limitations of previous classification-based methods and extend their applicability of self-supervised methods to general data types.  
+We also show that our method is more robust to adversarial attacks.
+
+> **Classification-Based Methods:**
+anomaly detection의 또 다른 패러다임은 다른 모든 영역의 normal data를 포함하는 공간 영역(space regions) 간의 분리이다.  
+이러한 접근 방식의 예로는 classifier를 훈련시켜 이러한 분리를 수행하는 One-Class SVM이 있다.  
+그러한 분리를 수행하기 위한 좋은 feature space를 학습하는 것은 고전적인 kernel methods뿐만 아니라 최근의 deep learning 접근법에 의해 수행된다.  
+unsupervised (or semi-supervised) learning의 주요 challenges 중 하나는 관심 있는 작업과 관련된 features를 학습하는 목표를 제공하는 것이다.  
+self-supervised 방식으로 좋은 representations을 학습하는 한 가지 방법은 데이터를 얻는 것이 무료이거나 적어도 매우 저렴한 보조 작업(auxiliary task)을 해결하기 위해 신경망을 훈련시키는 것이다.  
+고품질 image features을 학습하기 위한 보조 작업(Auxiliary tasks)으로는 video frame prediction, image colorization, puzzle solving이 있다. - random permuted image patches의 올바른 순서를 예측하는 작업이 있다.  
+최근, Gidaris 외 연구진(2018)은 이미지 축을 중심으로 0도, 90도, 180도, 270도 정도의 image processing transformations rotation 세트를 사용했으며, 실제 이미지 방향이 high-quality image features을 학습하는 데 사용됐다고 예측했다.  
+Golan & El-Yaniv(2018)는 이미지의 anomalies를 감지하기 위해 유사한 image-processing task prediction을 사용해 왔다.  
+이 방법은 anomalous classes의 이미지를 감지하는 데 좋은 성능을 보여 주었다.  
+본 연구에서는 이전 classification-based 방법의 몇 가지 한계를 극복하고  self-supervised 방법의 applicability을 일반 데이터 유형으로 확장하였다.  
+또한 우리의 방법이 adversarial attacks에 더 강력하다는 것을 보여준다.
 
 ## 2 CLASSIFICATION-BASED ANOMALY DETECTION
 
