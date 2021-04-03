@@ -87,7 +87,7 @@ We use a large number of well-studied tasks across three research areas, using s
 For out-of-distribution detection, we provide ways to supply the out-of-distribution examples at test time like using images from different datasets and realistically distorting inputs.   
 We hope that other researchers will pursue these tasks in future work and surpass the performance of our baselines.  
 
-> baseline methods 외에도, 이 작업의 또 다른 contribution은 errors의 automatic detection과  out-of-distribution examples를 평가하기 위한 standard tasks 및 evaluation metrics의 designation이다.  
+> baseline methods 외에도, 이 작업의 또 다른 contribution은 errors의 automatic detection과  out-of-distribution examples를 평가하기 위한 standard tasks 및 evaluation metrics을 설계하였다.  
 우리는 세 가지 연구 분야에 걸쳐 잘 연구된 많은 tasks을 사용하는데, 그 tasks에 잘 작용하는 standard neural network architectures를 사용한다.  
 out-of-distribution detection를 위해, 우리는 다른 datasets의 이미지를 사용하고 입력을 현실적으로 왜곡하는 것과 같은 test time에 out-of-distribution examples를 제공할 수 있는 방법을 제공한다.   
 우리는 다른 연구자들이 향후 작업에서 이러한 과제를 추구하고 우리의 baselines의 performance를 능가하기를 바란다.
