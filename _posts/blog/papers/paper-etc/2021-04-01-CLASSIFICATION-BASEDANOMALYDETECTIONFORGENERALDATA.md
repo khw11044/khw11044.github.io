@@ -327,24 +327,47 @@ Such data consists of both discrete and continuous attributes with no particular
 The data is one-dimensional and rotations do not naturally generalize to it.  
 To allow transformation-based methods to work on general data types, we therefore need to extend the class of transformations.
 
+> Geometric transformations은 이전에 classification-based anomaly detection을 위해 GEOM(Golan & El-Yaniv, 2018)뿐만 아니라 Gidaris et al. (2018)에 의해 unsupervised feature learning에 사용되어왔다.  
+이러한 변환 세트는 pixels 간 neighborhood을 보존하는 데 큰 benefit을 갖는 CNN(Convolutional Neural Network)과 잘 작동하도록 수작업으로 제작되었다.   
+그러나 fully-connected networks의 requirement는 아니다.  
+Anomaly detection는 종종 non-image datasets(예: tabular data)를 다룬다.  
+Tabular data는 사이버 보안이나 온라인 광고와 같은 인터넷 상에서 매우 흔하게 사용된다.  
+이러한 데이터는 특별한 neighborhoods나 순서가 없는 이산형(discrete) 및 연속형(continuous) 속성(attributes)으로 구성된다.  
+데이터는 1차원이며 회전은 자연스럽게 일반화되지 않습니다.  
+따라서 transformation-based methods이 일반적인 data types에 대해 작동하도록 하려면 transformations class를 확장해야 한다.
+
 We propose to generalize the set of transformations to the class of affine transformations (where we have a total of $$M$$ transformations):
+> 우리는 affine 변환(총 $$M$$ transformations이 있는 경우) class로 변환 세트를 일반화할 것을 제안한다:
 
 $$T(x,m) = W_{m}x + b_m \qquad \qquad (6)$$
 
 It is easy to verify that all geometric transformations in Golan & El-Yaniv (2018) (rotation by a multiple of 90 degrees, flips and translations) are a special case of this class (x in this case is the set of image pixels written as a vector).  
-The affine class is however much more general than mere permutations, and allows for dimensionality reduction, non-distance preservation and random transformation by sampling $$W$$, b from a random distribution.
+The affine class is however much more general than mere permutations, and allows for dimensionality reduction, non-distance preservation and random transformation by sampling $$W,b$$ from a random distribution.
 
-Apart from reduced variance across different dataset types where no apriori knowledge on the correct transformation classes exists, random transformations are important for avoiding adversarial examples.  
+> Golan & El-Yaniv(2018)의 모든 geometric transformations(90도 배수로 회전, flips과 translations)이 이 class의 special case임을 쉽게 확인할 수 있다(이 경우 x는 벡터로 작성된 이미지 픽셀 집합이다).  
+그러나 affine class는 단순한 순열보다 훨씬 일반적이며, random distribution에서 $$W, b$$를 샘플링하여 차원 축소, 비거리 보존 및 무작위 변환을 허용한다.
+
+Apart from reduced variance across different dataset types where no a priori knowledge on the correct transformation classes exists, random transformations are important for avoiding adversarial examples.  
 Assume an adversary wishes to change the label of a particular sample from anomalous to normal or vice versa.  
 This is the same as requiring that $$\tilde{P} (m^{'}\|T(x,m))$$ has low or high probability for $$m^{'} = m$$.  
 If $$T$$ is chosen deterministically, the adversary may create adversarial examples against the known class of transformations (even if the exact network parameters are unknown).  
 Conversely, if $$T$$ is unknown, the adversary must create adversarial examples that generalize across different transformations, which reduces the effectiveness of the attack.
 
+> 올바른 변환 클래스에 대한 사전 지식이 없는 서로 다른 dataset 유형에 대한 분산 감소 외에도, random transformations은 adversarial examples를 피하는 데 중요하다.   
+adversary가 특정 sample의 label을 anomalous에서 normal 또는 그 반대로 변경하기를 원한다고 가정한다.  
+이는 $$\tilde{P} (m^{'}\|T(x,m))$$가 $$m^{'} = m$$에 대해 낮은 확률 또는 높은 확률을 요구하는 것과 같다.  
+$$T$$를 결정적으로 선택하는 경우, adversary는 알려진 변환 class에 대한 adversarial examples를 생성할 수 있다(정확한 network parameters를 알 수 없는 경우에도).  
+반대로 $$T$$를 알 수 없는 경우, adversary는는 서로 다른 변환에 걸쳐 일반화하는 adversarial examples를 만들어야 하므로 공격의 효과가 감소한다.
+
 To summarize, generalizing the set of transformations to the affine class allows us to: generalize to non-image data, use an unlimited number of transformations and choose transformations randomly which reduces variance and defends against adversarial examples.
+
+> 요약하면, affine class로 변환 집합을 일반화하면 다음과 같이 non-image data로 일반화하고, 무제한 변환을 사용하고, 분산을 줄이고 adversarial examples에 대해 방어하는 변환을 무작위로 선택할 수 있다.
 
 ## 5 EXPERIMENTS
 
 We perform experiments to validate the effectiveness of our distance-based approach and the performance of the general class of transformations we introduced for non-image data.
+
+> 우리는 non-image data에 대해 소개한 distance-based approach의 효과와 general class of transformations의 성능을 검증하기 위한 실험을 수행한다.
 
 ### 5.1 IMAGE EXPERIMENTS
 
@@ -487,6 +510,11 @@ In this paper, we presented a method for detecting anomalies for general data.
 This was achieved by training a classifier on a set of random auxiliary tasks.  
 Our method does not require knowledge of the data domain, and we are able to generate an arbitrary number of random tasks.  
 Our method significantly improve over the state-of-the-art.
+
+> 본 논문에서는 general data에 대한 anomalies를 탐지하는 방법을 제시하였다.  
+이것은 일련의 random auxiliary tasks에 대한 classifier를 training시킴으로써 달성되었다.  
+우리의 방법은 data domain에 대한 지식을 필요로 하지 않으며 임의의 수의 무작위 작업을 생성할 수 있다.  
+우리의 방법은 state-of-the-art에 비해 크게 향상된다.
 
 > [참고하면 좋은 블로그1](https://hongl.tistory.com/82)  
 > [참고하면 좋은 블로그2](https://hoya012.github.io/blog/iclr2020-paper-preview/)  
