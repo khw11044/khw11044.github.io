@@ -387,7 +387,8 @@ This is a special property of CNN architectures and image/time series data.
 As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
 <detail>
-<blockquote>
+
+
 **Cifar10**: 방법의 성능을 평가하기 위해 Cifar10 dataset에 대한 실험을 수행한다.   
 우리는 거리 기반 접근법과 함께 Golan & El-Yaniv (2018)의 동일한 아키텍처와 parameter를 선택한다.   
 우리는 한 자릿수의 모든 training images에 대한 training과 모든 test images에 대한 testing의 standard protocol을 사용한다.   
@@ -402,7 +403,8 @@ Golan & El-Yaniv(2018)와 동일한 geometric transformations을 사용했다는
 무작위 affine 행렬은 pixel 순서가 보존되지 않기 때문에 경쟁적으로 수행되지 않았으며, 이 정보는 CNN에 의해 효과적으로 사용되며 이 정보를 제거하면 성능이 저하된다.  
 이것은 CNN 아키텍처와 image/time series data의 특수한 속성이다.  
 원칙적으로, fully-connected networks는 pixel 순서를 보존하지 않으며 무작위 affine 행렬을 완전히 활용할 수 있다.
-</blockquote>
+
+
 </detail>
 
 **FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset.  
