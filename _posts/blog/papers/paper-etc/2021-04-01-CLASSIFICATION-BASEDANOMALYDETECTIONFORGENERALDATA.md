@@ -302,27 +302,43 @@ training set에서 멀리 떨어진 uncertainty에 대한 general prior을 추�
 $$\tilde{P(m^{'}|T(x,m))} = \frac{e^{-||f(T(x,m))-c_{m^{'}}||^2 +  \epsilon}}{\sum_{\tilde{m}}e^{-||f(T(x,m))-c_{\tilde{m}}||^2} + M \cdot \epsilon} \qquad (4)$$
 
 At test time we transform each sample by the $$M$$ transformations.  
-By assuming independence between transformations, the probability that x is normal (i.e. x \in X) is the product of the probabilities that all transformed samples are in their respective subspace.  
+By assuming independence between transformations, the probability that $$x$$ is normal (i.e. $$x \in X$$) is the product of the probabilities that all transformed samples are in their respective subspace.  
 For log-probabilities the total score is given by:
+
+> test time에 우리는 $$M$$ transformations을 통해 각 sample을 transform한다.  
+transformations 간의 independence을 가정함으로써, $$x$$가 정규일 확률(즉, $$x \in X$$)은 변환된 모든 samples이 respective subspace에 있을 확률의 product이다.   
+log-probabilities의 경우 total score는 다음과 같다.  
 
 $$Score(x) = -\log P(x \in X) = -\sum_m \log \tilde{P}(T(x,m) \in X_m) = -\sum_m \log \tilde{P}(m|T(x,m)) \qquad (5)$$
 
-The score computes the degree of anomaly of each sample. Higher scores indicate a more anomalous
-sample.
+The score computes the degree of anomaly of each sample.  
+Higher scores indicate a more anomalous sample.
 
 ![algorithm1](/assets/img/Blog/papers/Classification-based/Algorithm1.JPG)
 
 ## 4 PARAMETERIZING THE SET OF TRANSFORMATIONS
 
-Geometric transformations have been used previously for unsupervised feature learning by Gidaris et al. (2018) as well as by GEOM (Golan & El-Yaniv, 2018) for classification-based anomaly detection. This set of transformations is hand-crafted to work well with convolutional neural networks (CNNs) which greatly benefit from preserving neighborhood between pixels. This is however not a requirement for fully-connected networks. Anomaly detection often deals with non-image datasets e.g. tabular data. Tabular data is very commonly used on the internet e.g. for cyber security or online advertising. Such data consists of both discrete and continuous attributes with no particular neighborhoods or order. The data is onedimensional and rotations do not naturally generalize to it. To allow transformation-based methods to work on general data types, we therefore need to extend the class of transformations.
+Geometric transformations have been used previously for unsupervised feature learning by Gidaris et al. (2018) as well as by GEOM (Golan & El-Yaniv, 2018) for classification-based anomaly detection.  
+This set of transformations is hand-crafted to work well with convolutional neural networks (CNNs) which greatly benefit from preserving neighborhood between pixels.  
+This is however not a requirement for fully-connected networks.  
+Anomaly detection often deals with non-image datasets e.g. tabular data.  
+Tabular data is very commonly used on the internet e.g. for cyber security or online advertising.  
+Such data consists of both discrete and continuous attributes with no particular neighborhoods or order.  
+The data is one-dimensional and rotations do not naturally generalize to it.  
+To allow transformation-based methods to work on general data types, we therefore need to extend the class of transformations.
 
 We propose to generalize the set of transformations to the class of affine transformations (where we have a total of $$M$$ transformations):
 
 $$T(x,m) = W_{m}x + b_m \qquad \qquad (6)$$
 
-It is easy to verify that all geometric transformations in Golan & El-Yaniv (2018) (rotation by a multiple of 90 degrees, flips and translations) are a special case of this class (x in this case is the set of image pixels written as a vector). The affine class is however much more general than mere permutations, and allows for dimensionality reduction, non-distance preservation and random transformation by sampling $$W$$, b from a random distribution.
+It is easy to verify that all geometric transformations in Golan & El-Yaniv (2018) (rotation by a multiple of 90 degrees, flips and translations) are a special case of this class (x in this case is the set of image pixels written as a vector).  
+The affine class is however much more general than mere permutations, and allows for dimensionality reduction, non-distance preservation and random transformation by sampling $$W$$, b from a random distribution.
 
-Apart from reduced variance across different dataset types where no apriori knowledge on the correct transformation classes exists, random transformations are important for avoiding adversarial examples. Assume an adversary wishes to change the label of a particular sample from anomalous to normal or vice versa. This is the same as requiring that $$\tilde{P} (m^{'}|T(x,m))$$ has low or high probability for $$m^{'} = m$$. If $$T$$ is chosen deterministically, the adversary may create adversarial examples against the known class of transformations (even if the exact network parameters are unknown). Conversely, if $$T$$ is unknown, the adversary must create adversarial examples that generalize across different transformations, which reduces the effectiveness of the attack.
+Apart from reduced variance across different dataset types where no apriori knowledge on the correct transformation classes exists, random transformations are important for avoiding adversarial examples.  
+Assume an adversary wishes to change the label of a particular sample from anomalous to normal or vice versa.  
+This is the same as requiring that $$\tilde{P} (m^{'}\|T(x,m))$$ has low or high probability for $$m^{'} = m$$.  
+If $$T$$ is chosen deterministically, the adversary may create adversarial examples against the known class of transformations (even if the exact network parameters are unknown).  
+Conversely, if $$T$$ is unknown, the adversary must create adversarial examples that generalize across different transformations, which reduces the effectiveness of the attack.
 
 To summarize, generalizing the set of transformations to the affine class allows us to: generalize to non-image data, use an unlimited number of transformations and choose transformations randomly which reduces variance and defends against adversarial examples.
 
@@ -332,11 +348,39 @@ We perform experiments to validate the effectiveness of our distance-based appro
 
 ### 5.1 IMAGE EXPERIMENTS
 
-**Cifar10**: To evaluate the performance of our method, we perform experiments on the Cifar10 dataset. We use the same architecture and parameter choices of Golan & El-Yaniv (2018), with our distance-based approach. We use the standard protocol of training on all training images of a single digit and testing on all test images. Results are reported in terms of AUC. In our method, we used a margin of $$s = 0.1$$ (we also run GOAD with $$s = 1$$, shown in the appendix). Similarly to He et al. (2018), to stabilize training, we added a softmax + cross entropy loss, as well as $$L_2$$ norm regularization for the extracted features $$f(x)$$. We compare our method with the deep oneclass method of Ruff et al. (2018) as well as Golan & El-Yaniv (2018) without and with Dirichlet weighting. We believe the correct comparison is without Dirichlet post-processing, as we also do not use it in our method. Our distance based approach outperforms the SOTA approach by Golan & El-Yaniv (2018), both with and without Dirichlet (which seems to improve performance on a few classes). This gives evidence for the importance of considering the generalization behavior outside the normal region used in training. Note that we used the same geometric transformations as Golan & El-Yaniv (2018). Random affine matrices did not perform competitively as they are not pixel order preserving, this information is effectively used by CNNs and removing this information hurts performance. This is a special property of CNN architectures and image/time series data. As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
+**Cifar10**: To evaluate the performance of our method, we perform experiments on the Cifar10 dataset.  
+We use the same architecture and parameter choices of Golan & El-Yaniv (2018), with our distance-based approach.  
+We use the standard protocol of training on all training images of a single digit and testing on all test images.  
+Results are reported in terms of AUC.  
+In our method, we used a margin of $$s = 0.1$$ (we also run GOAD with $$s = 1$$, shown in the appendix).  
+Similarly to He et al. (2018), to stabilize training, we added a softmax + cross entropy loss, as well as $$L_2$$ norm regularization for the extracted features $$f(x)$$.  
+We compare our method with the deep oneclass method of Ruff et al. (2018) as well as Golan & El-Yaniv (2018) without and with Dirichlet weighting.  
+We believe the correct comparison is without Dirichlet post-processing, as we also do not use it in our method.  
+Our distance based approach outperforms the SOTA approach by Golan & El-Yaniv (2018), both with and without Dirichlet (which seems to improve performance on a few classes).  
+This gives evidence for the importance of considering the generalization behavior outside the normal region used in training.  
+Note that we used the same geometric transformations as Golan & El-Yaniv (2018).  
+Random affine matrices did not perform competitively as they are not pixel order preserving, this information is effectively used by CNNs and removing this information hurts performance.  
+This is a special property of CNN architectures and image/time series data.  
+As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
-**FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset. We used exactly the same setting as Golan & El-Yaniv (2018). GOAD was run with s = 1. OCSVM and GEOM with Dirichlet were copied from their paper. We run their method without Dirichlet and presented it in the table (we verified the implementation by running their code with Dirichlet and replicated the numbers in the paper). It appears that GEOM is quite dependent on Dirichlet for this dataset, whereas we do not use it at all. GOAD outperforms all the baseline methods.
+**FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset.  
+We used exactly the same setting as Golan & El-Yaniv (2018).  
+GOAD was run with s = 1. OCSVM and GEOM with Dirichlet were copied from their paper.  
+We run their method without Dirichlet and presented it in the table (we verified the implementation by running their code with Dirichlet and replicated the numbers in the paper).  
+It appears that GEOM is quite dependent on Dirichlet for this dataset, whereas we do not use it at all.  
+GOAD outperforms all the baseline methods.
 
-**Adversarial Robustness**: Let us assume an attack model where the attacker knows the architecture and the normal training data and is trying to minimally modify anomalies to look normal. We examine the merits of two settings i) the adversary knows the transformations used (non-random) ii) the adversary uses another set of transformations. To measure the benefit of the randomized transformations, we train three networks A, B, C. Networks A and B use exactly the same transformations but random parameter initialization prior to training. Network C is trained using other randomly selected transformations. The adversary creates adversarial examples using PGD (Madry et al., 2017) based on network A (making anomalies appear like normal data). On Cifar10, we randomly selected 8 transformations from the full set of 72 for A and B, another randomly selected 8 transformations are used for C. We measure the increase of false classification rate on the adversarial examples using the three networks. The average increase in performance of classifying transformation correctly on anomalies (causing lower anomaly scores) on the original network A was 12:8%, the transfer performance for B causes an increase by 5:0% on network B which shared the same set of transformation, and 3% on network C that used other rotations. This shows the benefits of using random transformations.
+**Adversarial Robustness**: Let us assume an attack model where the attacker knows the architecture and the normal training data and is trying to minimally modify anomalies to look normal.  
+We examine the merits of two settings  
+i) the adversary knows the transformations used (non-random)  
+ii) the adversary uses another set of transformations.  
+To measure the benefit of the randomized transformations, we train three networks A, B, C. Networks A and B use exactly the same transformations but random parameter initialization prior to training.  
+Network C is trained using other randomly selected transformations.  
+The adversary creates adversarial examples using PGD (Madry et al., 2017) based on network A (making anomalies appear like normal data).  
+On Cifar10, we randomly selected 8 transformations from the full set of 72 for A and B, another randomly selected 8 transformations are used for C.  
+We measure the increase of false classification rate on the adversarial examples using the three networks.  
+The average increase in performance of classifying transformation correctly on anomalies (causing lower anomaly scores) on the original network A was 12.8%, the transfer performance for B causes an increase by 5.0% on network B which shared the same set of transformation, and 3% on network C that used other rotations.  
+This shows the benefits of using random transformations.
 
 ![Table1](/assets/img/Blog/papers/Classification-based/Table1.JPG)
 
@@ -346,31 +390,84 @@ We perform experiments to validate the effectiveness of our distance-based appro
 
 ### 5.2 TABULAR DATA EXPERIMENTS
 
-Datasets: We evaluate on small-scale medical datasets Arrhythmia, Thyroid as well as large-scale cyber intrusion detection datasets KDD and KDDRev. Our configuration follows that of Zong et al. (2018). Categorical attributes are encoded as one-hot vectors. For completeness the datasets are described in the appendix A.2. We train all compared methods on 50% of the normal data. The methods are evaluated on 50% of the normal data as well as all the anomalies.
+Datasets: We evaluate on small-scale medical datasets Arrhythmia, Thyroid as well as large-scale cyber intrusion detection datasets KDD and KDDRev.  
+Our configuration follows that of Zong et al. (2018).  
+Categorical attributes are encoded as one-hot vectors.  
+For completeness the datasets are described in the appendix A.2. We train all compared methods on 50% of the normal data.  
+The methods are evaluated on 50% of the normal data as well as all the anomalies.
 
-Baseline methods: The baseline methods evaluated are: One-Class SVM (OC-SVM, Scholkopf et al. (2000)), End-to-End Autoencoder (E2E-AE), Local Outlier Factor (LOF, Breunig et al. (2000)). We also evaluated deep distributional method DAGMM (Zong et al., 2018), choosing their strongest variant. To compare against ensemble methods e.g. Chen et al. (2017), we implemented the Feature Bagging Autoencoder (FB-AE) with autoencoders as the base classifier, feature bagging as the source of randomization, and average reconstruction error as the anomaly score. OC-SVM, E2E-AE and DAGMM results are directly taken from those reported by Zong et al. (2018). LOF and FB-AE were computed by us.
+Baseline methods: The baseline methods evaluated are: One-Class SVM (OC-SVM, Scholkopf et al. (2000)), End-to-End Autoencoder (E2E-AE), Local Outlier Factor (LOF, Breunig et al. (2000)).  
+We also evaluated deep distributional method DAGMM (Zong et al., 2018), choosing their strongest variant.  
+To compare against ensemble methods e.g. Chen et al. (2017), we implemented the Feature Bagging Autoencoder (FB-AE) with autoencoders as the base classifier, feature bagging as the source of randomization, and average reconstruction error as the anomaly score.  
+OC-SVM, E2E-AE and DAGMM results are directly taken from those reported by Zong et al. (2018). LOF and FB-AE were computed by us.
 
-Implementation of GOAD: We randomly sampled transformation matrices using the normal distribution for each element. Each matrix has dimensionality L  r, where L is the data dimension and r is a reduced dimension. For Arryhthmia and Thyroid we used r = 32, for KDD and KDDrev we used r = 128 and r = 64 respectively, the latter due to high memory requirements. We used 256 tasks for all datasets apart from KDD (64) due to high memory requirements. We set the bias term to 0. For C we used fully-connected hidden layers and leaky-ReLU activations (8 hidden nodes for the small datasets, 128 and 32 for KDDRev and KDD). We optimized using ADAM with a learning rate of 0:001. Similarly to He et al. (2018), to stabilize the triplet center loss training, we added a softmax + cross entropy loss. We repeated the large-scale experiments 5 times, and the small scale GOAD experiments 500 times (due to the high variance). We report the mean and standard deviation (). Following the protocol in Zong et al. (2018), the decision threshold value is chosen to result in the correct number of anomalies e.g. if the test set contains Na anomalies, the threshold is selected so that the highest Na scoring examples are classified as anomalies. True positives and negatives are evaluated in the usual way. Some experiments copied from other papers did not measure standard variation and we kept the relevant cell blank.
+Implementation of GOAD: We randomly sampled transformation matrices using the normal distribution for each element.  
+Each matrix has dimensionality L  r, where L is the data dimension and r is a reduced dimension.  
+For Arryhthmia and Thyroid we used r = 32, for KDD and KDDrev we used r = 128 and r = 64 respectively, the latter due to high memory requirements.  
+We used 256 tasks for all datasets apart from KDD (64) due to high memory requirements.  
+We set the bias term to 0.  
+For C we used fully-connected hidden layers and leaky-ReLU activations (8 hidden nodes for the small datasets, 128 and 32 for KDDRev and KDD).  
+We optimized using ADAM with a learning rate of 0.001.  
+Similarly to He et al. (2018), to stabilize the triplet center loss training, we added a softmax + cross entropy loss.  
+We repeated the large-scale experiments 5 times, and the small scale GOAD experiments 500 times (due to the high variance).  
+We report the mean and standard deviation ().  
+Following the protocol in Zong et al. (2018), the decision threshold value is chosen to result in the correct number of anomalies e.g. if the test set contains Na anomalies, the threshold is selected so that the highest Na scoring examples are classified as anomalies.   True positives and negatives are evaluated in the usual way.  
+Some experiments copied from other papers did not measure standard variation and we kept the relevant cell blank.
 
 #### Results
 
-Arrhythmia: The Arrhythmia dataset was the smallest examined. A quantitative comparison on this dataset can be seen in Tab. 3. OC-SVM and DAGMM performed reasonably well. Our method is comparable to FB-AE. A linear classifier $$C$$ performed better than deeper networks (which suffered from overfitting). Early stopping after a single epoch generated the best results.
+Arrhythmia: The Arrhythmia dataset was the smallest examined. A quantitative comparison on this dataset can be seen in Tab. 3.  
+OC-SVM and DAGMM performed reasonably well.  
+Our method is comparable to FB-AE.  
+A linear classifier $$C$$ performed better than deeper networks (which suffered from overfitting).  
+Early stopping after a single epoch generated the best results.
 
-Thyroid: Thyroid is a small dataset, with a low anomaly to normal ratio and low feature dimensionality. A quantitative comparison on this dataset can be seen in Tab. 3. Most baselines performed about equally well, probably due to the low dimensionality. On this dataset, we also found that early stopping after a single epoch gave the best results. The best results on this dataset, were obtained with a linear classifier. Our method is comparable to FB-AE and beat all other baselines by a wide margin.
+Thyroid: Thyroid is a small dataset, with a low anomaly to normal ratio and low feature dimensionality.  
+A quantitative comparison on this dataset can be seen in Tab. 3.  
+Most baselines performed about equally well, probably due to the low dimensionality.  
+On this dataset, we also found that early stopping after a single epoch gave the best results.  
+The best results on this dataset, were obtained with a linear classifier.  
+Our method is comparable to FB-AE and beat all other baselines by a wide margin.
 
-KDDCUP99: The UCI KDD 10% dataset is the largest dataset examined. A quantitative comparison on this dataset can be seen in Tab. 3. The strongest baselines are FB-AE and DAGMM. Our method significantly outperformed all baselines. We found that large datasets have different dynamics from very small datasets. On this dataset, deep networks performed the best. We also, did not need early stopping. The results are reported after 25 epochs.
+KDDCUP99: The UCI KDD 10% dataset is the largest dataset examined.  
+A quantitative comparison on this dataset can be seen in Tab. 3.  
+The strongest baselines are FB-AE and DAGMM.  
+Our method significantly outperformed all baselines.  
+We found that large datasets have different dynamics from very small datasets.  
+On this dataset, deep networks performed the best.  
+We also, did not need early stopping.  
+The results are reported after 25 epochs.
 
-KDD-Rev: The KDD-Rev dataset is a large dataset, but smaller than KDDCUP99 dataset. A quantitative comparison on this dataset can be seen in Tab. 3. Similarly to KDDCUP99, the best baselines are FB-AE and DAGMM, where FB-AE significantly outperforms DAGMM. Our method significantly outperformed all baselines. Due to the size of the dataset, we did not need early stopping. The results are reported after 25 epochs.
+KDD-Rev: The KDD-Rev dataset is a large dataset, but smaller than KDDCUP99 dataset.  
+A quantitative comparison on this dataset can be seen in Tab. 3.  
+Similarly to KDDCUP99, the best baselines are FB-AE and DAGMM, where FB-AE significantly outperforms DAGMM.  
+Our method significantly outperformed all baselines.  
+Due to the size of the dataset, we did not need early stopping.  
+The results are reported after 25 epochs.
 
-Adversarial Robustness: Due to the large number of transformations and relatively small networks, adversarial examples are less of a problem for tabular data. PGD generally failed to obtain adversarial examples on these datasets. On KDD, transformation classification accuracy on anomalies was increased by 3:7% for the network the adversarial examples were trained on, 1:3% when transferring to the network with the same transformation and only 0:2% on the network with other randomly selected transformations. This again shows increased adversarial robustness due to random transformations.
+Adversarial Robustness: Due to the large number of transformations and relatively small networks, adversarial examples are less of a problem for tabular data.  
+PGD generally failed to obtain adversarial examples on these datasets.  
+On KDD, transformation classification accuracy on anomalies was increased by 3.7% for the network the adversarial examples were trained on, 1.3% when transferring to the network with the same transformation and only 0.2% on the network with other randomly selected transformations.  
+This again shows increased adversarial robustness due to random transformations.
 
 ![Fig1](/assets/img/Blog/papers/Classification-based/Fig1.JPG)
 
 #### Further Analysis
 
-Contaminated Data: This paper deals with the semi-supervised scenario i.e. when the training dataset contains only normal data. In some scenarios, such data might not be available but instead we might have a training dataset that contains a small percentage of anomalies. To evaluate the robustness of our method to this unsupervised scenario, we analysed the KDDCUP99 dataset, when X% of the training data is anomalous. To prepare the data, we used the same normal training data as before and added further anomalous examples. The test data consists of the same proportions as before. The results are shown in Fig. 1. Our method significantly outperforms DAGMM for all impurity values, and degrades more graceful than the baseline. This attests to the effectiveness of our approach. Results for the other datasets are presented in Fig. 3, showing similar robustness to contamination.
+Contaminated Data: This paper deals with the semi-supervised scenario i.e. when the training dataset contains only normal data.  
+In some scenarios, such data might not be available but instead we might have a training dataset that contains a small percentage of anomalies.  
+To evaluate the robustness of our method to this unsupervised scenario, we analysed the KDDCUP99 dataset, when X% of the training data is anomalous.  
+To prepare the data, we used the same normal training data as before and added further anomalous examples.  
+The test data consists of the same proportions as before.  
+The results are shown in Fig. 1. Our method significantly outperforms DAGMM for all impurity values, and degrades more graceful than the baseline.  
+This attests to the effectiveness of our approach.  
+Results for the other datasets are presented in Fig. 3, showing similar robustness to contamination.
 
-Number of Tasks: One of the advantages of GOAD, is the ability to generate any number of tasks. We present the anomaly detection performance on the KDD-Rev dataset with different numbers of tasks in Fig. 1. We note that a small number of tasks (less than 16) leads to poor results. From 16 tasks, the accuracy remains stable. We found that on the smaller datasets (Thyroid, Arrhythmia) using a larger number of transformations continued to reduce $$F_1$$ score variance between differently initialized runs (Fig. 2).
+Number of Tasks: One of the advantages of GOAD, is the ability to generate any number of tasks.  
+We present the anomaly detection performance on the KDD-Rev dataset with different numbers of tasks in Fig. 1.  
+We note that a small number of tasks (less than 16) leads to poor results.  
+From 16 tasks, the accuracy remains stable.  
+We found that on the smaller datasets (Thyroid, Arrhythmia) using a larger number of transformations continued to reduce $$F_1$$ score variance between differently initialized runs (Fig. 2).
 
 ## 6 DISCUSSION
 
@@ -386,7 +483,10 @@ _Deep vs. shallow classifiers_: Our experiments show that for large datasets dee
 
 ## 7 CONCLUSION
 
-In this paper, we presented a method for detecting anomalies for general data. This was achieved by training a classifier on a set of random auxiliary tasks. Our method does not require knowledge of the data domain, and we are able to generate an arbitrary number of random tasks. Our method significantly improve over the state-of-the-art.
+In this paper, we presented a method for detecting anomalies for general data.  
+This was achieved by training a classifier on a set of random auxiliary tasks.  
+Our method does not require knowledge of the data domain, and we are able to generate an arbitrary number of random tasks.  
+Our method significantly improve over the state-of-the-art.
 
 > [참고하면 좋은 블로그1](https://hongl.tistory.com/82)  
 > [참고하면 좋은 블로그2](https://hoya012.github.io/blog/iclr2020-paper-preview/)  
