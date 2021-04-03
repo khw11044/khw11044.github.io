@@ -49,6 +49,7 @@ This is fundamentally different from supervised learning tasks, in which example
 
 >
 <details>
+<pre>
 <code>
 인식된 데이터에서 Detecting anomalies는 인간과 인공지능의 핵심 능력이다.  
 인간은 위험의 초기 징후를 제공하거나 고유한 기회를 발견하기 위해 종종 anomalies를 감지한다.  
@@ -57,6 +58,7 @@ Anomaly detection 시스템은 신용카드 사기 발견, 사이버 침입 탐�
 작업의 중요성은 과거에 나타난 패턴과는 다른 패턴을 감지할 때 경보를 발생시킬 수 있기 때문에 추가 검사를 triggering하는 데 있다.  
 이는 모든 데이터 클래스의 examples를 준수하는 supervised learning tasks와 근본적으로 다르다.
 </code>
+</pre>
 </details>
 
 There are different possible scenarios for anomaly detection methods. In supervised anomaly detection, we are given training examples of normal and anomalous patterns. This scenario can be quite well specified, however obtaining such supervision may not be possible. For example in cyber security settings, we will not have supervised examples of new, unknown computer viruses making supervised training difficult. On the other extreme, fully unsupervised anomaly detection, obtains a stream of data containing normal and anomalous patterns and attempts to detect the anomalous data. In this work we deal with the semi-supervised scenario. In this setting, we have a training set of normal examples (which contains no anomalies). After training the anomaly detector, we detect anomalies in the test data, containing both normal and anomalous examples. This supervision is easy to obtain in many practical settings and is less difficult than the fully-unsupervised case.
