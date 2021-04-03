@@ -63,7 +63,7 @@ This is consistent with a great deal of anecdotal evidence from researchers (Ngu
 따라서 softmax inputs, 즉 logits에 대한 minor additions는 output distribution에 상당한 변화를 가져올 수 있다.   
 softmax function은 indicator function의 smooth 근사치이기 때문에, out-of-distribution examples를 출력하는 uniform distribution를 보는 것은 드문 일이다.  
 실제로, MNIST image classifier에 공급되는  random Gaussian noise는 나중에 우리가 보여주듯이 “prediction confidence(예측 신뢰도)" 또는 91%의 예측된 class probability를 제공한다.  
-실험을 통해 우리는 softmax distribution의 예측 확률이 confidence와 직접 일치하지 않음을 확인한다.  
+실험을 통해 우리는 softmax distribution의 prediction probability이 confidence와 직접 일치하지 않음을 확인한다.  
 이는 연구자들의 많은 입증되지 않은 증거와 일치한다(Nguyen & O'Connor, 2015; Yu et al., 2010; Provost et al., 1998; Nguyen et al., 2015).
 
 However, in this work we also show the prediction probability of incorrect and out-of-distribution examples tends to be lower than the prediction probability for correct examples.   
