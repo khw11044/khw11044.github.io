@@ -386,6 +386,13 @@ Random affine matrices did not perform competitively as they are not pixel order
 This is a special property of CNN architectures and image/time series data.  
 As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
+<detail>
+> askdmasldsaldsal;das;dsa;dksal;dkas;ldka;
+aasdasldlasdkladklasdklas;dkasldas;ld
+asdkaslaskldjakd 
+
+</detail>
+
 **FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset.  
 We used exactly the same setting as Golan & El-Yaniv (2018).  
 GOAD was run with s = 1. OCSVM and GEOM with Dirichlet were copied from their paper.  
