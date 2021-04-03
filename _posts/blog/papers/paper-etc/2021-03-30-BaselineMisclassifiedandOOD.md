@@ -146,7 +146,7 @@ The baseline detector has an AUPR approximately equal to the precision (Saito & 
 Consequently, the base rate of the positive class greatly influences the AUPR, so for detection we must specify which class is positive.  
 
 > AUROC는 때로 더 유익하다고 여겨지는 Area Under the Precision-Recall curve (AUPR)과 마찬가지로 threshold selection 문제를 회피한다(Maning & Schutze, 1999).   
-왜냐하면 AUROC는 positive class과 negative class이 크게 다른 base rates 가질 때 이상적이지 않고, AUPR은 이러한 서로 다른 positive 및 negative base rates에 대해 조정되기 때문이다.  
+왜냐하면 AUROC는 positive class와 negative class가 크게 다른 base rates 가질 때 이상적이지 않고, AUPR은 이러한 서로 다른 positive 및 negative base rates에 대해 조정되기 때문이다.  
 이러한 이유로, AUPR은 우리의 두 번째 evaluation metric이다.   
 PR curve는 서로에 대한 precision(tp=(tp+fp)와 recall(tp=(tp+fn))을 plots한다.    
 baseline detector의 AUPR은 precision와 거의 동일하고(Saito & Rehmsmeier, 2015), “perfect” classifier의 AUPR은 100%이다.   
