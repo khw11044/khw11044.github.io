@@ -247,7 +247,7 @@ This again shows softmax probabilities should not be viewed as a direct represen
 Fortunately, out-of-distribution examples sufficiently differ in the prediction probabilities from in-distribution examples, allowing for successful detection and generally high area under PR and ROC curves.
 
 > 결과는 Table 2에 나와 있다.  
-평mean predicted/maximum class probabilities (Pred. Prob (mean))는 75% 이상이지만 prediction probability만 confidence로 변환되면 CIFAR-100에 대해 softmax distribution가 더 uniform해야 한다.   
+mean predicted/maximum class probabilities (Pred. Prob (mean))는 75% 이상이지만 prediction probability만 confidence로 변환되면 CIFAR-100에 대해 softmax distribution가 더 uniform해야 한다.   
 이것은 softmax probabilities을 confidence의 직접적인 표현으로 간주해서는 안 된다는 것을 다시 보여준다.  
 다행히 out-of-distribution examples는 in-distribution examples와 예측 확률이 충분히 다르므로 성공적인 검출이 가능하고 일반적으로 PR 및 ROC 곡선에서 높은 area을 가질 수 있다.
 
@@ -340,14 +340,32 @@ Consequently, noised examples are in the abnormal class, clean examples are of t
 After training we consequently have a normal classifier, an auxiliary decoder, and what we call an **abnormality module**.  
 The gains from the abnormality module demonstrate there are possible research avenues for outperforming the baseline.
 
+> softmax prediction probabilities이 abnormality detection를 가능하게 한다는 것을 보고, 이제 우리는 때때로 detection에 더 유용한 다른 정보가 있음을 보여준다.  
+이를 입증하기 위해 신경망의 학습된 내부 표현(internal representations)을 활용한다.  
+우리는 normal classifier를 훈련시키는 것으로 시작하고 Figure 1에 나온 것처럼 입력을 재구성하는 보조 디코더(auxiliary decoder)를 추가한다.  
+보조 디코더(auxiliary decoder)는 때때로 분류 성능을 향상시키는 것으로 알려져 있다(Zhang et al., 2016).  
+디코더와 scorer는 in-distribution examples에 대해 공동으로 훈련된다.  
+그 후, Figure 1의 blue layers는 동결된다.  
+그런 다음 clean training examples하고 noised training examples에 대해 red layers를 훈련시키고, red layers의 sigmoid output는 입력이 얼마나 정상적인지를 점수화한다.  
+결과적으로, noised examples는 abnormal class에 있고, clean examples는 normal class에 속하며, sigmoid에는 입력이 속한 class에 출력하도록 훈련된다.   
+훈련 후에 우리는 결과적으로 normal classifier, auxiliary decoder, 그리고 우리가 **abnormality module**이라고 부르는 것을 갖게 된다.  
+abnormality module의 이득은 baseline을 능가할 수 있는 연구 방법이 있음을 보여준다.  
+
 ### 4.1 TIMIT
 
 We test the abnormality module by revisiting the TIMIT task with a different architecture and show how these auxiliary components can greatly improve detection.  
-The system is a three-layer, 1024-neuron wide classifier with an auxiliary decoder and abnormality module.  
+The system is a three-layer, 1024-neuron wide classifier with an auxiliary decoder and abnormality module.   
 This network takes as input 11 frames and must predict the phone of the center frame, 26 features per frame.  
 Weights are initialized according to (Hendrycks & Gimpel, 2016c).  
 This network trains for 20 epochs, and the abnormality module trains for two.  
 The abnormality module sees clean examples and, as negative examples, TIMIT examples distorted with either white noise, brown noise (noise with its spectral density proportional to $$1/f^2$$), or pink noise (noise with its spectral density proportional to $$1/f$$) at various volumes.
+
+> 우리는 다른 아키텍처로 TIMIT 작업을 다시 방문하여 abnormality module을 테스트하고 이러한 auxiliary components가 detection을 크게 개선할 수 있는 방법을 보여준다.   
+이 시스템은 auxiliary decoder(보조디코더)와 abnormality module이 있는 1024-neuron wide classifier이다.   
+이 network는 input 11 frames으로 사용되며 frame당 26 features을 가진 center frame의 phone을 예측해야 한다.  
+가중치는 (Hendryks & Gimpel, 2016c)에 따라 초기화된다.  
+이 network는 20 epochs 동안 훈련하고, abnormality module은 2 epoch 동안 훈련한다.  
+abnormality module은 clean examples를 보고 negative examples로, 다양한 volumes에서 white noise, brown noise (noise with its spectral density proportional to $$1/f^2$$) 또는 pink noise (noise with its spectral density proportional to $$1/f$$)로 왜곡된 TIMIT examples를 본다.
 
 We note that the abnormality module is not trained on the same type of noise added to the test examples.  
 Nonetheless, Table 10 shows that simple noised examples translate to effective detection of realistically distorted audio.  
@@ -361,6 +379,18 @@ Because the classification degradation was only slight, the softmax statistics a
 In contrast, the abnormality module provided scores which allowed the detection of different-but-similar examples.  
 In practice, it may be important to determine whether an example is out-of-distribution even if it does not greatly confuse the network, and the abnormality module facilitates this.
 
+> abnormality module은 test examples에 추가된 동일한 유형의 노이즈에 대해 train되지 않는다.  
+그럼에도 불구하고 Table 10은 simple noised examples가 현실적으로 왜곡된 오디오의 효과적인 detection으로 해석된다는 것을 보여준다.  
+우리는 깨끗한 예제에 대한 일반적인 abnormality module outputs과 왜곡된 examples에 대한 outputs을 비교하여 abnormal examples를 감지한다.  
+이 noises은 Aurora-2에서 발생하며 30% 볼륨으로 TIMIT 예제에 추가됩니다.  
+또한 중국어 음성에는 THCS-30 데이터 세트를 사용한다.  
+이전과는 달리, 완전히 연결된 네트워크는 전체 훈련 세트를 충분히 빠르게 평가할 수 있기 때문에 테스트 세트 예보다는 THCs-30 훈련 예제를 사용한다.  
+완전히 연결된 심층 신경망은 노이즈가 강하지만(Seltzer et al., 2013) 이상 모듈은 여전히 예제가 분포 밖인지 여부를 감지할 수 있다는 것을 언급할 필요가 있다.  
+이것이 왜 주목할 만한지 알아보기 위해, 네트워크의 프레임 분류 오류는 전체 테스트(핵심이 아님) 데이터 세트에서 29.69%이고 왜곡된 예제의 평균 분류 오류는 30.43%이며, 이는 성능 저하가 더 두드러진 양방향 LSTM과는 다르다는 점에 유의한다.  
+분류 저하가 미미했기 때문에, 소프트맥스 통계만으로는 유용한 분포 외 탐지를 제공하지 못했다.  
+이와는 대조적으로, 이상 모듈은 서로 다르지만 유사한 예를 감지할 수 있는 점수를 제공했다.  
+실제적으로 예시가 네트워크를 크게 혼란시키지 않더라도 유통이 불가능한지를 판단하는 것이 중요할 수 있으며, 이상 모듈은 이를 촉진한다.
+
 ![Table10,11](/assets/img/Blog/papers/Baselinefordetectigmisclassifiedandood/Table10.JPG)
 
 ### 4.2 MNIST
@@ -371,18 +401,60 @@ For abnormal examples we blur, rotate, or add Gaussian noise to training images.
 Gains from the abnormality module are shown in Table 11, and there is a consistent out-of-sample detection improvement compared to softmax prediction probabilities.  
 Even for highly dissimilar examples the abnormality module can further improve detection.
 
+> 마지막으로, 이전 실험과 매우 유사하게, 우리는 width 256의 3 layers를 가진 MNIST classifier를 훈련시킨다.  
+이번에는 softmax statistics에만 의존하는 대신 auxiliary decoder와 abnormality module도 사용한다.  
+abnormal examples의 경우 훈련 이미지를 blur하거나 rotate하거나 Gaussian noise를 add한다.  
+abnormality module의 이득은 Table 11에 나타나 있으며, softmax prediction probabilities에 비해 일관된 out-of-sample detection 개선 효과가 있다.  
+매우 다른 예에서도 abnormality module은 detection을 더욱 향상시킬 수 있다.  
+
 ## 5 DISCUSSION AND FUTURE WORK
 
-The abnormality module demonstrates that in some cases the baseline can be beaten by exploiting the representations of a network, suggesting myriad research directions. Some promising future avenues may utilize the intra-class variance: if the distance from an example to another of the same predicted class is abnormally high, it may be out-of-distribution (Giryes et al., 2015). Another path is to feed in a vector summarizing a layer’s activations into an RNN, one vector for each layer. The RNN may determine that the activation patterns are abnormal for out-of-distribution examples. Others could make the detections fine-grained: is the out-of-distribution example a known-unknown or an unknown-unknown? A different avenue is not just to detect correct classifications but to output the probability of a correct detection. These are but a few ideas for improving error and out-of-distribution detection.
+The abnormality module demonstrates that in some cases the baseline can be beaten by exploiting the representations of a network, suggesting myriad research directions.   
+Some promising future avenues may utilize the intra-class variance: if the distance from an example to another of the same predicted class is abnormally high, it may be out-of-distribution (Giryes et al., 2015).  
+Another path is to feed in a vector summarizing a layer’s activations into an RNN, one vector for each layer.  
+The RNN may determine that the activation patterns are abnormal for out-of-distribution examples.  
+Others could make the detections fine-grained: is the out-of-distribution example a known-unknown or an unknown-unknown?  
+A different avenue is not just to detect correct classifications but to output the probability of a correct detection.  
+These are but a few ideas for improving error and out-of-distribution detection.
 
-We hope that any new detection methods are tested on a variety of tasks and architectures of the researcher’s choice. A basic demonstration could include the following datasets: MNIST, CIFAR, IMDB, and tweets because vision-only demonstrations may not transfer well to other architectures and datasets. Reporting the AUPR and AUROC values is important, and so is the underlying classifier’s accuracy since an always-wrong classifier gets a maximum AUPR for error detection if error is the positive class. Also, future research need not use the exact values from this paper for comparisons. Machine learning systems evolve, so tethering the evaluations to the exact architectures and datasets in this paper is needless. Instead, one could simply choose a variety of datasets and architectures possibly like those above and compare their detection method with a detector based on the softmax prediction probabilities from their classifiers. These are our basic recommendations for others who try to surpass the baseline on this underexplored challenge.
+> abnormality module은 network의 representations을 활용하여 수많은 연구 방향을 제시함으로써 어떤 경우에는 baseline을 이길 수 있음을 보여준다.  
+일부 유망한 미래 방법은 클래스 내 분산(intra-class variance)을 활용할 수 있다: same predicted class의 한 example에서 다른 example까지의 거리가 abnormally high하면, out-of-distribution일 수 있다(Giryes et al., 2015).  
+또 다른 path는 layer’s activations를 요약하는 벡터로 각 layer에 대해 하나의 벡터인 RNN으로 전달하는 것이다. RNN은 activation patterns이 out-of-distribution examples에 대해 abnormal이라고 판단할 수 있다.  
+다른 이들은 탐지 내용을 세분화(fine-grained)할 수 있다: out-of-distribution example가 known-unknown인지 unknown-unknown인지  
+다른 방법은 단지 정확한 분류를 감지하는 것이 아니라 정확한 검출의 확률을 출력하는 것이다.  
+이는 error 및 out-of-distribution detection을 개선하기 위한 몇 가지 아이디어에 불과하다.
+
+We hope that any new detection methods are tested on a variety of tasks and architectures of the researcher’s choice.  
+A basic demonstration could include the following datasets: MNIST, CIFAR, IMDB, and tweets because vision-only demonstrations may not transfer well to other architectures and datasets.  
+Reporting the AUPR and AUROC values is important, and so is the underlying classifier’s accuracy since an always-wrong classifier gets a maximum AUPR for error detection if error is the positive class.  
+Also, future research need not use the exact values from this paper for comparisons.  
+Machine learning systems evolve, so tethering the evaluations to the exact architectures and datasets in this paper is needless.  
+Instead, one could simply choose a variety of datasets and architectures possibly like those above and compare their detection method with a detector based on the softmax prediction probabilities from their classifiers.  
+These are our basic recommendations for others who try to surpass the baseline on this underexplored challenge.
+
+> 우리는 연구자가 선택한 다양한 작업과 아키텍처에서 new detection methods를 테스트하기를 바란다.  
+기본 데모에는 다음 datasets을 포함할수 있다 : MNIST, CIFAR, IMDB 및 tweets, 왜냐하면 비전 전용 데모는 다른 아키텍처와 datasets으로 잘 transfer되지 않을 수 있기 때문이다.  
+AUPR 및 AUROC values을 보고하는 것이 중요하며, error가 positive class인 경우 always-wrong classifier가 error detection을 위한 maximum AUPR을 얻기 때문에 기본 분류기의 정확성도 중요하다.  
+또한 향후 연구는 비교를 위해 본 논문의 정확한 값을 사용할 필요가 없다.  
+머신 러닝 시스템은 진화하므로 본 논문에서 정확한 아키텍처와 데이터 세트에 대한 평가를 tethering할 필요가 없다.  
+대신, 위와 같은 다양한 데이터 세트와 아키텍처를 선택하고 분류기의 softmax prediction probabilities을 기반으로 detection 방법을 detector와 비교할 수 있다.  
+이러한 기본 권장 사항은 이 미탐험 과제에 대한 baseline을 초과하려는 다른 사람들을 위한 것이다.
 
 ## 6 CONCLUSION
 
-We demonstrated a softmax prediction probability baseline for error and out-of-distribution detection across several architectures and numerous datasets. We then presented the abnormality module, which provided superior scores for discriminating between normal and abnormal examples on tested cases. The abnormality module demonstrates that the baseline can be beaten in some cases, and this implies there is room for future research. Our hope is that other researchers investigate architectures which make predictions in view of abnormality estimates, and that others pursue more reliable methods for detecting errors and out-of-distribution inputs because knowing when a machine learning system fails strikes us as highly important.
+We demonstrated a softmax prediction probability baseline for error and out-of-distribution detection across several architectures and numerous datasets.  
+We then presented the abnormality module, which provided superior scores for discriminating between normal and abnormal examples on tested cases.  
+The abnormality module demonstrates that the baseline can be beaten in some cases, and this implies there is room for future research.  
+Our hope is that other researchers investigate architectures which make predictions in view of abnormality estimates, and that others pursue more reliable methods for detecting errors and out-of-distribution inputs because knowing when a machine learning system fails strikes us as highly important.
+
+> 우리는 여러 아키텍처와 수많은 datasets에 걸친 error 및 out-of-distribution detection에 대한 softmax prediction probability baseline을 시연했다.  
+그런 다음 우리는 abnormality module을 제시했는데, 이 module은 tested cases에서 normal examples와 abnormal examples를 구별하는 데 탁월한 점수를 제공했다.  
+abnormality module은 경우에 따라 baseline을 이길 수 있다는 것을 입증하며, 이는 향후 연구할 여지가 있음을 의미한다.  
+우리의 희망은 다른 연구자들이 abnormality estimates을 고려하여 예측을 하는 아키텍처를 조사하고, 다른 연구자들이 machine learning system이 언제 실패하는지 아는 것이 우리에게 매우 중요하기 때문에 errors와 out-of-distribution inputs을 감지하기 위해 더 신뢰할 수 있는 방법을 추구하는 것이다.
 
 ## ACKNOWLEDGMENTS
 
-We would like to thank John Wieting, Hao Tang, Karen Livescu, Greg Shakhnarovich, and our
-reviewers for their suggestions. We would also like to thank NVIDIA Corporation for donating
-several TITAN X GPUs used in this research.
+We would like to thank John Wieting, Hao Tang, Karen Livescu, Greg Shakhnarovich, and our reviewers for their suggestions.  
+We would also like to thank NVIDIA Corporation for donating several TITAN X GPUs used in this research.
+
+>
