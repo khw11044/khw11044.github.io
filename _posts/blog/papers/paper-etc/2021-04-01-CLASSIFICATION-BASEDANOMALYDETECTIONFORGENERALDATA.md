@@ -47,23 +47,34 @@ The typical anomaly detection setting is a one class classification task, where 
 The importance of the task stems from being able to raise an alarm when detecting a different pattern from those seen in the past, therefore triggering further inspection.  
 This is fundamentally different from supervised learning tasks, in which examples of all data classes are observed.
 
->
-<details>
-<pre>
-<code>
-인식된 데이터에서 Detecting anomalies는 인간과 인공지능의 핵심 능력이다.  
+
+>인식된 데이터에서 Detecting anomalies는 인간과 인공지능의 핵심 능력이다.  
 인간은 위험의 초기 징후를 제공하거나 고유한 기회를 발견하기 위해 종종 anomalies를 감지한다.  
 Anomaly detection 시스템은 신용카드 사기 발견, 사이버 침입 탐지, 산업 장비의 경보 예측 유지 및 매력적인 주식 시장 기회 발견을 위해 인공지능에 의해 사용되고 있다.  
 일반적인 anomaly detection 설정은 단일 분류 작업(one class classification task)이며, 여기서 목적은 데이터를 정상 또는 비정상적으로 분류하는 것이다.  
 작업의 중요성은 과거에 나타난 패턴과는 다른 패턴을 감지할 때 경보를 발생시킬 수 있기 때문에 추가 검사를 triggering하는 데 있다.  
 이는 모든 데이터 클래스의 examples를 준수하는 supervised learning tasks와 근본적으로 다르다.
-</code>
-</pre>
-</details>
 
-There are different possible scenarios for anomaly detection methods. In supervised anomaly detection, we are given training examples of normal and anomalous patterns. This scenario can be quite well specified, however obtaining such supervision may not be possible. For example in cyber security settings, we will not have supervised examples of new, unknown computer viruses making supervised training difficult. On the other extreme, fully unsupervised anomaly detection, obtains a stream of data containing normal and anomalous patterns and attempts to detect the anomalous data. In this work we deal with the semi-supervised scenario. In this setting, we have a training set of normal examples (which contains no anomalies). After training the anomaly detector, we detect anomalies in the test data, containing both normal and anomalous examples. This supervision is easy to obtain in many practical settings and is less difficult than the fully-unsupervised case.
 
->
+There are different possible scenarios for anomaly detection methods.  
+In supervised anomaly detection, we are given training examples of normal and anomalous patterns.  
+This scenario can be quite well specified, however obtaining such supervision may not be possible.  
+For example in cyber security settings, we will not have supervised examples of new, unknown computer viruses making supervised training difficult.  
+On the other extreme, fully unsupervised anomaly detection, obtains a stream of data containing normal and anomalous patterns and attempts to detect the anomalous data.  
+In this work we deal with the semi-supervised scenario.  
+In this setting, we have a training set of normal examples (which contains no anomalies).  
+After training the anomaly detector, we detect anomalies in the test data, containing both normal and anomalous examples.  
+This supervision is easy to obtain in many practical settings and is less difficult than the fully-unsupervised case.
+
+> anomaly detection 방법에 대해 여러 가지 가능한 시나리오가 있다.  
+ supervised anomaly detection에서는 정상 및 비정상적인 패턴에 대한 training examples를 제공한다.  
+이 시나리오는 상당히 잘 명시될 수 있지만, 그러한 supervision을 얻는 것은 불가능할 수 있다.  
+예를 들어, 사이버 보안 설정에서, 우리는 supervised training을 어렵게 만드는 알려지지 않은 새로운 컴퓨터 바이러스의 supervised examples를 갖고있지는 않을 것이다.  
+다른 극단적으로, fully unsupervised anomaly detection에서는 정상 및 비정상적인 패턴을 포함하는 데이터 스트림을 얻고 비정상적인 데이터를 탐지하려고 시도한다.  
+이 작업에서 우리는 semi-supervised 시나리오를 다룬다.  
+이 설정에서는 anomalies를 포함하지 않는 normal examples의 training set가 있다.  
+anomaly detector를 training한 후, 우리는 정상 및 비정상적인 예제를 모두 포함하는 test data에서 anomalies를 탐지한다.  
+이 supervision은 많은 실제 환경에서 얻기 쉽고 fully-unsupervised case보다 덜 어렵다.
 
 Many anomaly detection methods have been proposed over the last few decades. They can be broadly classified into reconstruction and statistically based methods.Recently, deep learning methods based on classification have achieved superior results. Most semi-supervised classificationbased methods attempt to solve anomaly detection directly, despite only having normal training data. One example is: Deep-SVDD (Ruff et al., 2018) - one-class classification using a learned deep space. Another type of classification-based methods is self-supervised i.e. methods that solve one or more classification-based auxiliary tasks on the normal training data, and this is shown to be useful for solving anomaly detection, the task of interest e.g. (Golan & El-Yaniv, 2018). Self-supervised classification-based methods have been proposed with the object of image anomaly detection, but we show that by generalizing the class of transformations they can apply to all data types.
 
