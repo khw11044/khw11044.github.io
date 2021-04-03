@@ -181,50 +181,88 @@ Golan & El-Yaniv(2018)는 이미지의 anomalies를 감지하기 위해 유사�
 ## 2 CLASSIFICATION-BASED ANOMALY DETECTION
 
 Classification-based methods have dominated supervised anomaly detection.  
-In this section we will analyse semi-supervised classification-based methods:
-
+In this section we will analyse semi-supervised classification-based methods:  
 Let us assume all data lies in space $$R^L$$ (where $$L$$ is the data dimension).  
-Normal data lie in subspace $$X \sub R^L$$.  
+Normal data lie in subspace $$X \subset R^L$$.  
 We assume that all anomalies lie outside X.  
 To detect anomalies, we would therefore like to build a classifier $$C$$, such that $$C(x) = 1$$ if $$x \in X$$ and $$C(x) = 0$$ if $$x \in R^L / X$$.
 
+> 분류 기반 방법은 supervised anomaly detection을 지배해왔다.  
+이 section에서는 semi-supervised classification-based methods을 분석한다:  
+모든 data가 space $$R^L$$($$L$$ : data dimension)에 있다고 가정하자.  
+Normal data는 subspace $$X \subset R^L$$에 있다.  
+우리는 모든 anomalies기 X 밖에 있다고 가정한다.  
+따라서 anomalies을 감지하기 위해 $$x \in X$$이면 $$C(x) = 1$$, $$x \in R^L / X$$이면 $$C(x) = 0$$인 classifier $$C$$를 구축하려고 한다.
+
 One-class classification methods attempt to learn $$C$$ directly as $$P(x \in X)$$.  
 Classical approaches have learned a classifier either in input space or in a kernel space.  
-Recently, Deep-SVDD (Ruff et al., 2018) learned end-to-end to i) transform the data to an isotropic feature space $$f(x)$$ ii) fit the minimal hypersphere of radius $$R$$ and center $$c_0$$ around the features of the normal training data.  
+Recently, Deep-SVDD (Ruff et al., 2018) learned end-to-end to  
+i) transform the data to an isotropic feature space $$f(x)$$  
+ii) fit the minimal hypersphere of radius $$R$$ and center $$c_0$$ around the features of the normal training data.  
+
+> One-class classification methods은 $$C$$를  $$P(x \in X)$$로 직접 학습하려고 시도한다.  
+고전적인 접근 방식은 input space 또는  kernel space에서 classifier를 학습했다.  
+최근 Deep-SVDD(Ruff et al., 2018)는
+i) data를 isotropic feature space $$f(x)$$로 변환하고
+ii) normal training data의 features 주위에 radius $$R$$과 center $$c_0$$의 minimal hypersphere에 맞게 end-to-end로 학습한다.
+
 Test data is classified as anomalous if the following normality score is positive: $$||f(x) - c_0||^2 - R^2$$.
 Learning an effective feature space is not a simple task, as the trivial solution of $$f(x) = 0 \; \forall x$$ results in the smallest hypersphere, various tricks are used to avoid this possibility.
+
+> 다음 normality score는 positive인 경우 Test data는 anomalous으로 분류된다: $$||f(x) - c_0||^2 - R^2$$.  
+$$f(x) = 0 \; \forall x$$의 trivial solution이 가장 작은 hypersphere에서 발생하므로, 효과적인 feature space 학습은 간단한 task가 아니다. 이러한 가능성을 피하기 위해 다양한 트릭을 사용한다.
 
 Geometric-transformation classification (GEOM), proposed by Golan & El-Yaniv (2018) first transforms the normal data subspace $$X$$ into $$M$$ subspaces $$X_1 .. X_M$$.  
 This is done by transforming each image $$x \in X$$ using $$M$$ different geometric transformations (rotation, reflection, translation) into $$T(x,1)..T(x,M)$$.  
 Although these transformations are image specific, we will later extend the class of transformations to all affine transformations making this applicable to non-image data.  
-They set an auxiliary task of learning a classifier able to predict the transformation label m given transformed data point $$T(x,m)$$.  
+They set an auxiliary task of learning a classifier able to predict the transformation label $$m$$ given transformed data point $$T(x,m)$$.  
 As the training set consists of normal data only, each sample is $$x \in X$$ and the transformed sample is in $$\cup_m X_m$$.  
 The method attempts to estimate the following conditional probability:
+
+> Geometric-transformation classification (GEOM)는 먼저 normal data subspace $$X$$를 $$M$$ subspaces $$X_1 .. X_M$$로 변환한다.   
+X_M$$ 이는 $$M$$ geometric transformations (rotation, reflection, translation)을 사용하여 각 image $$x \in X$$를 $$T(x,1)..T(x,M)$$로 변환함으로써 이루어진다.   
+이러한 변환은 이미지에 따라 다르긴 하지만 나중에 변환 class를 모든 affine 변환으로 확장하여 non-image data에 적용할 수 있게 할 것이다.  
+그들은 변환된 data point $$T(x,m)$$가 주어진 transformation label $$m$$ 을 예측할 수 있는 classifier를 학습하는 보조 작업을 설정했다.  
+training set는 normal data로만 구성되므로, 각 sample은 $$x \in X$$이고 변환된 sample은 $$\cup_m X_m$$이다.  
+이 방법은 다음과 같은 조건부 확률(conditional probability)을 추정하려고 한다.
 
 $$P(m^{'}|T(x,m)) = \frac{P(T(x,m) \in X_{m^{'}})P(m^{'})}{\sum_{\tilde{m}}P(T(x,m) \in X_{\tilde{m}})P(\tilde{m})} = \frac{P(T(x,m) \in X_{m^{'}})}{\sum_{\tilde{m}}P(T(x,m) \in X_{\tilde{m}})} \qquad (1)$$
 
 ,Where the second equality follows by design of the training set, and where every training sample is transformed exactly once by each transformation leading to equal priors.
 
-For anomalous data $$x \in R^L \backslash X$$, by construction of the subspace, if the transformations $$T$$ are one-to-one, it follows that the transformed sample does not fall in the appropriate subspace: $$T(x,m) \in R^L \backslash X_m$$.  
-GEOM uses $$P(m|T(x,m))$$ as a score for determining if $$x$$ is anomalous i.e. that x \in
-R^L \backslash X.  
+For anomalous data $$x \in R^L \backslash X$$, by construction of the subspace, if the transformations $$T$$ are one-to-one, it follows that the transformed sample does not fall in the appropriate subspace: $$T(x,m) \in R^L \backslash X_m$$.
+
+> anomalous data $$x \in R^L \backslash X$$에서, subspace의 construction에 의해, transformations $$T$$가 one-to-one이면, transformed sample이 적절한 subspace인  $$T(x,m) \in R^L \backslash X_m$$에 속하지 않는다.
+
+GEOM uses $$P(m|T(x,m))$$ as a score for determining if $$x$$ is anomalous i.e. that $$x \in R^L \backslash X$$.  
 GEOM gives samples with low probabilities $$P(m|T(x,m))$$ high anomaly scores.
+
+> GEOM은 $$x$$가 anomalous인지, 즉 $$x \in R^L \backslash X$$인지를 결정하기 위한 score로 $$P(m|T(x,m))$$를 사용한다.  
+GEOM은 낮은 probabilities $$P(m|T(x,m))$$ 높은 anomaly scores를 가진 samples을 제공한다.
 
 A significant issue with this methodology, is that the learned classifier $$P(m^{'}|T(x,m))$$ is only valid for samples $$x \in X$$ which were found in the training set.  
 For $$x \in R^L\backslash X$$ we should in fact have $$P(T(x,m) \in X_{m^{'}} ) = 0$$ for all $$m = 1..M$$ (as the transformed $$x$$ is not in any of the subsets).  
 This makes the anomaly score $$P(m^{'}|T(x,m))$$ have very high variance for anomalies.
 
+> 이 방법론의 중요한 문제는 학습된 classifier $$P(m^{'}|T(x,m))$$가 training set에서 발견된 samples $$x \in X$$에만 valid하다는 것이다.   
+$$x \in R^L\backslash X$$에서, 우리는 사실 모든 $$m = 1..M$$에 대해 $$P(T(x,m) \in X_{m^{'}}) = 0$$를 가져야 한다.(transformed $$x$$가 subsets에 있지 않기 때문에)  
+이로 인해 anomaly score $$P(m^{'}|T(x,m))$$는 anomalies에 대한 변동이 매우 높다.
+
 One way to overcome this issue is by using examples of anomalies $$x_a$$ and training $$P(m|T(x,m)) = 1/M$$ on anomalous data.  
 This corresponds to the supervised scenario and was recently introduced as Outlier Exposure (Hendrycks et al., 2018).  
 Although getting such supervision is possible for some image tasks (where large external datasets can be used) this is not possible in the general case e.g. for tabular data which exhibits much more variation between datasets.
+
+> 이 문제를 해결하는 한 가지 방법은 anomalies $$x_a$$의 examples를 사용하고 anomalous data에 대해 $$P(m|T(x,m)) = 1/M$$를 training시키는 것이다.  
+이는 supervised scenario에 해당하며 최근 Outlier Exposure(Hendrycks et al., 2018)로 소개되었다.  
+일부 image tasks(large external datasets를 사용할 수 있는 경우)에서는 이러한 supervision을 받을 수 있지만, 일반적인 경우(예: datasets 간에 훨씬 더 많은 변동(variation)을 보이는 tabular data)에서는 가능하지 않다.
 
 ## 3 DISTANCE-BASED MULTIPLE TRANSFORMATION CLASSIFICATION
 
 We propose a novel method to overcome the generalization issues highlighted in the previous section by using ideas from open-set classification (Bendale & Boult, 2016).  
 Our approach unifies one-class and transformation-based classification methods. Similarly to GEOM, we transform $$X$$ to $$X_1..X_M$$.
 We learn a feature extractor $$f(x)$$ using a neural network, which maps the original input data into a feature representation.  
-Similarly to deep OC methods, we model each subspace $$X_m$$ mapped to the feature space $${f(x)|x \in X_m} as a sphere with center $$c_m$$. The probability of data point $$x$$ after
-transformation m is parameterized by $$P(T(x,m) \in X^{'}_m ) = \frac{1}{Z} e^{-(f(T(x,m))-c^{'}_m)^2}$$.  
+Similarly to deep OC methods, we model each subspace $$X_m$$ mapped to the feature space $${f(x)|x \in X_m}$$ as a sphere with center $$c_m$$.  
+The probability of data point $$x$$ after transformation m is parameterized by $$P(T(x,m) \in X^{'}_m ) = \frac{1}{Z} e^{-(f(T(x,m))-c^{'}_m)^2}$$.  
 The classifier predicting transformation $$m$$ given a transformed point is therefore:
 
 $$P(m^{'}|T(x,m)) = \frac{e^{-||f(T(x,m))-c_{m^{'}}||^2}}{\sum_{\tilde{m}}e^{-||f(T(x,m))-c_{\tilde{m}}||^2}} \qquad (2)$$
@@ -249,7 +287,7 @@ $$Score(x) = -\log P(x \in X) = -\sum_m \log \tilde{P}(T(x,m) \in X_m) = -\sum_m
 The score computes the degree of anomaly of each sample. Higher scores indicate a more anomalous
 sample.
 
-![algorithm1](/assets/img/Blog/papers/Classification-based/algorithm1.JPG)
+![algorithm1](/assets/img/Blog/papers/Classification-based/Algorithm1.JPG)
 
 ## 4 PARAMETERIZING THE SET OF TRANSFORMATIONS
 
@@ -327,6 +365,6 @@ _Deep vs. shallow classifiers_: Our experiments show that for large datasets dee
 
 In this paper, we presented a method for detecting anomalies for general data. This was achieved by training a classifier on a set of random auxiliary tasks. Our method does not require knowledge of the data domain, and we are able to generate an arbitrary number of random tasks. Our method significantly improve over the state-of-the-art.
 
-> [참고하면 좋은 블로그1](https://hongl.tistory.com/82)
-> [참고하면 좋은 블로그2](https://hoya012.github.io/blog/iclr2020-paper-preview/)
-> [참고하면 좋은 블로그3](https://stopspoon.tistory.com/44)
+> [참고하면 좋은 블로그1](https://hongl.tistory.com/82)  
+> [참고하면 좋은 블로그2](https://hoya012.github.io/blog/iclr2020-paper-preview/)  
+> [참고하면 좋은 블로그3](https://stopspoon.tistory.com/44)  
