@@ -386,9 +386,7 @@ Random affine matrices did not perform competitively as they are not pixel order
 This is a special property of CNN architectures and image/time series data.  
 As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
-<details>
-<blockquote>
-**Cifar10**: 방법의 성능을 평가하기 위해 Cifar10 dataset에 대한 실험을 수행한다.   
+>**Cifar10**: 방법의 성능을 평가하기 위해 Cifar10 dataset에 대한 실험을 수행한다.   
 우리는 거리 기반 접근법과 함께 Golan & El-Yaniv (2018)의 동일한 아키텍처와 parameter를 선택한다.   
 우리는 한 자릿수의 모든 training images에 대한 training과 모든 test images에 대한 testing의 standard protocol을 사용한다.   
 결과는 AUC로 보고된다.   
@@ -403,9 +401,6 @@ Golan & El-Yaniv(2018)와 동일한 geometric transformations을 사용했다는
 이것은 CNN 아키텍처와 image/time series data의 특수한 속성이다.  
 원칙적으로, fully-connected networks는 pixel 순서를 보존하지 않으며 무작위 affine 행렬을 완전히 활용할 수 있다.
 
-</blockquote>
-</details>
-
 **FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset.  
 We used exactly the same setting as Golan & El-Yaniv (2018).  
 GOAD was run with s = 1.
@@ -414,13 +409,15 @@ We run their method without Dirichlet and presented it in the table (we verified
 It appears that GEOM is quite dependent on Dirichlet for this dataset, whereas we do not use it at all.  
 GOAD outperforms all the baseline methods.
 
-> **FasionMNIST**: Tab. 2에서 우리는 FashionMNIST dataset에서 우리의 method(GOAD)와 strongest baseline methods(Deep SVDD and GEOM)을 비교한다.  
+
+>**FasionMNIST**: Tab. 2에서 우리는 FashionMNIST dataset에서 우리의 method(GOAD)와 strongest baseline methods(Deep SVDD and GEOM)을 비교한다.  
 Golan & El-Yaniv(2018)와 정확히 동일한 설정을 했다.  
 GOAD는 s= 1.
 OCSVM and GEOM with Dirichlet는 그들의 논문에서 복사해왔다.  
 우리는 Dirichlet 없이 그들의 방법을 실행하고 표에 제시하였다(Dirichlet으로 코드를 실행하여 구현을 검증하고 논문의 숫자를 복제했다).  
 GEOM은 dataset에 대해 Dirichlet에 상당히 의존하는 반면, 우리는 전혀 사용하지 않았다.  
 GOAD는 모든 기본 방법을 능가한다.
+
 
 **Adversarial Robustness**: Let us assume an attack model where the attacker knows the architecture and the normal training data and is trying to minimally modify anomalies to look normal.  
 We examine the merits of two settings  
@@ -435,9 +432,7 @@ We measure the increase of false classification rate on the adversarial examples
 The average increase in performance of classifying transformation correctly on anomalies (causing lower anomaly scores) on the original network A was 12.8%, the transfer performance for B causes an increase by 5.0% on network B which shared the same set of transformation, and 3% on network C that used other rotations.  
 This shows the benefits of using random transformations.
 
-<details>
-<blockquote>
-**Adversarial Robustness**: attacker가 아키텍처와 normal training data를 알고 anomalies를 최소한으로 수정하여 normal로 보이도록 하는 공격 모델을 가정하자.   
+> **Adversarial Robustness**: attacker가 아키텍처와 normal training data를 알고 anomalies를 최소한으로 수정하여 normal로 보이도록 하는 공격 모델을 가정하자.   
 우리는 두 가지 설정의 장점을 조사한다.  
 i) adversary가 사용된 변환을 알고 있다(non-random).  
 ii) adversary는 다른 변환 집합을 사용한다.  
@@ -449,9 +444,6 @@ Cifar10에서는 A와 B에 대한 72개의 전체 집합에서 8개의 변환을
 우리는 세 개의 networks를 사용하여 adversarial examples에서 false classification rate의 증가를 측정한다.  
 original network A에서 anomalies(anomaly scores가 낮아짐)에서 변환을 올바르게 분류하는 평균 성능 증가는 12.8%, B에 대한 transfer performance는 동일한 변환 세트를 공유하는 network B에서 5.0%, other rotations을 사용한 network C에서 3%의 증가를 유발했다.  
 이것은 random transformations을 사용할 때의 이점을 보여준다.
-
-</blockquote>
-</details>
 
 ![Table1](/assets/img/Blog/papers/Classification-based/Table1.JPG)
 
@@ -487,11 +479,19 @@ Some experiments copied from other papers did not measure standard variation and
 
 #### Results
 
-Arrhythmia: The Arrhythmia dataset was the smallest examined. A quantitative comparison on this dataset can be seen in Tab. 3.  
+Arrhythmia: The Arrhythmia dataset was the smallest examined.  
+A quantitative comparison on this dataset can be seen in Tab. 3.  
 OC-SVM and DAGMM performed reasonably well.  
 Our method is comparable to FB-AE.  
 A linear classifier $$C$$ performed better than deeper networks (which suffered from overfitting).  
 Early stopping after a single epoch generated the best results.
+
+> 부정맥: 부정맥 데이터 세트가 가장 적게 검사되었다.  
+이 데이터 세트에 대한 정량적 비교는 표 3에서 확인할 수 있다.  
+OC-SVM과 DAGMM은 상당히 잘 수행되었다.  
+우리의 방법은 FB-AE에 필적한다.  
+linear classifier $$C$$는 (과적합을 겪는)deeper networks보다 더 잘 수행되었다.  
+single epoch후 Early stopping는 것이 최상의 결과를 낳았다.
 
 Thyroid: Thyroid is a small dataset, with a low anomaly to normal ratio and low feature dimensionality.  
 A quantitative comparison on this dataset can be seen in Tab. 3.  
@@ -542,15 +542,37 @@ We found that on the smaller datasets (Thyroid, Arrhythmia) using a larger numbe
 
 ## 6 DISCUSSION
 
-_Openset vs. Softmax_: The openset-based classification presented by GOAD resulted in performance improvement over the closed-set softmax approach on Cifar10 and FasionMNIST. In our experiments, it has also improved performance in KDDRev. Arrhythmia and Thyroid were comparable. As a negative result, performance of softmax was better on KDD (F1 = 0:99).
+_Openset vs. Softmax_: The openset-based classification presented by GOAD resulted in performance improvement over the closed-set softmax approach on Cifar10 and FasionMNIST.  
+In our experiments, it has also improved performance in KDDRev. Arrhythmia and Thyroid were comparable.  
+As a negative result, performance of softmax was better on KDD (F1 = 0:99).
+
+> Openset vs. Softmax : GOAD가 제시한 openset-based classification는 Cifar10 및 FasionMNIST에서 closed-set softmax approach에 비해 성능 향상을 가져왔다.  
+우리의 실험에서, 그것은 또한 KDDRev의 성능을 향상시켰다. 부정맥과 갑상선은 비교할 만한 수준이었다.  
+그 결과, KDD에서 softmax의 성능이 더 우수하였다(F1 = 0:99).
 
 _Choosing the margin parameter s_: GOAD is not particularly sensitive to the choice of margin parameter s, although choosing s that is too small might cause some instability. We used a fixed value of s = 1 in our experiments, and recommend this value as a starting point.
 
+> Choosing the margin parameter s: GOAD는 margin parameter s의 선택에 특별히 민감하지 않지만 너무 작은 s를 선택하면 불안정성이 발생할 수 있다. 실험에서 s=1의 고정값을 사용하였으며, 이 값을 출발점으로 추천하였다.
+
 _Other transformations_: GOAD can also work with other types of transformations such as rotations or permutations for tabular data. In our experiments, we observed that these transformation types perform comparably but a little worse than affine transformations.
 
-_Unsupervised training_: Although most of our results are semi-supervised i.e. assume that no anomalies exist in the training set, we presented results showing that our method is more robust than strong baselines to a small percentage of anomalies in the training set. We further presented results in other datasets showing that our method degrades gracefully with a small amount of contamination. Our method might therefore be considered in the unsupervised settings.
+> Other transformations: GOAD는 또한 tabular data에 대한 rotations 또는 permutations과 같은 다른 유형의 변환과 함께 작업할 수 있다. 실험에서 우리는 이러한 변환 유형이 affine 변환보다 비교 가능하지만 약간 더 나쁜 수행을 한다는 것을 관찰했다.
 
-_Deep vs. shallow classifiers_: Our experiments show that for large datasets deep networks are beneficial (particularly for the full KDDCUP99), but are not needed for smaller datasets (indicating that deep learning has not benefited the smaller datasets). For performance critical operations, our approach may be used in a linear setting. This may also aid future theoretical analysis of our method.
+_Unsupervised training_: Although most of our results are semi-supervised i.e. assume that no anomalies exist in the training set, we presented results showing that our method is more robust than strong baselines to a small percentage of anomalies in the training set.  
+We further presented results in other datasets showing that our method degrades gracefully with a small amount of contamination.  
+Our method might therefore be considered in the unsupervised settings.
+
+> 대부분의 결과는 semi-supervised(예 : 학습 세트에 이상이 없다고 가정)이지만 training set에서 작은 비율의 anomalies에 대해 우리의 방법이 strong baselines보다 더 robust하다는 결과를 제시했습니다.  
+우리는 우리의 방법이 소량의 오염(contamination)으로 적절하게 저하된다는 것을 보여주는 다른 datasets의 결과를 추가로 제시했다.  
+따라서 우리의 방법은 unsupervised settings에서 고려 될 수 있다.
+
+_Deep vs. shallow classifiers_: Our experiments show that for large datasets deep networks are beneficial (particularly for the full KDDCUP99), but are not needed for smaller datasets (indicating that deep learning has not benefited the smaller datasets).  
+For performance critical operations, our approach may be used in a linear setting.  
+This may also aid future theoretical analysis of our method.
+
+> Deep vs. shallow classifiers: 우리의 실험은 대규모 datasets의 경우 deep networks가 beneficial하지만 (특히 전체 KDDCUP99의 경우) 더 작은 datasets에는 필요하지 않다 (딥 러닝이 더 작은 데이터 세트에 도움이되지 않음을 나타냄).  
+성능이 중요한 작업의 경우 우리의 접근 방식은 linear setting에서 사용될 수 있다.  
+이것은 또한 우리의 방법에 대한 미래의 이론적 분석을 도울 수 있습니다.
 
 ## 7 CONCLUSION
 
