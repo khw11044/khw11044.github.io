@@ -176,7 +176,7 @@ This description treats correctly classified examples as the positive class, den
 In “Error” or “Err” we treat the the incorrectly classified examples as the positive class; to do this we label incorrectly classified examples as positive and take the negatives of the softmax probabilities of the predicted classes as the scores.
 
 > 이어지는 내용에서 우리는 softmax distribution에서 maximum/predicted class probability을 retrieve하고 example이 erroneously classified 또는 out-of-distribution인지 detect한다.  
-구체적으로, 우리는 correctly classified test set examples과 incorrectly classified test set examples를 분리하고, 각 example에 대해 predicted class의 softmax probability, 즉 maximum softmax probability을 계산한다.  
+구체적으로, 우리는 correctly classified test set examples와 incorrectly classified test set examples를 분리하고, 각 example에 대해 predicted class의 softmax probability, 즉 maximum softmax probability을 계산한다.  
 이 두 그룹에서 PR 및 ROC curves 아래의 영역을 얻는다.  
 이러한 영역은 서로 다른 thresholds에 걸쳐 values/scores(이 경우 maximum probabilities from the softmaxes)를 구별하는 binary classifier의 성능을 summarize한다.  
 이 설명은 correctly classified examples를 표에서 “Success” or “Succ”로 표시된, positive class로 취급한다.  
