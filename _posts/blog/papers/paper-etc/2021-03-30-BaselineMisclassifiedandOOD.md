@@ -129,7 +129,7 @@ negative class가 positive class보다 훨씬 가능성이 높은 경우, 모델
 그런 다음 일부 positive examples가 올바르게 분류되도록 score threshold을 지정해야 하지만, 이는 false negatives(fn)와  false positives(fp) 사이의 trade-off에 따라 달라진다.
 
 Faced with this issue, we employ the Area Under the Receiver Operating Characteristic curve (AUROC) metric, which is a threshold-independent performance evaluation (Davis & Goadrich, 2006).  
-The ROC curve is a graph showing the true positive rate (tpr = tp=(tp + fn)) and the false positive rate (fpr = fp=(fp + tn)) against each other.  
+The ROC curve is a graph showing the true positive rate (tpr = tp/(tp + fn)) and the false positive rate (fpr = fp/(fp + tn)) against each other.  
 Moreover, the AUROC can be interpreted as the probability that a positive example has a greater detector score/value than a negative example (Fawcett, 2005).  
 Consequently, a random positive example detector corresponds to a 50% AUROC, and a “perfect” classifier corresponds to 100%.
 
