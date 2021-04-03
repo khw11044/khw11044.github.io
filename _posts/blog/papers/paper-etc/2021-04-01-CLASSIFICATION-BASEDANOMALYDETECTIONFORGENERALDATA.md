@@ -259,22 +259,45 @@ Although getting such supervision is possible for some image tasks (where large 
 ## 3 DISTANCE-BASED MULTIPLE TRANSFORMATION CLASSIFICATION
 
 We propose a novel method to overcome the generalization issues highlighted in the previous section by using ideas from open-set classification (Bendale & Boult, 2016).  
-Our approach unifies one-class and transformation-based classification methods. Similarly to GEOM, we transform $$X$$ to $$X_1..X_M$$.
+Our approach unifies one-class and transformation-based classification methods.  
+Similarly to GEOM, we transform $$X$$ to $$X_1..X_M$$.  
 We learn a feature extractor $$f(x)$$ using a neural network, which maps the original input data into a feature representation.  
 Similarly to deep OC methods, we model each subspace $$X_m$$ mapped to the feature space $${f(x)|x \in X_m}$$ as a sphere with center $$c_m$$.  
-The probability of data point $$x$$ after transformation m is parameterized by $$P(T(x,m) \in X^{'}_m ) = \frac{1}{Z} e^{-(f(T(x,m))-c^{'}_m)^2}$$.  
+The probability of data point $$x$$ after transformation $$m$$ is parameterized by $$P(T(x,m) \in X^{'}_m ) = \frac{1}{Z} e^{-(f(T(x,m))-c^{'}_m)^2}$$.  
+
+> 우리는 open-set classification의 아이디어를 사용하여 이전 section에서 강조된 generalization 문제를 극복하기 위한 새로운 방법을 제안한다(Bendale & Boult, 2016).  
+우리의 접근 방식은 one-class와 transformation-based classification methods을 통합한다.  
+GEOM과 유사하게, 우리는 $$X$$를 $$X_1..X_M$$로 변환한다.  
+우리는 신경망(neural network)을 사용하여 feature extractor $$f(x)$$를 학습하며, 이는 original input data를 feature representation으로 매핑한다.  
+deep OC methods와 유사하게, 우리는 feature space $${f(x)|x \in X_m}$$에 매핑된 각 subspace $$X_m$$을 center $$c_m$$을 가진 sphere로 모델링한다.  
+transformation $$m$$이 $$P(T(x,m) \in X^{'}_m ) = \frac{1}{Z} e^{-(f(T(x,m))-c^{'}_m)^2}$$로 매개 변수화된 후 data point $$x$$의 probability이다.
+
 The classifier predicting transformation $$m$$ given a transformed point is therefore:
 
 $$P(m^{'}|T(x,m)) = \frac{e^{-||f(T(x,m))-c_{m^{'}}||^2}}{\sum_{\tilde{m}}e^{-||f(T(x,m))-c_{\tilde{m}}||^2}} \qquad (2)$$
 
-The centers cm are given by the average feature over the training set for every transformation i.e. $$c_m = \frac{1}{N} \sum_{x \in X}f(T(x,m))$$.  
+The centers $$c_m$$ are given by the average feature over the training set for every transformation i.e. $$c_m = \frac{1}{N} \sum_{x \in X}f(T(x,m))$$.  
 One option is to directly learn f by optimizing cross-entropy between $$P(m^{'}|T(x,m))$$ and the correct label on the normal training set.  
-In practice we obtained better results by training f using the center triplet loss (He et al., 2018), which learns supervised clusters with low intra-class variation, and high-inter-class variation by optimizing the following loss function (where s is a margin regularizing the distance between clusters):
+In practice we obtained better results by training $$f$$ using the center triplet loss (He et al., 2018), which learns supervised clusters with low intra-class variation, and high-inter-class variation by optimizing the following loss function (where $$s$$ is a margin regularizing the distance between clusters):
+
+> centers $$c_m$$은 모든 transformation에 대한 training set에 대한 average feature에 의해 주어진다.  
+즉, $$c_m = \frac{1}{N} \sum_{x \in X}f(T(x,m))$$.  
+한 가지 옵션은 $$P(m^{'}|T(x,m))$$와 normal training set의 올바른 label 사이의 cross-entropy를 optimizing하여 $$f$$를 직접 학습하는 것이다.  
+실제로 우리는 클래스 내 변동이 낮은 중앙 삼중 손실(He et al., 2018)과 다음 loss function(여기서 $$s$$는 clusters 간 거리를 정규화하는 margin)을 최적화하여 high-inter-class variation와 low intra-class variation로 supervised clusters를 학습하는 center triplet loss (He et al., 2018)을 사용하여 $$f$$를 training 함으로써 더 나은 결과를 얻었다:
 
 $$L=\sum_{i} \max (||f(T(x_i,m))) - c_m||^2 + s - \min_{\tilde{m} \ne m}||f(T(x_i,m))-c_{m^{'}}||^2,0) \qquad (3)$$
 
-Having learned a feature space in which the different transformation subspaces are well separated, we use the probability in Eq. 2 as a normality score. However, for data far away from the normal distributions, the distances from the means will be large. A small difference in distance will make the classifier unreasonably certain of a particular transformation. To add a general prior for uncertainty far from the training set, we add a small regularizing constant \epsilon to the probability of each transformation.  
+Having learned a feature space in which the different transformation subspaces are well separated, we use the probability in Eq. 2 as a normality score.  
+However, for data far away from the normal distributions, the distances from the means will be large.   
+A small difference in distance will make the classifier unreasonably certain of a particular transformation.   
+To add a general prior for uncertainty far from the training set, we add a small regularizing constant $$\epsilon$$ to the probability of each transformation.   
 This ensures equal probabilities for uncertain regions:
+
+> 서로 다른 transformation subspaces가 잘 분리되는 feature space를 학습하여 Eq. 2의 probability을 normality score로 사용한다.  
+그러나 normal distributions에서 멀리 떨어진 data의 경우 평균으로부터의 거리가 크다.  
+거리에 작은 차이가 있으면 classifier가 특정 변환을 불합리하게 확신하게 된다.  
+training set에서 멀리 떨어진 uncertainty에 대한 general prior을 추가하기 위해, 우리는 각 변환 확률에 작은 정규화 상수 $$\epsilon$$을 추가한다.  
+이렇게 하면 불확실한 영역에 대해 동일한 확률이 보장된다.
 
 $$\tilde{P(m^{'}|T(x,m))} = \frac{e^{-||f(T(x,m))-c_{m^{'}}||^2 +  \epsilon}}{\sum_{\tilde{m}}e^{-||f(T(x,m))-c_{\tilde{m}}||^2} + M \cdot \epsilon} \qquad (4)$$
 
