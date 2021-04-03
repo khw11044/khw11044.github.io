@@ -460,3 +460,5 @@ We would like to thank John Wieting, Hao Tang, Karen Livescu, Greg Shakhnarovich
 We would also like to thank NVIDIA Corporation for donating several TITAN X GPUs used in this research.
 
 > [참고하면 좋은 설명 영상](https://www.youtube.com/watch?v=xaABseUoHAI)
+> [참고하면 좋은 설명 블로그1](https://hoya012.github.io/blog/anomaly-detection-overview-2/)
+> [참고하면 좋은 설명 블로그2](https://hoya012.github.io/blog/anomaly-detection-overview-1/)

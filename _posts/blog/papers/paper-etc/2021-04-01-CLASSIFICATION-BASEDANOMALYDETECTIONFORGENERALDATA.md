@@ -24,11 +24,37 @@ The Hebrew University of Jerusalem, Israel
 
 ## ABSTRACT
 
-Anomaly detection, finding patterns that substantially deviate from those seen previously, is one of the fundamental problems of artificial intelligence. Recently, classification-based methods were shown to achieve superior results on this task. In this work, we present a unifying view and propose an open-set method, GOAD, to relax current generalization assumptions. Furthermore, we extend the applicability of transformation-based methods to non-image data using random affine transformations. Our method is shown to obtain state-of-the-art accuracy and is applicable to broad data types. The strong performance of our method is extensively validated on multiple datasets from different domains.
+Anomaly detection, finding patterns that substantially deviate from those seen previously, is one of the fundamental problems of artificial intelligence.  
+Recently, classification-based methods were shown to achieve superior results on this task.  
+In this work, we present a unifying view and propose an open-set method, GOAD, to relax current generalization assumptions.  
+Furthermore, we extend the applicability of transformation-based methods to non-image data using random affine transformations.  
+Our method is shown to obtain state-of-the-art accuracy and is applicable to broad data types.  
+The strong performance of our method is extensively validated on multiple datasets from different domains.
+
+> 이전에 본 것과 실질적으로 다른 패턴을 찾는, Anomaly detection는 인공지능의 근본적인 문제 중 하나이다.  
+최근, classification-based methods는 이 작업에서 우수한 결과를 달성하는 것으로 나타났다.  
+본 연구에서, 우리는 통합 관점을 제시하고 현재의 일반화 가정을 완화하기 위한 open-set method인 GOAD를 제안한다.  
+또한 random affine transformations을 사용하여 변환 기반 방법의 적용 가능성을 non-image data에 확장한다.  
+우리의 방법은 state-of-the-art accuracy를 얻는 것으로 나타나며 광범위한 데이터 유형에 적용된다.  
+우리 방법의 강력한 성능은 서로 다른 도메인의 여러 데이터 세트에서 광범위하게 검증된다.  
 
 ## 1 INTRODUCTION
 
-Detecting anomalies in perceived data is a key ability for humans and for artificial intelligence. Humans often detect anomalies to give early indications of danger or to discover unique opportunities. Anomaly detection systems are being used by artificial intelligence to discover credit card fraud, for detecting cyber intrusion, alert predictive maintenance of industrial equipment and for discovering attractive stock market opportunities. The typical anomaly detection setting is a one class classification task, where the objective is to classify data as normal or anomalous. The importance of the task stems from being able to raise an alarm when detecting a different pattern from those seen in the past, therefore triggering further inspection. This is fundamentally different from supervised learning tasks, in which examples of all data classes are observed.
+Detecting anomalies in perceived data is a key ability for humans and for artificial intelligence.  
+Humans often detect anomalies to give early indications of danger or to discover unique opportunities.  
+Anomaly detection systems are being used by artificial intelligence to discover credit card fraud, for detecting cyber intrusion, alert predictive maintenance of industrial equipment and for discovering attractive stock market opportunities.  
+The typical anomaly detection setting is a one class classification task, where the objective is to classify data as normal or anomalous.  
+The importance of the task stems from being able to raise an alarm when detecting a different pattern from those seen in the past, therefore triggering further inspection.  
+This is fundamentally different from supervised learning tasks, in which examples of all data classes are observed.
+
+<details>
+인식된 데이터에서 Detecting anomalies는 인간과 인공지능의 핵심 능력이다.  
+인간은 위험의 초기 징후를 제공하거나 고유한 기회를 발견하기 위해 종종 anomalies를 감지한다.  
+Anomaly detection 시스템은 신용카드 사기 발견, 사이버 침입 탐지, 산업 장비의 경보 예측 유지 및 매력적인 주식 시장 기회 발견을 위해 인공지능에 의해 사용되고 있다.  
+일반적인 anomaly detection 설정은 단일 분류 작업이며, 여기서 목적은 데이터를 정상 또는 비정상적으로 분류하는 것이다.  
+작업의 중요성은 과거에 나타난 패턴과 다른 패턴을 감지할 때 경보를 발생시킬 수 있기 때문에 추가 검사를 triggering하는 데 있다.  
+이는 모든 데이터 클래스의 예를 준수하는 지도 학습 작업과 근본적으로 다르다.
+</details>
 
 There are different possible scenarios for anomaly detection methods. In supervised anomaly detection, we are given training examples of normal and anomalous patterns. This scenario can be quite well specified, however obtaining such supervision may not be possible. For example in cyber security settings, we will not have supervised examples of new, unknown computer viruses making supervised training difficult. On the other extreme, fully unsupervised anomaly detection, obtains a stream of data containing normal and anomalous patterns and attempts to detect the anomalous data. In this work we deal with the semi-supervised scenario. In this setting, we have a training set of normal examples (which contains no anomalies). After training the anomaly detector, we detect anomalies in the test data, containing both normal and anomalous examples. This supervision is easy to obtain in many practical settings and is less difficult than the fully-unsupervised case.
 
@@ -194,3 +220,7 @@ _Deep vs. shallow classifiers_: Our experiments show that for large datasets dee
 ## 7 CONCLUSION
 
 In this paper, we presented a method for detecting anomalies for general data. This was achieved by training a classifier on a set of random auxiliary tasks. Our method does not require knowledge of the data domain, and we are able to generate an arbitrary number of random tasks. Our method significantly improve over the state-of-the-art.
+
+> [참고하면 좋은 블로그1](https://hongl.tistory.com/82)
+> [참고하면 좋은 블로그2](https://hoya012.github.io/blog/iclr2020-paper-preview/)
+> [참고하면 좋은 블로그3](https://stopspoon.tistory.com/44)
