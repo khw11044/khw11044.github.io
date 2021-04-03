@@ -377,7 +377,7 @@ We use the standard protocol of training on all training images of a single digi
 Results are reported in terms of AUC.  
 In our method, we used a margin of $$s = 0.1$$ (we also run GOAD with $$s = 1$$, shown in the appendix).  
 Similarly to He et al. (2018), to stabilize training, we added a softmax + cross entropy loss, as well as $$L_2$$ norm regularization for the extracted features $$f(x)$$.  
-We compare our method with the deep oneclass method of Ruff et al. (2018) as well as Golan & El-Yaniv (2018) without and with Dirichlet weighting.  
+We compare our method with the deep one-class method of Ruff et al. (2018) as well as Golan & El-Yaniv (2018) without and with Dirichlet weighting.  
 We believe the correct comparison is without Dirichlet post-processing, as we also do not use it in our method.  
 Our distance based approach outperforms the SOTA approach by Golan & El-Yaniv (2018), both with and without Dirichlet (which seems to improve performance on a few classes).  
 This gives evidence for the importance of considering the generalization behavior outside the normal region used in training.  
@@ -387,10 +387,22 @@ This is a special property of CNN architectures and image/time series data.
 As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
 <detail>
-> askdmasldsaldsal;das;dsa;dksal;dkas;ldka;
-aasdasldlasdkladklasdklas;dkasldas;ld
-asdkaslaskldjakd 
-
+<blockquote>
+**Cifar10**: 방법의 성능을 평가하기 위해 Cifar10 dataset에 대한 실험을 수행한다.   
+우리는 거리 기반 접근법과 함께 Golan & El-Yaniv (2018)의 동일한 아키텍처와 parameter를 선택한다.   
+우리는 한 자릿수의 모든 training images에 대한 training과 모든 test images에 대한 testing의 standard protocol을 사용한다.   
+결과는 AUC로 보고된다.   
+우리의 방법에서는 $$s = 0.1$$의 margin을 사용했다(부록에 표시된 $$s = 1$$로 GOAD를 실행하기도 한다).  
+He et al.(2018)와 유사하게, 우리는 training을 안정화하기 위해 추출된 features $$f(x)$$에 대해 $$L_2$$ norm regularization와 함께 softmax + cross entropy loss를 추가했다.   
+우리는 우리의 방법을 Dirichlet 가중치를 사용하고 사용하지 않고 Golan & El-Yaniv(2018)뿐만 아니라 Ruff et al.(2018)의 deep one-class method와 비교한다.  
+우리는 Dirichlet 후처리가 없는 정확한 비교가 가능하다고 믿는다. 왜냐하면 우리는 또한 Dirichlet을 우리의 방법에도 사용하지 않기 때문이다.   
+우리의 거리 기반 접근 방식은 (일부 클래스에서 성능을 향상시키는 것으로 보이는)Dirichlet가 있는것과 없는거 모두, Golan & El-Yaniv(2018)의 SOTA 접근 방식을 능가한다.  
+이는 training에 사용되는 normal region 밖의 일반화를 고려하는 것의 중요성을 보여주는 증거를 제공한다.  
+Golan & El-Yaniv(2018)와 동일한 geometric transformations을 사용했다는 점에 유의한다.  
+무작위 affine 행렬은 pixel 순서가 보존되지 않기 때문에 경쟁적으로 수행되지 않았으며, 이 정보는 CNN에 의해 효과적으로 사용되며 이 정보를 제거하면 성능이 저하된다.  
+이것은 CNN 아키텍처와 image/time series data의 특수한 속성이다.  
+원칙적으로, fully-connected networks는 pixel 순서를 보존하지 않으며 무작위 affine 행렬을 완전히 활용할 수 있다.
+</blockquote>
 </detail>
 
 **FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset.  
