@@ -69,8 +69,8 @@ softmax function은 indicator function의 smooth 근사치이기 때문에, out-
 However, in this work we also show the prediction probability of incorrect and out-of-distribution examples tends to be lower than the prediction probability for correct examples.   
 Therefore, capturing prediction probability statistics about correct or in-sample examples is often sufficient for detecting whether an example is in error or abnormal, even though the prediction probability viewed in isolation can be misleading.
 
-> 그러나 본 연구에서는 incorrect examples와 out-of-distribution examples의 예측 확률이 correct examples의 예측 확률보다 낮은 경향이 있음을 보여준다.  
-따라서, correct or in-sample examples에 대한 예측 확률 통계를 캡처하는 것은 example이 error인지 abnormal인지 여부를 detecting하는 데 충분하지만, isolation하여 보는 예측 확률은 misleading할수 있다.
+> 그러나 본 연구에서는 incorrect examples의 prediction probability와 out-of-distribution examples의 prediction probability이 correct examples의 prediction probability보다 낮은 경향이 있음을 보여준다.  
+따라서, correct or in-sample examples에 대한 prediction probability 통계를 캡처하는 것은 example이 error인지 abnormal인지 여부를 detecting하는 데 충분하지만, isolation하여 보는 prediction probability은 misleading할수 있다.
 
 These prediction probabilities form our detection baseline, and we demonstrate its efficacy through various computer vision, natural language processing, and automatic speech recognition tasks.   
 While these prediction probabilities create a consistently useful baseline, at times they are less effective, revealing room for improvement.   
