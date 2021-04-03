@@ -386,9 +386,8 @@ Random affine matrices did not perform competitively as they are not pixel order
 This is a special property of CNN architectures and image/time series data.  
 As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
-<detail>
-
-
+<details>
+<blockquote>
 **Cifar10**: 방법의 성능을 평가하기 위해 Cifar10 dataset에 대한 실험을 수행한다.   
 우리는 거리 기반 접근법과 함께 Golan & El-Yaniv (2018)의 동일한 아키텍처와 parameter를 선택한다.   
 우리는 한 자릿수의 모든 training images에 대한 training과 모든 test images에 대한 testing의 standard protocol을 사용한다.   
@@ -404,15 +403,24 @@ Golan & El-Yaniv(2018)와 동일한 geometric transformations을 사용했다는
 이것은 CNN 아키텍처와 image/time series data의 특수한 속성이다.  
 원칙적으로, fully-connected networks는 pixel 순서를 보존하지 않으며 무작위 affine 행렬을 완전히 활용할 수 있다.
 
-
-</detail>
+</blockquote>
+</details>
 
 **FasionMNIST**: In Tab. 2, we present a comparison between our method (GOAD) and the strongest baseline methods (Deep SVDD and GEOM) on the FashionMNIST dataset.  
 We used exactly the same setting as Golan & El-Yaniv (2018).  
-GOAD was run with s = 1. OCSVM and GEOM with Dirichlet were copied from their paper.  
+GOAD was run with s = 1.
+OCSVM and GEOM with Dirichlet were copied from their paper.  
 We run their method without Dirichlet and presented it in the table (we verified the implementation by running their code with Dirichlet and replicated the numbers in the paper).  
 It appears that GEOM is quite dependent on Dirichlet for this dataset, whereas we do not use it at all.  
 GOAD outperforms all the baseline methods.
+
+> **FasionMNIST**: Tab. 2에서 우리는 FashionMNIST dataset에서 우리의 method(GOAD)와 strongest baseline methods(Deep SVDD and GEOM)을 비교한다.  
+Golan & El-Yaniv(2018)와 정확히 동일한 설정을 했다.  
+GOAD는 s= 1.
+OCSVM and GEOM with Dirichlet는 그들의 논문에서 복사해왔다.  
+우리는 Dirichlet 없이 그들의 방법을 실행하고 표에 제시하였다(Dirichlet으로 코드를 실행하여 구현을 검증하고 논문의 숫자를 복제했다).  
+GEOM은 dataset에 대해 Dirichlet에 상당히 의존하는 반면, 우리는 전혀 사용하지 않았다.  
+GOAD는 모든 기본 방법을 능가한다.
 
 **Adversarial Robustness**: Let us assume an attack model where the attacker knows the architecture and the normal training data and is trying to minimally modify anomalies to look normal.  
 We examine the merits of two settings  

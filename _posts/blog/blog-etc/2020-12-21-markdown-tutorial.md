@@ -680,13 +680,13 @@ _   underscore
  </details>
 
 
-<detail>
+<details>
 <blockquote>
 askdmasldsaldsal;das;dsa;dksal;dkas;ldka;
 aasdasldlasdkladklasdklas;dkasldas;ld
 asdkaslaskldjakd
 </blockquote>
-</detail>
+</details>
 
 ---
 
