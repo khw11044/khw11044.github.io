@@ -22,6 +22,26 @@ Yedid Hoshen
 School of Computer Science and Engineering
 The Hebrew University of Jerusalem, Israel
 
+
+Classification 기반 Anomaly Detection 연구로는 Deep SVDD 방식과, Geometric-transformation Classification(GEOM) 방식이 대표적임.  
+다만 기존 연구들은 training set에 포함된 sample에는 잘 동작하나 Generalization 성능은 크게 떨어지는 문제를 가지고 있음.  
+이를 극복하기 위해 open-set classification 에서 활용되는 idea를 anomaly detection에 접목시키는 연구를 수행하였고, 위에서 소개한 Deep SVDD와 GEOM의 핵심 idea를 합쳐서 일반화 성능을 높인 GOAD 라는 방법론을 제안함.
+
+---
+
+One-class classification, self-supervised learning, metric learning의 총집합.
+
+1) One-class classification: 정상 데이터만으로 모델을 학습시켜 feature 공간에 투영시키는 사상.
+
+
+2) Self-supervsied learning: input data에 transformation m을 가하고 어떤 m을 적용했는지 맞추는 self-supervised 모델을 학습한다.  
+General data에 적용하기 위해 domain knowledge 기반의 transformation이 아닌, 학습되지 않는 random W와 b를 두고 Wx + b를 적용한다.  
+Adversarial attack에 더 robust한 결과를 보여준다.
+
+3) Metric learning: feature 공간에서 class m에 대한 centroids c를 기준으로 intra-class 간의 거리를 줄이고 inter-class 간의 거리는 벌리는 triplet loss를 계산한다.
+
+---
+
 ## ABSTRACT
 
 Anomaly detection, finding patterns that substantially deviate from those seen previously, is one of the fundamental problems of artificial intelligence.  
@@ -357,7 +377,7 @@ Conversely, if $$T$$ is unknown, the adversary must create adversarial examples 
 adversary가 특정 sample의 label을 anomalous에서 normal 또는 그 반대로 변경하기를 원한다고 가정한다.  
 이는 $$\tilde{P} (m^{'}\|T(x,m))$$가 $$m^{'} = m$$에 대해 낮은 확률 또는 높은 확률을 요구하는 것과 같다.  
 $$T$$를 결정적으로 선택하는 경우, adversary는 알려진 변환 class에 대한 adversarial examples를 생성할 수 있다(정확한 network parameters를 알 수 없는 경우에도).  
-반대로 $$T$$를 알 수 없는 경우, adversary는는 서로 다른 변환에 걸쳐 일반화하는 adversarial examples를 만들어야 하므로 공격의 효과가 감소한다.
+반대로 $$T$$를 알 수 없는 경우, adversary는 서로 다른 변환에 걸쳐 일반화하는 adversarial examples를 만들어야 하므로 공격의 효과가 감소한다.
 
 To summarize, generalizing the set of transformations to the affine class allows us to: generalize to non-image data, use an unlimited number of transformations and choose transformations randomly which reduces variance and defends against adversarial examples.
 
@@ -387,14 +407,14 @@ This is a special property of CNN architectures and image/time series data.
 As a rule of thumb, fully-connected networks are not pixel order preserving and can fully utilize random affine matrices.
 
 >**Cifar10**: 방법의 성능을 평가하기 위해 Cifar10 dataset에 대한 실험을 수행한다.   
-우리는 거리 기반 접근법과 함께 Golan & El-Yaniv (2018)의 동일한 아키텍처와 parameter를 선택한다.   
+우리는 distance-based 접근법과 함께 Golan & El-Yaniv (2018)의 동일한 아키텍처(GEOM)와 parameter를 선택한다.   
 우리는 한 자릿수의 모든 training images에 대한 training과 모든 test images에 대한 testing의 standard protocol을 사용한다.   
 결과는 AUC로 보고된다.   
 우리의 방법에서는 $$s = 0.1$$의 margin을 사용했다(부록에 표시된 $$s = 1$$로 GOAD를 실행하기도 한다).  
 He et al.(2018)와 유사하게, 우리는 training을 안정화하기 위해 추출된 features $$f(x)$$에 대해 $$L_2$$ norm regularization와 함께 softmax + cross entropy loss를 추가했다.   
 우리는 우리의 방법을 Dirichlet 가중치를 사용하고 사용하지 않고 Golan & El-Yaniv(2018)뿐만 아니라 Ruff et al.(2018)의 deep one-class method와 비교한다.  
 우리는 Dirichlet 후처리가 없는 정확한 비교가 가능하다고 믿는다. 왜냐하면 우리는 또한 Dirichlet을 우리의 방법에도 사용하지 않기 때문이다.   
-우리의 거리 기반 접근 방식은 (일부 클래스에서 성능을 향상시키는 것으로 보이는)Dirichlet가 있는것과 없는거 모두, Golan & El-Yaniv(2018)의 SOTA 접근 방식을 능가한다.  
+우리의 distance-based 접근 방식은 (일부 클래스에서 성능을 향상시키는 것으로 보이는)Dirichlet가 있는것과 없는거 모두, Golan & El-Yaniv(2018)의 SOTA 접근 방식을 능가한다.  
 이는 training에 사용되는 normal region 밖의 일반화를 고려하는 것의 중요성을 보여주는 증거를 제공한다.  
 Golan & El-Yaniv(2018)와 동일한 geometric transformations을 사용했다는 점에 유의한다.  
 무작위 affine 행렬은 pixel 순서가 보존되지 않기 때문에 경쟁적으로 수행되지 않았으며, 이 정보는 CNN에 의해 효과적으로 사용되며 이 정보를 제거하면 성능이 저하된다.  
@@ -613,11 +633,11 @@ We found that on the smaller datasets (Thyroid, Arrhythmia) using a larger numbe
 
 _Openset vs. Softmax_: The openset-based classification presented by GOAD resulted in performance improvement over the closed-set softmax approach on Cifar10 and FasionMNIST.  
 In our experiments, it has also improved performance in KDDRev. Arrhythmia and Thyroid were comparable.  
-As a negative result, performance of softmax was better on KDD (F1 = 0:99).
+As a negative result, performance of softmax was better on KDD (F1 = 0.99).
 
 > Openset vs. Softmax : GOAD가 제시한 openset-based classification는 Cifar10 및 FasionMNIST에서 closed-set softmax approach에 비해 성능 향상을 가져왔다.  
 우리의 실험에서, 그것은 또한 KDDRev의 성능을 향상시켰다. 부정맥과 갑상선은 비교할 만한 수준이었다.  
-그 결과, KDD에서 softmax의 성능이 더 우수하였다(F1 = 0:99).
+그 결과, KDD에서 softmax의 성능이 더 우수하였다(F1 = 0.99).
 
 _Choosing the margin parameter s_: GOAD is not particularly sensitive to the choice of margin parameter s, although choosing s that is too small might cause some instability. We used a fixed value of s = 1 in our experiments, and recommend this value as a starting point.
 
@@ -631,7 +651,7 @@ _Unsupervised training_: Although most of our results are semi-supervised i.e. a
 We further presented results in other datasets showing that our method degrades gracefully with a small amount of contamination.  
 Our method might therefore be considered in the unsupervised settings.
 
-> 대부분의 결과는 semi-supervised(예 : 학습 세트에 이상이 없다고 가정)이지만 training set에서 작은 비율의 anomalies에 대해 우리의 방법이 strong baselines보다 더 robust하다는 결과를 제시했습니다.  
+> 대부분의 결과는 semi-supervised(예 : 학습 세트에 anomalies가 없다고 가정)이지만 training set에서 작은 비율의 anomalies에 대해 우리의 방법이 strong baselines보다 더 robust하다는 결과를 제시했습니다.  
 우리는 우리의 방법이 소량의 오염(contamination)으로 적절하게 저하된다는 것을 보여주는 다른 datasets의 결과를 추가로 제시했다.  
 따라서 우리의 방법은 unsupervised settings에서 고려 될 수 있다.
 
@@ -655,6 +675,7 @@ Our method significantly improve over the state-of-the-art.
 우리의 방법은 data domain에 대한 지식을 필요로 하지 않으며 임의의 수의 무작위 작업을 생성할 수 있다.  
 우리의 방법은 state-of-the-art에 비해 크게 향상된다.
 
+> [참고하면 좋은 영상](https://www.youtube.com/watch?v=l--BSilQQqU)  
 > [참고하면 좋은 블로그1](https://hongl.tistory.com/82)  
 > [참고하면 좋은 블로그2](https://hoya012.github.io/blog/iclr2020-paper-preview/)  
 > [참고하면 좋은 블로그3](https://stopspoon.tistory.com/44)  
