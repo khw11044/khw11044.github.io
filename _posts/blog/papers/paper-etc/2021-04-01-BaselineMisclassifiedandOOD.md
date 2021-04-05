@@ -123,7 +123,7 @@ For detection we have two classes, and the detector outputs a score for both the
 If the negative class is far more likely than the positive class, a model may always guess the negative class and obtain high accuracy, which can be misleading (Provost et al., 1998).   
 We must then specify a score threshold so that some positive examples are classified correctly, but this depends upon the trade-off between false negatives (fn) and false positives (fp).
 
-> 두 가지 evaluation metrics를 언급하기 전에, 먼저 detectors를 비교하는 것이 정확도를 사용하는 것만큼 간단하지 않다는 점에 주목한다.  
+> 두 가지 evaluation metrics를 언급하기 전에, 먼저 detectors를 비교하는 것이 accuracy를 사용하는 것만큼 간단하지 않다는 점에 알아야한다.  
 detection을 위해 우리는 두 개의 클래스를 가지고 있으며, detector는 positive class와 negative class 모두에 대한 score를 출력한다.   
 negative class가 positive class보다 훨씬 가능성이 높은 경우, 모델은 항상 negative class를 추측하고 높은 정확도를 얻을 수 있으며, 이는 misleading할 수 있다(Provost et al., 1998).    
 그런 다음 일부 positive examples가 올바르게 분류되도록 score threshold을 지정해야 하지만, 이는 false negatives(fn)와  false positives(fp) 사이의 trade-off에 따라 달라진다.

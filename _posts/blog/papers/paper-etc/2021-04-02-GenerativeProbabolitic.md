@@ -34,6 +34,14 @@ We achieve this with two main contributions.
 First, we make the computation of the novelty probability feasible because we linearize the parameterized manifold capturing the underlying structure of the inlier distribution, and show how the probability factorizes and can be computed with respect to local coordinates of the manifold tangent space.  
 Second, we improve the training of the autoencoder network. An extensive set of results show that the approach achieves state-of-the-art performance on several benchmark datasets.
 
+> 새로움 탐지는 새로운 데이터 점이 특이치로 간주되는지 여부를 식별하는 문제입니다.  
+우리는 훈련 데이터가 초기 분포만 기술할 수 있다고 가정한다.  
+최근의 접근 방식은 주로 심층 인코더-디코더 네트워크 아키텍처를 활용하여 새로운 점수를 계산하거나 1등급 분류기를 훈련시키는 데 사용되는 재구성 오류를 계산한다.  
+우리도 그러한 종류의 새로운 네트워크를 활용하지만 확률론적 접근법을 취하여 초기 분포에 의해 표본이 생성되었을 가능성을 효과적으로 계산한다.  
+우리는 두 가지 주요 기여로 이것을 달성한다.  
+첫째, 초기 분포의 기본 구조를 캡처하는 매개 변수화된 매니폴드를 선형화하고, 매니폴드 접선 공간의 로컬 좌표에 대해 확률을 어떻게 인수하고 계산할 수 있는지 보여주기 때문에 새로운 확률 계산을 가능하게 한다.  
+둘째, 자동 인코더 네트워크의 훈련을 개선한다. 광범위한 결과 집합은 이 접근 방식이 여러 벤치마크 데이터 세트에서 최첨단 성능을 달성한다는 것을 보여준다.
+
 ## 1 Introduction
 
 Novelty detection is the problem of identifying whether a new data point is considered to be an inlier or an outlier.  
@@ -42,10 +50,21 @@ This is also the most difficult and relevant scenario because outliers are often
 Novelty detection has received significant attention in application areas such as medical diagnoses [2], drug discovery [3], and among others, several computer vision applications, such as anomaly detection in images [4, 5], videos [6], and outlier detection [7, 8]. We refer to [9] for a general review on novelty detection.  
 The most recent approaches are based on learning deep network architectures [10, 11], and they tend to either learn a one-class classifier [12, 11], or to somehow leverage as novelty score, the reconstruction error of the encoder-decoder architecture they are based on [13, 7].
 
+> 새로움 탐지는 새로운 데이터 점이 특이치로 간주되는지 여부를 식별하는 문제입니다.  
+통계적인 관점에서 이 프로세스는 일반적으로 특이치 분포에 대한 사전 지식이 이용 가능한 유일한 정보인 동안 발생합니다.  
+특이치는 종종 매우 희귀하거나 심지어 경험하기 위험하기 때문에(예: 산업 프로세스 결함 감지 [1]) 가장 어렵고 관련성이 높은 시나리오이기도 하다.  
+새로움 탐지는 의학 진단[2], 약물 발견[3]과 같은 응용 분야에서 상당한 관심을 받았고, 그 중에서도 이미지[4, 5], 비디오[6], 특이치 탐지[7, 8]와 같은 여러 컴퓨터 비전 응용 분야에서 주목을 받았다. 우리는 새로움 탐지에 대한 일반적인 검토를 위해 [9]를 참조한다.  
+가장 최근의 접근 방식은 딥 네트워크 아키텍처 학습[10, 11]을 기반으로 하며, 단일 클래스 분류기를 학습하거나 [12, 11]에 기반한 인코더-디코더 아키텍처의 재구성 오류인 신기한 점수로 활용하는 경향이 있다.
+
 In this work, we introduce a new encoder-decoder architecture as well, which is based on adversarial autoencoders [14].  
 However, we do not train a one-class classifier, instead, we learn the probability distribution of the inliers.   Therefore, the novelty test simply becomes the evaluation of the probability of a test sample, and rare samples (outliers) fall below a given threshold.  
 We show that this approach allows us to effectively use the decoder network to learn the parameterized manifold shaping the inlier distribution, in conjunction with the probability distribution of the (parameterizing) latent space.  
 The approach is made computationally feasible because for a given test sample we linearize the manifold, and show that with respect to the local manifold coordinates the data model distribution factorizes into a component dependent on the manifold (decoder network plus latent distribution), and another one dependent on the noise, which can also be learned offline.
+
+> 본 연구에서는 적대적 자동 인코더[14]를 기반으로 하는 새로운 인코더-디코더 아키텍처도 소개한다.  
+그러나 우리는 1 클래스 분류기를 훈련시키지 않고 대신 특이치의 확률 분포를 학습한다.   따라서 새로움 검정은 단순히 검정 표본의 확률에 대한 평가가 되며, 희귀 표본(이상치)은 지정된 임계값 아래로 떨어집니다.  
+우리는 이 접근법이 디코더 네트워크를 효과적으로 사용하여 (매개 변수화) 잠재 공간의 확률 분포와 함께 초기 분포를 형성하는 매개 변수화된 매니폴드를 학습할 수 있음을 보여준다.  
+이 접근 방식은 주어진 테스트 샘플에 대해 매니폴드를 선형화하고, 로컬 매니폴드와 관련하여 데이터 모델 분포가 매니폴드에 종속된 구성요소(디코더 네트워크 및 잠재 분포)로 인수화되고, 노이즈에 종속된다는 것을 보여주기 때문에 계산적으로 가능하다. 오프라인에서 학습한
 
 32nd Conference on Neural Information Processing Systems (NIPS 2018), Montréal, Canada.  
 We named the approach generative probabilistic novelty detection (GPND) because we compute the probability distribution of the fullmodel, which includes the signal plus noise portion, and because it relies on being able to also generate data samples.  
@@ -55,21 +74,45 @@ This aspect has been overlooked by the deep learning literature so far, since th
 We do leverage that as well, but we show in our framework that the reconstruction error affects only the noise portion of the model.  
 In order to control the latent distribution and image generation we learn an adversarial autoencoder network with two discriminators that address these two issues.
 
+> 제32차 신경 정보 처리 시스템 회의(NIPS 2018), 캐나다 몬트리올.  
+신호 + 노이즈 부분을 포함하는 전체 모델의 확률 분포를 계산하고 데이터 샘플도 생성할 수 있는 것에 의존하기 때문에 접근 방식을 GPND(생성 확률적 새로움 감지)라고 명명했다.  
+우리는 대부분 이미지를 사용한 신기한 검출과 초기 분포의 좋은 생성 번식을 보장하기 위해 잠재 공간의 분포를 제어하는 것에 관심이 있다.  
+이것은 좋은 이미지 생성을 보장하기 위해서가 아니라 새로운 점수의 정확한 계산을 위해서 필수적이다.   
+재구성 오류를 활용하는 데만 초점이 맞춰져 있었기 때문에 이러한 측면은 지금까지 딥 러닝 문헌에서 간과되어 왔다.  
+우리도 이 점을 활용하지만 재구성 오류가 모델의 노이즈 부분에만 영향을 미친다는 것을 프레임워크에서 보여준다.  
+잠재된 분포와 이미지 생성을 제어하기 위해 우리는 이 두 문제를 해결하는 두 개의 판별기가 있는 적대적 자동 인코더 네트워크를 학습한다.
+
 Section 2 reviews the related work.  
 Section 3 introduces the GPND framework, and Section 4 describes the training and architecture of the adversarial autoencoder network.  
 Section 6 shows a rich set of experiments showing that GPND is very effective and produces state-of-the-art results on several benchmarks.
 
+> 섹션 2는 관련 작업을 검토한다.  
+섹션 3은 GPND 프레임워크를 소개하고, 섹션 4는 적대적 자동 인코더 네트워크의 훈련과 아키텍처를 설명한다.  
+섹션 6은 GPND가 매우 효과적이며 여러 벤치마크에서 최첨단 결과를 산출한다는 것을 보여주는 풍부한 실험 세트를 보여준다.
+
 ## 2 Related Work
 
 Novelty detection is the task of recognizing abnormality in data.  
-The literature in this area is sizable. Novelty detection methods can be statistical and probabilistic based [15, 16], distance based [17], and also based on self-representation [8].  
+The literature in this area is sizable.  
+Novelty detection methods can be statistical and probabilistic based [15, 16], distance based [17], and also based on self-representation [8].  
 Recently, deep learning approaches [7, 11] have also been used, greatly improving the performance of novelty detection.
+
+> 새로움 탐지는 데이터의 이상을 인식하는 작업이다.  
+이 지역의 문헌은 상당한 규모이다.  
+신기 검출 방법은 통계 및 확률 기반[15, 16], 거리 기반 [17], 자기 표현에 기초할 수 있다[8].  
+최근에는 딥 러닝 접근 방식[7, 11]도 사용되어 신기 검출 성능을 크게 향상시켰다.
 
 Statistical methods [18, 19, 15, 16] usually focus on modeling the distribution of inliers by learning the parameters defining the probability, and outliers are identified as those having low probability under the learned model.  
 Distance based outlier detection methods [20, 17, 21] identify outliers by their distance to neighboring examples.   They assume that inliers are close to each other while the abnormal samples are far from their nearest neighbors.  
 A known work in this category is LOF [22], which is based on k-nearest neighbors and density based estimation.  
 More recently, [23] introduced the Kernel Null Foley-Sammon Transform (KNFST) for multi-class novelty detection, where training samples of each known category are projected onto a single point in the null space and then distances between the projection of a test sample and the class representatives are used to obtain a novelty measure.  
 [24] improves on previous approaches by proposing an incremental procedure called Incremental Kernel Null Space Based Discriminant Analysis (IKNDA).
+
+> 통계적 방법[18, 19, 15, 16]은 일반적으로 확률을 정의하는 매개 변수를 학습하여 특이치의 분포를 모델링하는 데 초점을 맞추고 있으며, 특이치는 학습된 모델에서 낮은 확률을 가진 것으로 식별된다.  
+거리 기반 특이치 탐지 방법[20, 17, 21]은 특이치를 인접 예제까지의 거리로 식별합니다.   이들은 특이치가 서로 가깝지만 비정상적인 표본은 가장 가까운 이웃과 멀리 떨어져 있다고 가정합니다.  
+이 범주의 알려진 연구는 K-근접 이웃과 밀도 기반 추정을 기반으로 하는 LOF [22]이다.  
+보다 최근에 [23]은 다중 클래스 새로움 감지를 위한 커널 널 폴리-삼몬 변환(KNFST)을 도입했는데, 여기서 알려진 각 범주의 훈련 샘플이 null 공간의 단일 지점에 투영된 다음 테스트 샘플 투영과 클래스 대표 사이의 거리가 새로운 측정값을 얻기 위해 사용된다.  
+[24]는 증분 커널 null 공간 기반 판별 분석(IKNDA)이라는 증분 절차를 제안하여 이전 접근 방식을 개선한다.
 
 Since outliers do not have sparse representations, self-representation approaches have been proposed for outlier detection in a union of subspaces [4, 25].  
 Similarly, deep learning based approaches have used neural networks and leveraged the reconstruction error of encoder-decoder architectures.   
@@ -82,8 +125,22 @@ In [11] they proposed a framework for one-class classification and novelty detec
 It consists of two main modules learned in an adversarial fashion.  
 The first is a decoder-encoder convolutional neural network trained to reconstruct inliers accurately, while the second is a one-class classifier made with another network that produces the novelty score.
 
+> 특이치는 희소 표현을 가지고 있지 않기 때문에, 하위 공간 조합에서 특이치 탐지에 대해 자체 표현 접근법이 제안되었다 [4, 25].  
+마찬가지로 딥 러닝 기반 접근 방식은 신경망을 사용하고 인코더-디코더 아키텍처의 재구성 오류를 활용했다.   
+[26, 27]은 딥 러닝 기반 자동 인코더를 사용하여 정상 동작의 모델을 학습하고 재구성 손실을 사용하여 특이치를 탐지했다.  
+[28]은 훈련 데이터와 유사한 새로운 샘플을 생성하여 GAN [29] 기반 방법을 사용했으며, 훈련 데이터를 설명하는 능력을 입증했다.  
+그런 다음 일반 데이터에 대한 암묵적 데이터 설명을 새로운 점수로 변환했습니다.  
+[10] 광학 흐름 이미지를 사용하여 비디오의 장면 표현을 학습하는 GAN을 훈련시켰다.  
+[7] 자동 인코더의 재구성 오류를 최소화하여 노이즈가 많은 데이터에서 특이치를 제거했으며, 자동 인코더의 기울기 크기를 활용하여 양성 샘플에 대한 재구성 오류를 보다 차별화할 수 있다.   
+[11]에서 그들은 1등급 분류와 새로움 탐지를 위한 프레임워크를 제안했다.  
+적대적 방식으로 학습된 두 가지 주요 모듈로 구성된다.  
+첫 번째는 특이치를 정확하게 재구성하도록 훈련된 디코더-인코더 컨볼루션 신경망이고, 두 번째는 새로움 점수를 생성하는 다른 네트워크로 만들어진 1등급 분류기이다.
+
 The proposed approach relates to the statistical methods because it aims at computing the probability distribution of test samples as novelty score, but it does so by learning the manifold structure of the distribution with an encoder-decoder network.  
 Moreover, the method is different from those that learn a one-class classifier, or rely on the reconstruction error to compute the novelty score, because in our framework we represent only one component of the score computation, allowing to achieve an improved performance.
+
+> 제안된 접근 방식은 시험 샘플의 확률 분포를 신기한 점수로 계산하는 것을 목표로 하기 때문에 통계 방법과 관련이 있지만, 인코더-디코더 네트워크를 통해 분포의 매니폴드 구조를 학습함으로써 관련된다.  
+또한, 이 방법은 1 클래스 분류기를 학습하거나 재구성 오류에 의존하여 새로움 점수를 계산하는 방법과 다르다. 우리의 프레임워크에서 우리는 점수 계산의 한 구성 요소만 나타내므로 향상된 성능을 달성할 수 있기 때문이다.
 
 State-of-the art works on density estimation for image compression include Pixel Recurrent Neural Networks [30] and derivatives [31, 32].  
 These pixel-based methods allow to sequentially predict pixels in an image along the two spatial dimensions.  
@@ -92,10 +149,22 @@ Although they could also model the probability distribution of known samples, th
 Our approach instead, does not allow modeling the probability density of individual pixels but works with the whole image.  
 It is not suitable for image compression, and while its generative nature allows in principle to produce novel images, in this work we focus only on novelty detection by evaluating the inlier probability distribution on test samples.
 
+> 이미지 압축을 위한 밀도 추정에 대한 최첨단 작업에는 픽셀 반복 신경망[30]과 파생 모델[31,32]이 포함된다.  
+이러한 픽셀 기반 방법을 사용하면 두 공간 차원을 따라 이미지의 픽셀을 순차적으로 예측할 수 있다.  
+원시 픽셀의 조인트 분포를 순차적 상관 관계와 함께 모델링하기 때문에 영상 압축에 사용할 수 있습니다.  
+알려진 샘플의 확률 분포를 모델링할 수도 있지만 패치 기반 방식으로 로컬 규모로 작동하므로 로컬이 아닌 픽셀이 느슨하게 상관된다.  
+대신 우리의 접근 방식은 개별 픽셀의 확률 밀도 모델링을 허용하지 않지만 전체 이미지와 함께 작동한다.  
+이미지 압축에는 적합하지 않으며, 생성 특성은 원칙적으로 새로운 이미지를 생성할 수 있지만, 본 연구에서는 테스트 샘플에 대한 초기 확률 분포를 평가하여 새로움 탐지에만 초점을 맞춘다.
+
 A recent line of work has focussed on detecting out-of-distribution samples by analyzing the output entropy of a prediction made by a pre-trained deep neural network [33, 34, 35, 36].  
 This is done by either simply thresholding the maximum softmax score [34], or by first applying perturbations to the input, scaled proportionally to the gradients w.r.t. to the input and then combining the softmax score with temperature scaling, as it is done in Out-of-distribution Image Detection in Neural Networks (ODIN) [36].  
 While these approaches require labels for the in-distribution data to train the classifier network, our method does not use label information.  
 Therefore, it can be applied for the case when in-distribution data is represented by one class or label information is not available.
+
+> 최근의 연구는 사전 훈련된 심층 신경망에 의해 이루어진 예측의 출력 엔트로피를 분석하여 분포 외 샘플을 감지하는 데 초점을 맞추고 있다[33, 34, 35, 36].  
+이는 단순히 최대 소프트맥스 점수[34]의 임계값을 지정하거나 먼저 입력에 그레이디언트 w.r.t.에 비례하여 스케일링된 섭동을 적용한 다음 신경망(ODIN)의 분포 외 이미지 감지에서와 같이 소프트맥스 점수를 온도 스케일링과 결합함으로써 이루어진다[36].  
+이러한 접근 방식은 분류기 네트워크를 훈련시키기 위해 분포 내 데이터에 대한 레이블을 요구하지만, 우리의 방법은 레이블 정보를 사용하지 않는다.  
+따라서 분포 내 데이터가 하나의 클래스로 표시되거나 레이블 정보를 사용할 수 없는 경우에 적용할 수 있습니다.
 
 ![Fig1](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Fig1.JPG)
 
@@ -191,18 +260,36 @@ VAEs utilize stochastic variational inference and minimize the Kullback-Leibler 
 Adversarial Autoencoders (AAEs) [14], in contrast to VAEs, use an adversarial training paradigm to match the posterior distribution of the latent space with the given distribution.  
 One of the advantages of AAEs over VAEs is that the adversarial training procedure encourages the encoder to match the whole distribution of the prior.  
 
+> 가변 자동 인코더(VAE) [44]는 연속 잠재 변수가 있는 경우 잘 작동하는 것으로 알려져 있으며 랜덤하게 샘플링된 잠재 공간에서 데이터를 생성할 수 있다.  
+VAE는 확률적 변동 추론을 활용하고 Kullback-Libler(KL) 발산 패널티를 최소화하여 인코더가 이전 분포의 모드를 학습하도록 유도하는 잠재 공간에 사전 분포를 부과한다.  
+적대적 자동 인코더(AAE)[14]는 VAE와 대조적으로 적대적 훈련 패러다임을 사용하여 잠재 공간의 후방 분포를 주어진 분포와 일치시킨다.  
+VAE에 비해 AAE의 장점 중 하나는 적대적 훈련 절차가 인코더가 이전의 전체 분포와 일치하도록 장려한다는 것이다.
+
 Unfortunately, since we are concerned with working with images, both AAEs and VAEs tend to produce examples that are often far from the real data manifold.  
 This is because the decoder part of the network is updated only from a reconstruction loss that is typically a pixel-wise cross-entropy between input and output image.  
 Such loss often causes the generated images to be blurry, which has a negative effect on the proposed approach. Similarly to AAEs, PixelGAN autoencoders [45] introduce the adversarial component to impose a prior distribution on the latent code, but the architecture is significantly different, since it is conditioned on the latent code.
+
+> 안타깝게도, 우리는 이미지 작업에 관심이 있기 때문에, AAE와 VAE 모두 종종 실제 데이터 매니폴드와 거리가 먼 예제를 생성하는 경향이 있다.  
+이는 네트워크의 디코더 부분이 일반적으로 입력 이미지와 출력 이미지 사이의 픽셀 단위 교차 엔트로피인 재구성 손실에서만 업데이트되기 때문이다.  
+이러한 손실은 종종 생성된 이미지를 흐리게 만들어 제안된 접근 방식에 부정적인 영향을 미친다. AAE와 유사하게, 픽셀GAN 자동 인코더[45]는 잠재 코드에 사전 분포를 부과하기 위해 적대적 구성요소를 도입하지만, 잠재 코드에 따라 조건화되기 때문에 아키텍처는 크게 다르다.
 
 Similarly to [43, 11] we add an adversarial training criterion to match the output of the decoder with the distribution of real data.  
 This allows to reduce blurriness and add more local details to the generated images.  
 Moreover, we also combine the adversarial training criterion with AAEs, which results in having two adversarial losses: one to impose a prior on the latent space distribution, and the second one to impose a prior on the output distribution.
 
+> [43, 11]과 유사하게, 우리는 디코더의 출력과 실제 데이터의 분포를 일치시키기 위해 적대적 훈련 기준을 추가한다.  
+이렇게 하면 흐릿함을 줄이고 생성된 이미지에 더 많은 로컬 세부 정보를 추가할 수 있습니다.  
+또한 적대적 훈련 기준을 AAE와 결합함으로써 잠재 공간 분포에 선행 조건을 부과하는 것과 출력 분포에 선행 조건을 부과하는 두 번째 것, 두 번째 적대적 손실이 발생한다.
+
 Our full objective consists of three terms.  
 First, we use an adversarial loss for matching the distribution of the latent space with the prior distribution, which is a normal with 0 mean, and standard deviation 1, $$\mathcal{N}(0, 1)$$.  
 Second, we use an adversarial loss for matching the distribution of the decoded images from $$z$$ and the known, training data distribution.  
 Third, we use an autoencoder loss between the decoded images and the encoded input image. Figure 3 shows the architecture configuration.
+
+> 우리의 전체 목표는 세 가지 용어로 구성되어 있다.  
+먼저, 우리는 평균이 0인 정규 분포와 표준 편차 1, $\mathcal{N}(0, 1)$인 잠재 공간의 분포를 일치시키기 위해 적대적 손실을 사용한다.  
+둘째, 우리는 $z$에서 디코딩된 이미지의 분포와 알려진 훈련 데이터 분포를 일치시키기 위해 적대적 손실을 사용한다.  
+셋째, 디코딩된 이미지와 인코딩된 입력 이미지 간에 자동 인코더 손실을 사용한다. 그림 3은 아키텍처 구성을 보여줍니다.
 
 ### 4.1 Adversarial losses
 
@@ -289,18 +376,33 @@ For more details please refer to [36]. We reuse the prepared datasets of outlier
 
 ### 6.2 Results
 
-**MNIST** dataset. We follow the protocol described in [11, 7] with some differences discussed below.  
+**MNIST** dataset.  
+We follow the protocol described in [11, 7] with some differences discussed below.  
 Results are averages from a 5-fold cross-validation.  
-Each fold takes 20% of each class. 60% of each class is used for training, 20% for validation, and 20% for testing.  
-Once pX(¯x) is computed for each validation sample, we search for the $$γ$$ that gives the highest $$F_1$$ measure.  
+Each fold takes 20% of each class.  
+60% of each class is used for training, 20% for validation, and 20% for testing.  
+Once $$p_X(\hat{x})$$ is computed for each validation sample, we search for the $$γ$$ that gives the highest $$F_1$$ measure.  
 For each class of digit, we train the proposed model and simulate outliers as randomly sampled images from other categories with proportion from 10% to 50%.  
-Results for $$\mathcal{D}(\mathcal{R}(X))$$ and $$\mathcal{D}(X)$$ reported in [11] correspond to
-the protocol for which data is not split into separate training, validation and testing sets, meaning that
-the same inliers used for training were also used for testing.  
+
+> **MNIST** dataset.  
+우리는 [11, 7]에 설명된 프로토콜을 따르고 아래에서 몇 가지 차이점에 대해 논의한다.  
+결과는 5배 교차 검증의 평균입니다.  
+각 접은 반의 20%를 차지합니다.  
+각 클래스의 60%, 검증의 20%, 테스트의 20%가 사용됩니다.  
+각 유효성 검사 샘플에 대해 $$p_X(\hat{x})$$가 계산되면 가장 높은 $$F_1$$ 측정값을 제공하는 $$γ$$를 검색한다.  
+각 자릿수 클래스에 대해 제안된 모델을 교육하고 10%에서 50% 사이의 비율로 다른 범주에서 랜덤하게 샘플링된 이미지로 특이치를 시뮬레이션한다.
+
+Results for $$\mathcal{D}(\mathcal{R}(X))$$ and $$\mathcal{D}(X)$$ reported in [11] correspond to the protocol for which data is not split into separate training, validation and testing sets, meaning that the same inliers used for training were also used for testing.  
 We diverge from this protocol and do not reuse the same inliers for training and testing.  
 We follow the 60%/20%/20% splits for training, validation and testing.  
 This makes our testing harder, but more realistic, while we still compare our numbers against those obtained by others with easier settings.  
 Results on the MNIST dataset are shown in Table 1 and Figure 4, where we compare with [11, 22, 7].
+
+> [11]에 보고된 $$\mathcal{D}(\mathcal{R)(X)$$ 및 $$\mathcal{D}(X)$$에 대한 결과는 데이터가 별도의 훈련, 유효성 검사 및 테스트 세트로 분할되지 않는 프로토콜에 해당하며, 이는 훈련에 사용된 것과 동일한 한정자가 테스트에도 사용되었음을 의미한다.  
+우리는 이 프로토콜에서 벗어나 훈련과 테스트를 위해 동일한 이니셜을 재사용하지 않는다.  
+우리는 훈련, 검증 및 테스트를 위해 60%/20%/20% 분할을 따른다.  
+이것은 우리의 시험을 더 어렵지만 더 현실적이게 만들지만, 우리는 여전히 더 쉬운 설정을 가진 다른 사람들에 의해 얻어진 숫자와 비교한다.  
+MNIST 데이터 세트에 대한 결과는 표 1과 그림 4에 나타나 있으며, 여기서 우리는 [11, 22, 7]과 비교한다.
 
 ![Table2](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Table2.JPG)
 
@@ -312,22 +414,45 @@ Results on the MNIST dataset are shown in Table 1 and Figure 4, where we compare
 We follow the protocol described in [8] with some differences discussed below.  
 Results are averages from 5-fold cross-validation.  
 Each fold takes 20% of each class.  
-Because the count of samples per category is very small, we use 80% of each class for training, and 20% for
-testing.  
+Because the count of samples per category is very small, we use 80% of each class for training, and 20% for testing.  
 We find the optimal threshold $$γ$$ on the training set.  
 Results reported in [8] correspond to not splitting data into separate training, validation and testing sets, because it is not essential, since they leverage a VGG [53] network pretrained on ImageNet [54].  
 We diverge from that protocol and do not reuse inliers and follow 80%/20% splits for training and testing.
 
+> **Coil-100 dataset**.  
+우리는 [8]에 설명된 프로토콜을 따르고 아래에서 몇 가지 차이점에 대해 논의한다.  
+결과는 5배 교차 검증의 평균입니다.  
+각 접은 반의 20%를 차지합니다.  
+범주당 샘플의 수가 매우 적기 때문에, 우리는 각 클래스의 80%, 테스트에 20%를 사용합니다.  
+우리는 훈련 세트에서 최적의 임계값 $$γ$$를 찾는다.  
+[8]에 보고된 결과는 ImageNet [54]에서 사전 훈련된 VGG [53] 네트워크를 활용하기 때문에 반드시 필요한 것은 아니기 때문에 데이터를 별도의 교육, 검증 및 테스트 세트로 분할하지 않는 것과 일치한다.  
+우리는 그 프로토콜에서 벗어나서 특이치를 재사용하지 않으며 훈련과 테스트를 위해 80%/20% 분할을 따른다.
+
 Results on Coil-100 are shown in Table 2.  
-We do not outperformR-graph [8], however as mentioned before, R-graph uses a pretrained VGG network, while we train an autoencoder from scratch on a very limited number of samples, which is on average only 70 per category.
+We do not outperform R-graph [8], however as mentioned before, R-graph uses a pretrained VGG network, while we train an autoencoder from scratch on a very limited number of samples, which is on average only 70 per category.
 
-**Fashion-MNIST dataset.** We repeat the same experiment with the same protocol that we have used for MNIST, but on Fashion-MNIST. Results are provided in Table 3.
+> 코일-100에 대한 결과는 표 2에 나와 있습니다.  
+우리는 R-그래프[8]를 능가하지 않지만, 앞에서 언급한 바와 같이, R-그래프는 사전 훈련된 VGG 네트워크를 사용하는 반면, 우리는 범주당 평균 70개에 불과한 매우 제한된 수의 샘플에서 자동 인코더를 처음부터 훈련시킨다.
 
-**CIFAR-10 (CIFAR-100) dataset**. We follow the protocol described in [36], where for inliers and outliers are used different datasets. ODIN relies on a pretrained classifier and thus requires label information provided with the training samples, while our approach does not use label information.   
+**Fashion-MNIST dataset.**  
+We repeat the same experiment with the same protocol that we have used for MNIST, but on Fashion-MNIST. Results are provided in Table 3.
+
+> **Fashion-MNIST dataset.**
+우리는 MNIST에 사용한 것과 동일한 프로토콜로 동일한 실험을 반복하지만, 패션-MNIST에 대해서는 같은 실험을 반복한다. 결과는 표 3에 제시되어 있다.
+
+**CIFAR-10 (CIFAR-100) dataset**.  
+We follow the protocol described in [36], where for inliers and outliers are used different datasets. ODIN relies on a pretrained classifier and thus requires label information provided with the training samples, while our approach does not use label information.   
 The results are reported in Table 4. Despite the fact that ODIN relies upon powerful classifier networks such as Dense-BC and WRN with more than 100 layers, the much smaller network of GPND competes well with ODIN.  
 Note that for CIFAR-100, GPND significantly outperforms both ODIN architectures.   
 We think this might be due to the fact that ODIN relies on the perturbation of the network classifier output, which becomes less accurate as the number of classes grows from 10 to 100.   
 On the other hand, GPND does not use class label information and copes much better with the additional complexity induced by the increased number of classes.
+
+> **CIFAR-10 (CIFAR-100) dataset**.   
+우리는 [36]에 설명된 프로토콜을 따르는데, 여기서 특이치와 특이치는 서로 다른 데이터 세트를 사용한다. ODIN은 사전 훈련된 분류기에 의존하므로 훈련 샘플과 함께 제공되는 라벨 정보가 필요한 반면, 우리의 접근 방식은 라벨 정보를 사용하지 않는다.   
+결과는 표 4에 보고된다. ODIN이 100개 이상의 계층을 가진 Dense-BC 및 WRN과 같은 강력한 분류기 네트워크에 의존한다는 사실에도 불구하고, GPN의 훨씬 더 작은 네트워크는 ODIN과 잘 경쟁한다.  
+CIFAR-100의 경우 GPND가 두 ODIN 아키텍처를 크게 능가한다는 점에 유의한다.   
+이는 ODIN이 네트워크 분류기 출력의 섭동에 의존하기 때문일 수 있으며, 클래스 수가 10개에서 100개로 증가함에 따라 정확도가 낮아진다.   
+반면, GPND는 클래스 레이블 정보를 사용하지 않으며 클래스 수에 의해 유발되는 추가적인 복잡성으로 훨씬 더 잘 대처한다.
 
 ![Table4](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Table4.JPG)
 
@@ -340,6 +465,12 @@ The baselines are:
 i) vanilla AE with thresholding of the reconstruction error and same pipeline (AE);  
 ii) proposed approach where the AAE is replaced by a VAE (P-VAE);  
 iii) proposed approach where the AAE is without the additional adversarial component induced by the discriminator applied to the decoded image (P-AAE).
+
+> 표 5는 구조 선택에 의해 제공되는 개선을 더 잘 평가하기 위해 GPND를 일부 기준선과 비교한다.  
+기준선은 다음과 같습니다.  
+i) 재구성 오류의 임계값과 동일한 파이프라인(AE)을 가진 바닐라 AE;  
+ii) AAE가 VAE(P-VAE)로 대체되는 경우 제안된 접근 방식  
+iii) AAE가 디코딩된 영상(P-AAE)에 적용된 판별기에 의해 유도된 추가 적대적 구성 요소 없이 제안된 접근법이다.
 
 To motivate the importance of each component of $$p_X(\hat{x})$$ in (5), we repeat the experiment with MNIST under the following conditions:  
 a) GPND Complete is the unmodified approach, where $$p_X(\hat{x})$$ is computed as in (5);  
@@ -363,6 +494,11 @@ We introduced GPND, an approach and a network architecture for novelty detection
 Unlike prior deep learning based methods, GPND detects that a given sample is an outlier by evaluating its inlier probability distribution.  
 We have shown how each architectural and model components are essential to the novelty detection.  
 In addition, with a relatively simple architecture we have shown how GPND provides state-of-the-art performance using different measures, different datasets, and different protocols, demonstrating to compare favorably also with the out-of-distribution literature.
+
+> 초기 분포의 기본 구조를 포착하는 매개 변수화된 매니폴드 $\mathcal{M}$를 정의하는 학습 매핑 $f$와 $g$를 기반으로 하는 새로운 탐지를 위한 접근 방식 및 네트워크 아키텍처인 GPND를 소개했다.  
+이전의 딥 러닝 기반 방법과 달리 GPND는 초기 확률 분포를 평가하여 주어진 표본이 특이치임을 감지한다.  
+우리는 각 아키텍처 및 모델 구성요소가 새로움 탐지에 어떻게 필수적인지 보여주었다.  
+또한, 우리는 비교적 간단한 아키텍처를 사용하여 GPND가 다른 측정, 다른 데이터 세트 및 다른 프로토콜을 사용하여 어떻게 최첨단 성능을 제공하는지를 보여 주었으며, 분포 외 문헌과도 잘 비교되는 것을 보여주었다.
 
 ### Acknowledgments
 This material is based upon work supported by the National Science Foundation under Grant No.

@@ -459,13 +459,24 @@ Categorical attributes are encoded as one-hot vectors.
 For completeness the datasets are described in the appendix A.2. We train all compared methods on 50% of the normal data.  
 The methods are evaluated on 50% of the normal data as well as all the anomalies.
 
+> Datasets: 소규모 의료 데이터 세트 부정맥, 갑상선뿐만 아니라 대규모 사이버 침입 탐지 데이터 세트 KDD 및 KDDRev에 대해 평가한다.  
+우리의 구성은 Zong 등(2018)과 같다.  
+범주형 특성은 원핫 벡터로 인코딩됩니다.  
+완전성을 위해 데이터 세트는 부록 A.2에 설명되어 있다. 우리는 모든 비교 방법을 정규 데이터의 50%에 대해 훈련한다.  
+이 방법은 정규 데이터의 50%와 모든 이상 징후에서 평가됩니다.
+
 Baseline methods: The baseline methods evaluated are: One-Class SVM (OC-SVM, Scholkopf et al. (2000)), End-to-End Autoencoder (E2E-AE), Local Outlier Factor (LOF, Breunig et al. (2000)).  
 We also evaluated deep distributional method DAGMM (Zong et al., 2018), choosing their strongest variant.  
 To compare against ensemble methods e.g. Chen et al. (2017), we implemented the Feature Bagging Autoencoder (FB-AE) with autoencoders as the base classifier, feature bagging as the source of randomization, and average reconstruction error as the anomaly score.  
 OC-SVM, E2E-AE and DAGMM results are directly taken from those reported by Zong et al. (2018). LOF and FB-AE were computed by us.
 
+> Baseline methods: 평가된 기준 방법은 One-Class SVM(OC-SVM, Scholkopf 등)이다. (2000), 단대단 자동 인코더(E2E-AE), 국소 특이치 인자(LOF, Breunig 등) (2000)).  
+또한 심층 분포 방법 DAGMM(종 등, 2018)을 평가하여 가장 강력한 변형을 선택했다.  
+예를 들어 앙상블 방법과 비교한다. Chen 외 연구진(2017)은 자동 인코더를 기본 분류기로, 기능 백킹을 무작위화의 소스로, 평균 재구성 오류를 이상 점수로 구현했다.  
+OC-SVM, E2E-AE 및 DAGMM 결과는 Zong 등(2018)이 보고한 결과에서 직접 가져온 것이다. LOF와 FB-AE는 우리가 계산했다.
+
 Implementation of GOAD: We randomly sampled transformation matrices using the normal distribution for each element.  
-Each matrix has dimensionality L  r, where L is the data dimension and r is a reduced dimension.  
+Each matrix has dimensionality $$L \times r$$, where L is the data dimension and r is a reduced dimension.  
 For Arryhthmia and Thyroid we used r = 32, for KDD and KDDrev we used r = 128 and r = 64 respectively, the latter due to high memory requirements.  
 We used 256 tasks for all datasets apart from KDD (64) due to high memory requirements.  
 We set the bias term to 0.  
@@ -473,9 +484,24 @@ For C we used fully-connected hidden layers and leaky-ReLU activations (8 hidden
 We optimized using ADAM with a learning rate of 0.001.  
 Similarly to He et al. (2018), to stabilize the triplet center loss training, we added a softmax + cross entropy loss.  
 We repeated the large-scale experiments 5 times, and the small scale GOAD experiments 500 times (due to the high variance).  
-We report the mean and standard deviation ().  
-Following the protocol in Zong et al. (2018), the decision threshold value is chosen to result in the correct number of anomalies e.g. if the test set contains Na anomalies, the threshold is selected so that the highest Na scoring examples are classified as anomalies.   True positives and negatives are evaluated in the usual way.  
+We report the mean and standard deviation ($$\sigma$$).  
+Following the protocol in Zong et al. (2018), the decision threshold value is chosen to result in the correct number of anomalies e.g. if the test set contains $$N_a$$ anomalies, the threshold is selected so that the highest Na scoring examples are classified as anomalies.   
+True positives and negatives are evaluated in the usual way.  
 Some experiments copied from other papers did not measure standard variation and we kept the relevant cell blank.
+
+> Implementation of GOAD: 각 원소에 대한 정규 분포를 사용하여 변환 행렬을 랜덤하게 샘플링했습니다.  
+각 행렬에는 치수 L이 있으며, 여기서 L은 데이터 치수이고 r은 축소 치수이다.  
+Arrythmia와 갑상선의 경우 r = 32를, KDDR 및 KDDrev의 경우 r = 128과 r = 64를 각각 사용했는데, 이는 메모리 요구량이 높기 때문이다.  
+높은 메모리 요구 사항으로 인해 KDD(64)를 제외한 모든 데이터 세트에 256개의 작업을 사용했다.  
+bias term을 0으로 설정합니다.  
+C의 경우 fully-connected hidden layers와 leaky-ReLU activations를 사용했습니다.(8 hidden nodes for the small datasets, 128 and 32 for KDDRev and KDD)
+우리는 학습률이 0.001인 ADAM을 사용하여 최적화했다.  
+He et al. (2018)와 유사하게, 트리플트 센터 손실 훈련을 안정화시키기 위해 소프트맥스 + 크로스 엔트로피 손실을 추가했다.  
+대규모 실험은 5회 반복했고, 소규모 GOAD 실험은 500회 반복했다(높은 분산 때문에).  
+평균 및 표준 편차($\sigma$$)를 보고한다.  
+Zong et al. (2018)의 protocol에 이어, 결정 임계값을 선택하여 테스트 세트에 $$N_a$$ anomalies이 포함된 경우, 가장 높은 Na 점수 매기기 예제를 이상 징후로 분류할 수 있도록 올바른 이상 징후 수를 산출한다.   
+진정한 긍정과 부정은 일반적인 방법으로 평가됩니다.  
+다른 논문에서 복사한 일부 실험은 표준 변동을 측정하지 않았으며 관련 셀을 공백으로 유지했습니다.
 
 #### Results
 
@@ -500,6 +526,13 @@ On this dataset, we also found that early stopping after a single epoch gave the
 The best results on this dataset, were obtained with a linear classifier.  
 Our method is comparable to FB-AE and beat all other baselines by a wide margin.
 
+> 갑상선: 갑상선은 정규 비율에 대한 이상 징후와 기능 치수가 낮은 작은 데이터 세트이다.  
+이 데이터 세트에 대한 정량적 비교는 표 3에서 확인할 수 있다.   
+대부분의 기준선은 낮은 차원성 때문에 거의 똑같이 잘 수행되었다.   
+이 데이터 세트에서도 단일 시대 이후 조기 중단이 최상의 결과를 제공한다는 것을 발견했다.   
+이 데이터 세트에 대한 최상의 결과는 선형 분류기로 얻어졌다.   
+우리의 방법은 FB-AE와 비슷하며 다른 모든 기준선을 큰 폭으로 능가한다.  
+
 KDDCUP99: The UCI KDD 10% dataset is the largest dataset examined.  
 A quantitative comparison on this dataset can be seen in Tab. 3.  
 The strongest baselines are FB-AE and DAGMM.  
@@ -509,6 +542,15 @@ On this dataset, deep networks performed the best.
 We also, did not need early stopping.  
 The results are reported after 25 epochs.
 
+> KDDCUP99:자전거 경기 미국의 10%의 데이터 가장 큰 데이터 조사하였습니다.  
+이 데이터 집합에 관한 양적 비교 탭. 3에서 볼 수 있다.  
+가장 강한 베이스 라인 있FB-AE과 DAGMM.  
+우리의 메서드는 모든 베이스 라인.  
+우리는 큰 데이터 집합은 매우 작은 데이터 집합에서 다른 역학을 가지고 있다고 한다.  
+이 데이터 집합에, 깊은 네트워크 최고를 수행했다.  
+우리는 또한, 일찍 제동이 필요하지 않았다.  
+그 결과는 25시대 이후 보고되고 있다.
+
 KDD-Rev: The KDD-Rev dataset is a large dataset, but smaller than KDDCUP99 dataset.  
 A quantitative comparison on this dataset can be seen in Tab. 3.  
 Similarly to KDDCUP99, the best baselines are FB-AE and DAGMM, where FB-AE significantly outperforms DAGMM.  
@@ -516,10 +558,22 @@ Our method significantly outperformed all baselines.
 Due to the size of the dataset, we did not need early stopping.  
 The results are reported after 25 epochs.
 
+> KDD-Rev: KDD-Rev 데이터 세트는 큰 데이터 세트이지만 KDDCUP99 데이터 세트보다 작습니다.  
+이 데이터 세트에 대한 정량적 비교는 표 3에서 확인할 수 있다.  
+KDDCUP99와 유사하게, 최고의 기준선은 FB-AE와 DAGMM이며, 여기서 FB-AE는 DAGMM을 크게 능가한다.  
+우리의 방법은 모든 기준치를 크게 앞질렀다.  
+데이터 세트의 크기 때문에, 우리는 일찍 중지할 필요가 없었다.  
+결과는 25시 이후에 보고된다.
+
 Adversarial Robustness: Due to the large number of transformations and relatively small networks, adversarial examples are less of a problem for tabular data.  
 PGD generally failed to obtain adversarial examples on these datasets.  
 On KDD, transformation classification accuracy on anomalies was increased by 3.7% for the network the adversarial examples were trained on, 1.3% when transferring to the network with the same transformation and only 0.2% on the network with other randomly selected transformations.  
 This again shows increased adversarial robustness due to random transformations.
+
+> 적대적 견고성: 변환의 수가 많고 네트워크가 상대적으로 작기 때문에, 적대적 예는 표 형식의 데이터에 대한 문제가 덜하다.  
+PGD는 일반적으로 이러한 데이터 세트에 대한 적대적 예를 얻지 못했다.  
+KDD에서는, 이상 징후들에 대한 변환 분류 정확도가 적대적인 예들이 훈련된 네트워크에 대해 3.7% 증가했고, 동일한 변환으로 네트워크로 전송할 때는 1.3%, 무작위로 선택된 다른 변환이 있는 네트워크에서 0.2% 증가했다.  
+이는 무작위 변환으로 인한 적대적 견고성의 증가를 다시 보여준다.
 
 ![Fig1](/assets/img/Blog/papers/Classification-based/Fig1.JPG)
 
@@ -534,11 +588,26 @@ The results are shown in Fig. 1. Our method significantly outperforms DAGMM for 
 This attests to the effectiveness of our approach.  
 Results for the other datasets are presented in Fig. 3, showing similar robustness to contamination.
 
+> 오염된 데이터: 본 논문은 훈련 데이터 세트에 정규 데이터만 포함된 반지도 시나리오를 다룬다.  
+일부 시나리오에서는 이러한 데이터를 사용할 수 없을 수 있지만 대신 약간의 이상 징후를 포함하는 교육 데이터 세트가 있을 수 있다.  
+이 비지도 시나리오에 대한 우리의 방법의 견고성을 평가하기 위해, 우리는 훈련 데이터의 X%가 비정상적일 때 KDDCUP99 데이터 세트를 분석하였다.  
+데이터를 준비하기 위해 이전과 동일한 정규 교육 데이터를 사용하고 비정상적인 예를 추가했습니다.  
+검정 데이터는 이전과 동일한 비율로 구성됩니다.  
+결과는 그림 1에 나와 있습니다. 우리의 방법은 모든 불순도 값에 대해 DAGMM을 크게 능가하며 기준값보다 더 우아하게 저하된다.  
+이것은 우리의 접근법의 효과를 입증한다.  
+다른 데이터 세트에 대한 결과는 그림 3에 제시되어 오염과 유사한 견고성을 보여준다.
+
 Number of Tasks: One of the advantages of GOAD, is the ability to generate any number of tasks.  
 We present the anomaly detection performance on the KDD-Rev dataset with different numbers of tasks in Fig. 1.  
 We note that a small number of tasks (less than 16) leads to poor results.  
 From 16 tasks, the accuracy remains stable.  
 We found that on the smaller datasets (Thyroid, Arrhythmia) using a larger number of transformations continued to reduce $$F_1$$ score variance between differently initialized runs (Fig. 2).
+
+> 작업 수: GOAD의 장점 중 하나는 여러 작업을 생성할 수 있다는 것입니다.  
+우리는 KDD-Rev 데이터 세트에 대한 이상 탐지 성능을 그림 1에서 서로 다른 수의 작업으로 제시한다.  
+우리는 적은 수의 작업(16개 미만)이 좋지 않은 결과를 초래한다는 점에 주목한다.  
+16개 과제에서 정확도는 안정적으로 유지됩니다.  
+우리는 더 많은 변환을 사용하는 소규모 데이터 세트(thyroid, 부정맥)에서 서로 다른 초기화 실행 간의 $F_1$ 점수 차이를 계속 줄인다는 것을 발견했다(그림 2).
 
 ## 6 DISCUSSION
 

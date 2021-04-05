@@ -206,6 +206,12 @@ The encoder ends with fully connected (FC) layers.
 When dealing with video inputs, we employ causal 3D convolutions [2] within the encoder (i.e., only accessing information from previous timesteps). Moreover, at the end of the encoder, we employ a temporally-shared full connection (TFC, namely a linear projection sharing parameters across the time axis on the input feature maps) resulting in a temporal series of feature vectors.  
 This way, the encoding procedure does not shuffle information across time-steps, ensuring temporal ordering.
 
+> **Autoencoder blocks.**    
+인코더와 디코더는 각각 그림 1ii에 설명된 다운샘플링 및 업샘플링 잔류 블록에 의해 구성된다.  
+인코더는 완전히 연결된(FC) 계층으로 끝납니다.  
+비디오 입력을 처리할 때, 우리는 인코더 내에서 인과적 3D 컨볼루션[2]을 사용한다(즉, 이전 시간 단계의 정보에만 액세스). 또한 인코더의 끝에는 임시 공유 전체 연결(TFC, 즉 입력 피처 맵의 시간 축에 걸친 선형 투영 공유 매개 변수)을 사용하여 시간적 일련의 피처 벡터를 생성한다.  
+이러한 방식으로 인코딩 절차는 시간 단계에 걸쳐 정보를 섞지 않으므로 시간적 순서가 보장된다.
+
 **Autoregressive layers.**  
 To guarantee the autoregressive nature of each output CPD, we need to ensure proper connectivity patterns in each layer of the estimator h.
 Moreover, since latent representations exhibit different shapes depending on the input nature (image or video), we propose two different solutions.
@@ -259,6 +265,11 @@ In the test phase, we present the corresponding test set, which is composed of 1
 We use standard train/test splits, and isolate 10% of training samples for validation purposes, and employ it as the normalization set (S in Eq. 9) for the computation of the novelty score.  
 As for the baselines, we consider the following:
 
+> 한 클래스 설정에서 모델의 성능을 평가하기 위해 MNIST 또는 CIFAR-10의 각 클래스에서 별도로 학습한다.  
+테스트 단계에서, 우리는 모든 클래스의 10000개의 예제로 구성된 해당 테스트 세트를 제시하고, 우리의 모델이 훈련 샘플과 레이블을 공유하는 이미지에 더 낮은 새로움 점수를 할당할 것으로 기대한다.  
+우리는 표준 열차/테스트 분할을 사용하고, 검증 목적으로 훈련 샘플의 10%를 격리하고, 새로운 점수 계산을 위해 정규화 세트(S in Eq. 9)로 사용한다.  
+기준선의 경우 다음을 고려합니다.
+
 - standard methods such as OC-SVM [36] and Kernel Density Estimator (KDE), employed out of features
 extracted by PCA-whitening;  
 - a denoising autoencoder (DAE) sharing the same architecture as our proposal, but defective of the density estimation module. The reconstruction error is employed as a measure of normality vs. novelty;  
@@ -269,6 +280,9 @@ extracted by PCA-whitening;
 We report the comparison in Tab. 1 in which performances are measured by the Area Under Receiver Operating Characteristic (AUROC), which is the standard metric for the task.  
 As the table shows, our proposal outperforms all baselines in both settings.  
 
+> 우리는 작업의 표준 메트릭인 AUROC(Area Under Receiver Operatic 특성)에 의해 성능이 측정되는 표 1에 비교를 보고한다.  
+표에서 알 수 있듯이, 우리의 제안은 두 가지 설정 모두에서 모든 기준을 능가한다.
+
 ![Table1](/assets/img/Blog/papers/LatentSpace/Table1.JPG)
 
 Considering MNIST, most methods perform favorably.  
@@ -276,10 +290,20 @@ Notably, Pix-CNN fails in modeling distributions for all digits but one, possibl
 Such poor test performances are registered despite good quality samples that we observed during training: indeed, the weak correlation between sample quality and test log-likelihood of the model has been motivated in [37].  
 Surprisingly, OC-SVM outperforms most deep learning based models in this setting.
 
+> MNIST를 고려할 때 대부분의 방법은 양호한 성능을 보인다.  
+특히, Pix-CNN은 픽셀 공간에 직접 밀도를 모델링하고 고정 자기 회귀 순서를 따르는 복잡성으로 인해 한 자리만 제외하고 모든 자릿수에 대한 분포를 모델링하는 데 실패한다.  
+훈련 중에 관찰한 우수한 품질의 샘플에도 불구하고 이러한 테스트 성능이 등록된다. 실제로 모델의 샘플 품질과 테스트 로그 가능성 사이의 약한 상관관계가 [37]에서 동기 부여되었다.  
+놀랍게도, OC-SVM은 이 설정에서 대부분의 딥 러닝 기반 모델을 능가한다.
+
 On the contrary, CIFAR10 represents a much more significant challenge, as testified by the low performances of most models, possibly due to the poor image resolution and visual clutter between classes.  
 Specifically, we observe that our proposal is the only model outperforming a simple KDE baseline; however, this finding should be put into perspective by considering the nature of non-parametric estimators.  
 Indeed, non-parametric models are allowed to access the whole training set for the evaluation of each sample.  
 Consequently, despite they benefit large sample sets in terms of density modeling, they lead into an unfeasible inference as the dataset grows in size.
+
+> 반대로 CIFAR10은 대부분의 모델의 낮은 성능으로 증명된 바와 같이 훨씬 더 중요한 과제를 나타내는데, 이미지 해상도가 떨어지고 클래스 간의 시각적 혼란 때문일 수 있다.  
+구체적으로, 우리는 우리의 제안이 단순한 KDE 기준을 능가하는 유일한 모델이라는 것을 관찰한다. 그러나 이 발견은 비모수 추정기의 특성을 고려하여 관점에 두어야 한다.  
+실제로 비모수 모델은 각 샘플의 평가를 위해 전체 교육 세트에 액세스할 수 있다.  
+결과적으로, 밀도 모델링 측면에서 큰 샘플 세트에 이점이 있음에도 불구하고, 데이터 세트의 크기가 커짐에 따라 실현 불가능한 추론을 야기한다.
 
 The possible reasons behind the difference in performance w.r.t. DAE are two-fold.  
 Firstly, DAE can recognize novel samples solely based on the reconstruction error, hence relying on its memorization capabilities, whereas our proposal also considers the likelihood of their representations under the learned prior, thus exploiting surprisal as well.   Secondly, by minimizing the differential entropy of the latent distribution, our proposal increases the discriminative capability of the reconstruction.  
@@ -289,6 +313,14 @@ On this last point, VAE seeks representations whose average surprisal converges 
 This flexibility allows modulating the richness of the latent representation vs. the reconstructing capability of the model.  
 On the contrary, in VAEs, the fixed prior acts as a blind regularizer, potentially leading to over-smooth representations; this aspect is also appreciable when sampling from the model as shown in the supplementary material.
 
+> W.r.t.DAE의 성능 차이 이면에 있는 가능한 이유는 두 가지입니다.  
+첫째, DAE는 재구성 오류만을 기반으로 새로운 샘플을 인식할 수 있으므로 기억 능력에 의존할 수 있는 반면, 우리의 제안은 학습된 사전에서 이들의 표현 가능성을 고려하므로 놀라움도 활용한다.   둘째, 잠재 분포의 미분 엔트로피를 최소화함으로써 우리의 제안은 재구성의 차별적 능력을 증가시킨다.  
+직관적으로, 이 마지막 진술은 새로운 표본이 잠재 공간의 높은 확률 영역에 상주하도록 강요되고, 후자는 훈련 세트에서 발생하는 놀라운 변동 요인만 포착하도록 제한된다는 것을 관찰하는 동기가 될 수 있다.  
+반면, W.r.t. VAE는 당면한 작업의 경우 등방성 다변량 가우스보다 더 유연한 자기 회귀 사전이 선호되어야 한다고 제안한다.  
+이 마지막 점에서 VAE는 평균 놀라도가 고정 및 기대값(즉, 이전의 차등 엔트로피)으로 수렴되는 표현을 추구하는 반면, 우리의 솔루션은 MLE 목표 내에서 그러한 양을 최소화한다.  
+이러한 유연성은 잠재 표현의 풍부성 대 모델의 재구성 능력을 변조할 수 있다.  
+반대로 VAE에서는 고정식 사전이 블라인드 레귤레이터 역할을 하여 지나치게 매끄러운 표현을 할 수 있습니다. 이 측면은 보조 재료에 표시된 것처럼 모델로부터 표본을 추출할 때도 유용합니다.
+
 ![Fig4](/assets/img/Blog/papers/LatentSpace/Fig4.JPG)
 
 Fig. 4 reports an ablation study questioning the loss functions aggregation presented in Eq. 9. The figure illustrates ROC curves under three different novelty scores:  
@@ -297,6 +329,13 @@ ii) the reconstruction term, and
 iii) the proposed scheme that accounts for both.  
 As highlighted in the picture, accounting for both memorization and surprisal aspects is advantageous in each dataset.  
 Please refer to the supplementary material for additional evidence.
+
+> 그림 4는 Eq. 9에 제시된 손실 함수 집계에 의문을 제기하는 절제 연구를 보고한다. 그림에는 세 가지 다른 신규성 점수의 ROC 곡선이 나와 있습니다.  
+i) 로그 우도 항,  
+ii) 재구성 용어 및  
+iii) 두 가지를 모두 설명하는 제안된 계획.  
+그림에서 강조했듯이, 암기와 놀라운 측면을 모두 설명하는 것은 각 데이터 세트에서 유리하다.  
+추가 증거는 보충 자료를 참고하세요.
 
 ### 4.2. Video anomaly detection
 
@@ -309,6 +348,15 @@ We compute the novelty score of each input clip as the mean novelty score among 
 Concerning ShanghaiTech, we removed the dependency on the scenario by estimating the foreground for each frame of a clip with a standard MOG-based approach and removing the background.  
 We fed the model with 16-frames clips, but ground-truth anomalies are labeled at frame level.
 
+> 비디오 감시 컨텍스트에서, 새로움은 종종 비정상적인 인간 행동의 측면에서 고려된다.  
+따라서, 우리는 최신 이상 탐지 모델에 대해 우리의 제안을 평가한다.  
+이를 위해 문헌에서 UCSD Ped2[8]와 ShanghaiTech[27]의 두 가지 표준 벤치마크를 고려했습니다.  
+비디오 수와 해상도의 차이에도 불구하고, 둘 다 감시 시나리오에서 일반적으로 발생하는 이상 징후를 포함하고 있다(예: 보행자 통로의 차량, 소매치기, 싸움).  
+UCSD Ped의 경우, 우리는 더 작은 패치를 추출하기 위해 16프레임의 입력 클립을 사전 처리했으며(자세한 내용은 보조 자료를 참조), $$ \sigma = 0.025$$의 무작위 가우스 노이즈로 그러한 입력을 교란시켰다.  
+우리는 모든 패치 중 평균 새로움 점수로 각 입력 클립의 새로움 점수를 계산한다.  
+상하이테크와 관련하여, 우리는 표준 MG 기반 접근법으로 클립의 각 프레임에 대한 전경을 추정하고 배경을 제거함으로써 시나리오에 대한 의존성을 제거했다.  
+모델에 16프레임 클립을 공급했지만, 지상 실측 이상 징후는 프레임 레벨에서 라벨링된다.
+
 In order to recover the novelty score of each frame, we compute the mean score of all clips in which it appears.  
 We then merge the two terms of the loss function following the same strategy illustrated in Eq. 9, computing however normalization coefficients in a per-sequence basis, following the standard approach in the anomaly detection literature.  
 The scores for each sequence are then concatenated to compute the overall AUROC of the model.  
@@ -318,6 +366,16 @@ Differently, in ShanghaiTech, we adopt a sliding-window approach [44]: as expect
 Fig. 5 reports results in comparison with prior works, along with qualitative assessments regarding the novelty score and localization capabilities.  
 Despite a more general formulation, our proposal scores on-par with the current state-of-the-art solutions specifically designed for video applications and taking advantage of optical flow estimation and motion constraints.  
 Indeed, in the absence of such hypotheses (FFP entry in Fig. 5), our method outperforms future frame prediction on UCSD Ped2.
+
+> 각 프레임의 새로움 점수를 복구하기 위해 표시되는 모든 클립의 평균 점수를 계산합니다.  
+그런 다음 Eq. 9에 설명된 동일한 전략에 따라 손실 함수의 두 항을 병합하고, 이상 탐지 문헌의 표준 접근 방식을 따라 시퀀스별로 정규화 계수를 계산한다.  
+그런 다음 각 시퀀스에 대한 점수를 연결하여 모델의 전체 AUROC를 계산한다.  
+또한, 우리는 두 데이터 세트에 대한 지역화 전략을 구상한다.  
+이를 위해 UCSD의 경우 프레임에서 가장 높은 새로움 점수를 나타내는 패치를 이례적으로 나타낸다.  
+이와는 달리, 상하이 기술에서는 슬라이딩 윈도우 접근 방식을 채택한다[44]. 예상대로, 직사각형 패치로 이상 징후 근원을 차단하면 새로움 점수가 크게 떨어진다.  
+그림 5는 새로운 점수와 지역화 능력에 대한 정성적 평가와 함께 이전 연구와 비교한 결과를 보여준다.  
+보다 일반적인 공식에도 불구하고, 우리의 제안은 비디오 애플리케이션을 위해 특별히 설계된 최신 솔루션과 동등하게 평가되며 광학 흐름 추정 및 모션 제약 조건을 이용한다.  
+실제로, 그러한 가설(그림 5의 FFP 입력)이 없는 경우, 우리의 방법은 UCSD Ped2에서 미래 프레임 예측을 능가한다.
 
 ![Fig5](/assets/img/Blog/papers/LatentSpace/Fig5.JPG)
 
@@ -333,6 +391,16 @@ The two models achieved respectively 79.26 and 95.4 top-1 classification accurac
 Even though this procedure is to be considered unfair in novelty detection, it serves as a sanity check delivering the upper-bound performances our model can achieve when applied to even better features.  
 To deal with dense inputs, we employ a fully connected autoencoder and MFC layers within the estimation network.
 
+> **CIFAR-10 with semantic features.**  
+우리는 새로운 샘플의 예상 특성에 관한 서로 다른 가정이 존재하는 상태에서 모델의 동작을 조사한다.  
+우리는 그러한 가정의 정확성이 증가함에 따라 새로운 감지 성능이 그에 따라 확장될 것으로 기대한다.  
+이러한 특성은 새로운 사례에 대한 사전 믿음이 구상될 수 있는 응용 분야에 특히 바람직하다.  
+이를 위해, 우리는 4.1절에서 설명한 CIFAR-10 벤치마크를 활용하고 입력으로 제공되는 정보의 유형을 변경한다.  
+구체적으로, 원시 이미지 대신, 우리는 ResNet-50[12]에 의해 추출된 의미 표현을 모델에 공급한다. 이미지넷에서 사전 훈련된 (즉, 의미적 새로움을 가정한다) 또는 CIFAR-10 자체(즉, 데이터별 새로움을 가정한다).  
+두 모델은 각 테스트 세트에서 각각 79.26과 95.4 상위 1등급 분류 정확도를 달성했다.  
+이 절차는 새로움 감지에서 불공정하다고 간주되지만, 훨씬 더 나은 기능에 적용될 때 우리 모델이 달성할 수 있는 상한 성능을 제공하는 온전성 검사 역할을 한다.  
+조밀한 입력을 처리하기 위해 추정 네트워크 내에서 완전히 연결된 자동 인코더와 MFC 계층을 사용한다.
+
 Fig. 6-(a) illustrates the resulting ROC curves, where semantic descriptors improve AUROC w.r.t. raw image inputs (entry “Unsupervised”).  
 Such results suggest that our model profitably takes advantage of the separation between normal and abnormal input representations and scales accordingly, even up to optimal performances for the task under consideration.  
 Nevertheless, it is interesting to note how different degrees of supervision deliver significantly different performances.  
@@ -340,17 +408,36 @@ As expected, dataset-specific supervision increases the AUROC from 0.64 up to 0.
 Surprisingly, semantic feature vectors trained on Imagenet (which contains all CIFAR classes) provide a much lower boost, yielding an AUROC of 0.72.  
 Such result suggests that, even in the rare cases where the semantic of novelty can be known in advance, its contribution has a limited impact in modeling the normality, mostly because novelty can depend on other cues (e.g., low-level statistics).
 
+> 그림 6-(a)는 의미론적 설명자가 AUROC w.r.t. 원시 이미지 입력을 개선하는 결과 ROC 곡선을 보여준다(항목 "비지도").  
+그러한 결과는 우리의 모델이 정상적인 입력 표현과 비정상적인 입력 표현 사이의 분리를 수익적으로 활용하고 고려 중인 작업에 대한 최적의 성능까지 그에 따라 확장한다는 것을 시사한다.  
+그럼에도 불구하고, 서로 다른 수준의 감독이 유의하게 다른 성능을 제공하는 방법에 주목하는 것은 흥미롭다.  
+예상대로 데이터 세트별 감독은 AUROC를 0.64에서 0.99(만점)로 증가시킨다.  
+놀랍게도, Imagnet(모든 CIFAR 클래스를 포함)에서 훈련된 의미론적 특징 벡터는 훨씬 낮은 부스트를 제공하여 0.72의 AUROC를 산출한다.  
+그러한 결과는 새로움의 의미를 미리 알 수 있는 드문 경우에도, 새로움이 주로 다른 단서(예: 낮은 수준의 통계)에 의존할 수 있기 때문에 정규성을 모델링하는 데 그 기여도가 제한적이라는 것을 시사한다.
+
 **Autoregression via recurrent layers.**  
 To measure the contribution of the proposed MFC and MSC layers described in Sec. 3, we test on CIFAR-10 and UCSD Ped2, alternative solutions for the autoregressive density estimator.  
 Specifically, we investigate recurrent networks, as they represent the most natural alternative featuring autoregressive properties.  
 We benchmark the proposed building blocks against an estimator composed of LSTM layers, which is designed to sequentially observe latent symbols $$z<i$$ and output the CPD of $$z_i$$ as the hidden state of the last layer.  
 We test MFC, MSC and LSTM in single-layer and multi-layer settings, and report all outcomes in Fig. 6-(b).
 
+> **Autoregression via recurrent layers.**    
+3항에서 설명하는 제안된 MFC 및 MSC 계층의 기여도를 측정하기 위해, 우리는 자기 회귀 밀도 추정기의 대안 솔루션인 CIFAR-10 및 UCSD Ped2에서 테스트한다.  
+구체적으로, 우리는 반복 네트워크가 자기 회귀 속성을 특징으로 하는 가장 자연스러운 대안을 나타내기 때문에 반복 네트워크를 조사한다.  
+우리는 LSTM 계층으로 구성된 추정기에 대해 제안된 빌딩 블록을 벤치마킹하는데, LSTM 계층은 잠재 기호 $$z<i$$를 순차적으로 관찰하고 마지막 계층의 숨겨진 상태로 CPD $$z_i$$를 출력하도록 설계되었다.  
+우리는 단일 계층 및 다중 계층 설정에서 MFC, MSC 및 LSTM을 테스트하고 모든 결과를 그림 6-(b)에 보고한다.
+
 It emerges that, even though our solutions perform similarly to the recurrent baseline when employed in a shallow setting, they significantly take advantage of their depth when stacked in consecutive layers.  
 MFC and MSC, indeed, employ disentangled parametrizations for each output CPD.  
 This property is equivalent to the adoption of a specialized estimator network for each zi, thus increasing the proficiency in modeling the density of its designated CPD.  
 On the contrary, LSTM networks embed all the history (i.e., the observed symbols) in their memory cells, but manipulate each input of the sequence through the same weight matrices.  
 In such a regime, the recurrent module needs to learn parameters shared among symbols, losing specialization and eroding its modeling capabilities.
+
+> 우리의 솔루션이 얕은 환경에서 사용될 때 반복 기준선과 유사하게 수행되지만 연속 레이어에 쌓일 때 깊이를 크게 활용한다는 사실이 밝혀졌다.  
+실제로 MFC와 MSC는 각 출력 CPD에 대해 분리된 매개 변수를 사용한다.  
+이 속성은 각 zi에 대해 전문화된 추정기 네트워크를 채택하는 것과 동일하므로, 지정된 CPD의 밀도를 모델링하는 숙련도가 증가한다.  
+반대로 LSTM 네트워크는 모든 기록(즉, 관찰된 기호)을 메모리 셀에 포함시키지만 동일한 가중치 행렬을 통해 시퀀스의 각 입력을 조작한다.  
+이러한 체제에서 반복 모듈은 기호 간에 공유되는 매개 변수를 학습하여 전문화를 상실하고 모델링 기능을 잠식할 필요가 있다.
 
 ![Fig6](/assets/img/Blog/papers/LatentSpace/Fig6.JPG)
 
@@ -365,6 +452,15 @@ Moreover, since the dataset features annotations of peculiar and unfrequent patt
 In terms of AUROC, our model scores 0.926, highlighting that novelty can arise from unexpected behaviors of the driver, such as distractions or other shifts in attention.  
 Fig. 7 reports the different distribution of novelty scores for ordinary and peculiar events.
 
+> 우리의 제안의 잠재적인 적용으로, 우리는 인간의 주의 행동을 모델링하는 그것의 능력을 조사한다.  
+이를 위해 DR(눈)을 사용합니다.VE 데이터 세트[30]는 운전 컨텍스트에서 주의 집중을 예측하기 위해 도입되었다.  
+프레임별 고정 맵이 제공되는 74개의 주행 비디오가 담겨 있어 운전자가 참석하는 장면의 영역을 조명한다.   
+주의 패턴의 역학을 포착하기 위해, 우리는 훈련 세트에서 무작위로 추출한 고정 맵 클립에서 장면의 시각적 내용을 의도적으로 버리고 모델을 최적화한다.  
+훈련 후, 우리는 주의 패턴의 흔하지 않은 것에 대한 대리로서 각 클립의 신기한 점수에 의존한다.  
+또한 데이터 세트는 특이하고 빈번하지 않은 패턴의 주석(예: 산만, 기록 오류)을 특징으로 하므로 캡처된 새로움 w.r.t의 상관 관계를 측정할 수 있다.  
+AUROC의 관점에서, 우리의 모델은 0.926점을 기록하여, 새로움이 주의 집중력의 다른 이동과 같은 운전자의 예상치 못한 행동에서 발생할 수 있음을 강조한다.  
+그림 7은 일반 이벤트와 특이한 이벤트에 대한 새로운 점수의 다른 분포를 보고한다.
+
 ![Fig7](/assets/img/Blog/papers/LatentSpace/Fig7.JPG)
 
 ## 5. Conclusions
@@ -375,6 +471,13 @@ From a technical perspective, both terms are modeled by a deep generative autoen
 To this aim, we introduce two different masked layers suitable for image and video data.  
 We show that the introduction of such an auxiliary module, operating in latent space, leads to the minimization of the encoder’s differential entropy, which proves to be a suitable regularizer for the task at hand.  
 Experimental results show state-of-the-art performances in one-class and anomaly detection settings, fostering the flexibility of our framework for different tasks without making any data-related assumption.
+
+> 우리는 novelty detection를 위한 포괄적인 프레임워크를 제안한다.  
+우리는 보이지 않는 데이터를 기억하는 능력과 잠재 표현의 관찰에 의해 유발되는 놀라움과 관련된 새로운 것의 두 가지 특성을 포착하기 위해 우리의 모델을 공식화한다.  
+기술적 관점에서 두 용어는 최대우도 원리에 의한 잠재 벡터의 분포를 학습하는 추가 자기 회귀 밀도 추정기와 쌍으로 구성된 심층 생성 자동 인코더에 의해 모델링된다.  
+이를 위해 이미지 및 비디오 데이터에 적합한 두 가지 마스킹된 레이어를 소개한다.  
+우리는 잠재 공간에서 작동하는 그러한 보조 모듈의 도입이 인코더의 미분 엔트로피를 최소화하도록 이끌며, 이는 당면한 작업에 적합한 정규화라는 것을 보여준다.  
+실험 결과는 1등급 및 이상 탐지 설정에서 최첨단 성능을 보여 데이터 관련 가정을 하지 않고 다양한 작업에 대한 프레임워크의 유연성을 강화한다.
 
 ### Acknowledgements.
 We gratefully acknowledge Facebook Artificial Intelligence Research and Panasonic Silicon Valley Lab for the donation of GPUs used for this research.
