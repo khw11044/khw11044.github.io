@@ -141,7 +141,7 @@ Another set of methods used non-parametric density estimate methods such as kern
 Recently, deep learning methods (autoencoders or variational autoencoders) were used to learn deep features which are sometimes easier to model than raw features (Yang et al., 2017).  
 DAGMM introduced by Zong et al. (2018) learn the probabilistic model jointly with the deep features therefore shaping the features space to better conform with the probabilistic assumption.
 
-> **Distributional Methods:**  
+> **Distributional Methods:**   
 일반적으로 사용되는 또 다른 방법 집합은 분포 기반이다.  
 이러한 방법의 주요 주제는 normal data의 distribution을 model화하는 것이다.  
 anomalous test data는 probabilistic model에서 low likelihood를 갖는 반면 normal data는 higher likelihood를 가질 것으로 예상된다.  
@@ -165,7 +165,7 @@ This method has shown good performance on detecting images from anomalous classe
 In this work, we overcome some of the limitations of previous classification-based methods and extend their applicability of self-supervised methods to general data types.  
 We also show that our method is more robust to adversarial attacks.
 
-> **Classification-Based Methods:**
+> **Classification-Based Methods:**  
 anomaly detection의 또 다른 패러다임은 다른 모든 영역의 normal data를 포함하는 공간 영역(space regions) 간의 분리이다.  
 이러한 접근 방식의 예로는 classifier를 훈련시켜 이러한 분리를 수행하는 One-Class SVM이 있다.  
 그러한 분리를 수행하기 위한 좋은 feature space를 학습하는 것은 고전적인 kernel methods뿐만 아니라 최근의 deep learning 접근법에 의해 수행된다.  
