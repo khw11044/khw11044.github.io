@@ -333,7 +333,7 @@ To allow transformation-based methods to work on general data types, we therefor
 Anomaly detection는 종종 non-image datasets(예: tabular data)를 다룬다.  
 Tabular data는 사이버 보안이나 온라인 광고와 같은 인터넷 상에서 매우 흔하게 사용된다.  
 이러한 데이터는 특별한 neighborhoods나 순서가 없는 이산형(discrete) 및 연속형(continuous) 속성(attributes)으로 구성된다.  
-데이터는 1차원이며 회전은 자연스럽게 일반화되지 않습니다.  
+데이터는 1차원이며 회전은 자연스럽게 일반화되지 않는다.  
 따라서 transformation-based methods이 일반적인 data types에 대해 작동하도록 하려면 transformations class를 확장해야 한다.
 
 We propose to generalize the set of transformations to the class of affine transformations (where we have a total of $$M$$ transformations):
