@@ -141,7 +141,7 @@ Another set of methods used non-parametric density estimate methods such as kern
 Recently, deep learning methods (autoencoders or variational autoencoders) were used to learn deep features which are sometimes easier to model than raw features (Yang et al., 2017).  
 DAGMM introduced by Zong et al. (2018) learn the probabilistic model jointly with the deep features therefore shaping the features space to better conform with the probabilistic assumption.
 
-> **Distributional Methods:**
+> **Distributional Methods:**  
 일반적으로 사용되는 또 다른 방법 집합은 분포 기반이다.  
 이러한 방법의 주요 주제는 normal data의 distribution을 model화하는 것이다.  
 anomalous test data는 probabilistic model에서 low likelihood를 갖는 반면 normal data는 higher likelihood를 가질 것으로 예상된다.  
