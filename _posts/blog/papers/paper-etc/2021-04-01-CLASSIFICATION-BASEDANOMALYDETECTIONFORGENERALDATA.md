@@ -34,7 +34,7 @@ The strong performance of our method is extensively validated on multiple datase
 > 이전에 본 것과 실질적으로 다른 패턴을 찾는, Anomaly detection는 인공지능의 근본적인 문제 중 하나이다.  
 최근, classification-based methods는 이 작업에서 우수한 결과를 달성하는 것으로 나타났다.  
 본 연구에서, 우리는 통합 관점을 제시하고 현재의 일반화 가정을 완화하기 위한 open-set method인 GOAD를 제안한다.  
-또한 random affine transformations을 사용하여 변환 기반 방법의 적용 가능성을 non-image data에 확장한다.  
+또한 random affine transformations을 사용하여 transformation-based methods의 적용 가능성을 non-image data에 확장한다.  
 우리의 방법은 state-of-the-art accuracy를 얻는 것으로 나타나며 광범위한 데이터 유형에 적용된다.  
 우리 방법의 강력한 성능은 서로 다른 도메인의 여러 데이터 세트에서 광범위하게 검증된다.  
 
