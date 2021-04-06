@@ -221,9 +221,9 @@ U^{⊥^⊤}\bar{x}
 \begin{bmatrix}
 \bar{w}^{||} \\
 \bar{w}^⊥
-\end{bmatrix}, \qquad \qquad \qquad (3)$$
+\end{bmatrix} \qquad \qquad \qquad (3)$$
 
-where the rotated coordinates $$\bar{w}$$ are decomposed into $$\bar{w}^{||}$$, which are parallel to $$\mathcal{T}$$ , and $$\bar{w}^⊥$$ which are orthogonal to $$\mathcal{T}$$ .
+where the rotated coordinates $$\bar{w}$$ are decomposed into $$\bar{w}^{||} $$, which are parallel to $$\mathcal{T}$$ , and $$\bar{w}^⊥$$ which are orthogonal to $$\mathcal{T}$$ .
 
 We now indicate with $$p_X(x)$$ the probability density function describing the random variable $$X$$, from which training data points have been drawn.  
 Also, $$p_W(w)$$ is the probability density function of the random variable $$W$$ representing $$X$$ after the change of coordinates.  
