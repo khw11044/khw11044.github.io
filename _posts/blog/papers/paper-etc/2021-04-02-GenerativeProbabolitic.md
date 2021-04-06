@@ -195,18 +195,18 @@ We assume that training data points $$x_1, . . . , x_N$$, where $$xi \in R_m$$, 
 
 $$x_i = f(z_i) + ξ_i    i=1,...,N, \qquad \qquad (1) $$
 
-where $$z_i \in \Omega \sub \mathbb{R^n}$$.  
+where $$z_i \in \Omega \subset \mathbb{R^n}$$.  
 The mapping $$f : \Omega → \mathbb{R^m}$$ defines $$\mathcal{M} ≡ f(\Omega)$$, which is a parameterized manifold of dimension $$n$$, with $$n < m$$.  
 We also assume that the Jacobi matrix of $$f$$ is full rank at every point of the manifold.  
 In addition, we assume that there is another mapping $$g : \mathbb{R^m} → \mathbb{R^n}$$, such that for every $$x \in \mathcal{M}$$, it follows that $$f(g(x)) = x$$, which means that $$g$$ acts as the inverse of $$f$$ on such points.
 
 Given a new data point $$\bar{x} \in \mathbb{R^m}$$, we design a novelty test to assert whether $$\bar{x}$$ was sampled from model (1).  
-We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M} via \bar{x}^{||} = f(\bar{z}), where $$\bar{z} = g(\bar{x})$$.  
+We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M}$$ via $$\bar{x}^{||} = f(\bar{z}), where $$\bar{z} = g(\bar{x})$$.  
 Assuming f to be smooth enough, we perform a linearization based on its first-order Taylor expansion
 
 $$f(z) = f(\bar{z}) + J_{f}(\bar{z})(z − \bar{z}) + O(||z − \bar{z}||^2) , \qquad \qquad (2) $$
 
-where $$J_f(\bar{z})$$ is the Jacobi matrix computed at \bar{z}, and $$||·||$$ is the $$L_2$$ norm.   
+where $$J_f(\bar{z})$$ is the Jacobi matrix computed at $$\bar{z}$$, and $$||·||$$ is the $$L_2$$ norm.   
 We note that $$\mathcal{T}$$ = span$$(J_f (\bar{z}))$$ represents the tangent space of $$f$$ at $$\bar{x}^{||}$$ that is spanned by the $$n$$ independent column vectors of $$J_f(\bar{z})$$, see Figure 1.  
 Also, we have $$\mathcal{T}$$ = span($$U^{||}$$), where $$J_f(\bar{z}) = U^{||}SV^⊤$$ is the singular value decomposition (SVD) of the Jacobi matrix.   
 The matrix $$U^{||}$$ has rank $$n$$, and if we define $$U^{⊥}$$ such that $$U = [U^{||}U^{⊥}]$$ is a unitary matrix, we can represent the data point \bar{x} with respect to the local coordinates that define the tangent space $$\mathcal{T}$$ , and its orthogonal complement $$\mathcal{T}^⊥$$.  
