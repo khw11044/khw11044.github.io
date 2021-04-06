@@ -23,6 +23,11 @@ Rita Cucchiara
 
 University of Modena and Reggio Emilia
 
+---
+
+* toc
+{:toc}
+
 ## ABSTRACT
 
 Novelty detection is commonly referred to as the discrimination of observations that do not conform to a learned model of regularity.  

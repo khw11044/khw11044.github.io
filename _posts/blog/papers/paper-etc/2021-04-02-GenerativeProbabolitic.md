@@ -24,6 +24,11 @@ Gianfranco Doretto
 Lane Department of Computer Science and Electrical Engineering
 West Virginia University,Morgantown,WV 26506
 
+---
+
+* toc
+{:toc}
+
 ## ABSTRACT
 
 Novelty detection is the problem of identifying whether a new data point is considered to be an inlier or an outlier.  
@@ -40,7 +45,7 @@ An extensive set of results show that the approach achieves state-of-the-art per
 > Novelty detection은 new data point이 inlier인지 outlier인지로 간주되는지 여부를 식별하는 문제이다.  
 우리는  training data가 inlier distribution만 설명할 수 있다고 가정한다.  
 최근의 접근 방식은 주로 deep encoder-decoder network 아키텍처를 활용하여 novelty score를 계산하거나 one-class classifier를 train시키는 데 사용되는 reconstruction error를 계산한다.  
-우리도 그러한 종류의 novel network를 활용하지만 probabilistic 접근법을 취하여 inlier distribution에 의해 sample이 generat되었을 가능성을 효과적으로 계산한다.  
+우리도 그러한 종류의 novel network를 활용하지만 probabilistic 접근법을 취하여 inlier distribution에 의해 sample이 generate되었을 가능성을 효과적으로 계산한다.  
 우리는 두 가지  main contributions로 이것을 달성한다.  
 
 > 첫째, inlier distribution의 기본 구조를 캡처하는 매개 변수화된 manifold를 linearize하고, manifold tangent space의 local coordinates에 대해 probability을 어떻게 factorizes(분해)하고 계산할 수 있는지 보여주기 때문에 novelty probability 계산을 가능(feasible)하게 한다.  
@@ -57,12 +62,17 @@ Novelty detection has received significant attention in application areas such a
 We refer to [9] for a general review on novelty detection.  
 The most recent approaches are based on learning deep network architectures [10, 11], and they tend to either learn a one-class classifier [12, 11], or to somehow leverage as novelty score, the reconstruction error of the encoder-decoder architecture they are based on [13, 7].
 
-> Novelty detection은 new data point이 inlier인지 outlier인지로 간주되는지 여부를 식별하는 문제이다.  
-통계적인 관점에서 이 프로세스는 distribution of inliers에 대한 사전 지식이 이용 가능한 유일한 information인 동안 발생합니다.  
+> Novelty detection은 new data point가 inlier인지 outlier인지로 간주되는지 여부를 식별하는 문제이다.  
+통계적인 관점에서 이 프로세스는 distribution of inliers에 대한 사전 지식이 이용 가능한 information이면 발생한다.  
 outliers는 종종 매우 희귀하거나 심지어 경험하기 위험하기 때문에(예: 산업 프로세스 결함 감지 [1]) 가장 어렵고 관련성이 높은 시나리오이기도 하다, 그래서 inlier training data에 의존할 필요가 있다.  
 Novelty detection는 의학 진단[2], 약물 발견[3]과 같은 응용 분야에서 상당한 관심을 받았고, 그 중에서도 이미지[4, 5], 비디오[6], anomaly detection[7, 8]와 같은 여러 컴퓨터 비전 응용 분야에서 주목을 받았다.  
 우리는 novelty detection에 대한 general review를 위해 [9]를 참조한다.  
 가장 최근의 접근 방식은 deep network 아키텍처 학습[10, 11]을 기반으로 하며, one-class classifier [12, 11]를 학습하거나, [13, 7]에 기반한 encoder-decoder아키텍처의 reconstruction error, novelty score로 활용하는 경향이 있다.
+
+> [9] A review of novelty detection.Signal Processing, 99:215 – 249, 2014.
+[10] Abnormal event detection in videos using generative adversarial nets. arXiv preprint arXiv:1708.09644,2017.
+[11] Adversarially learned one-class classifier for novelty detection
+
 
 In this work, we introduce a new encoder-decoder architecture as well, which is based on adversarial autoencoders [14].  
 However, we do not train a one-class classifier, instead, we learn the probability distribution of the inliers.   

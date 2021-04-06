@@ -22,6 +22,7 @@ Yedid Hoshen
 School of Computer Science and Engineering
 The Hebrew University of Jerusalem, Israel
 
+---
 
 Classification 기반 Anomaly Detection 연구로는 Deep SVDD 방식과, Geometric-transformation Classification(GEOM) 방식이 대표적임.  
 다만 기존 연구들은 training set에 포함된 sample에는 잘 동작하나 Generalization 성능은 크게 떨어지는 문제를 가지고 있음.  
@@ -41,6 +42,9 @@ Adversarial attack에 더 robust한 결과를 보여준다.
 3) Metric learning: feature 공간에서 class m에 대한 centroids c를 기준으로 intra-class 간의 거리를 줄이고 inter-class 간의 거리는 벌리는 triplet loss를 계산한다.
 
 ---
+
+* toc
+{:toc}
 
 ## ABSTRACT
 
