@@ -195,13 +195,13 @@ We assume that training data points $$x_1, . . . , x_N$$, where $$xi \in R_m$$, 
 
 $$x_i = f(z_i) + ξ_{i} \qquad   i=1,...,N, \qquad \qquad (1) $$
 
-where $$z_i \in \Omega \subset \mathbb{R^{n}}$$.  
+where $$z_i \in \Omega \subset \mathbb{R}^n$$.  
 The mapping $$f : \Omega → \mathbb{R^m}$$ defines $$\mathcal{M} ≡ f(\Omega)$$, which is a parameterized manifold of dimension $$n$$, with $$n < m$$.  
 We also assume that the Jacobi matrix of $$f$$ is full rank at every point of the manifold.  
-In addition, we assume that there is another mapping $$g : \mathbb{R^m} → \mathbb{R^n}$$, such that for every $$x \in \mathcal{M}$$, it follows that $$f(g(x)) = x$$, which means that $$g$$ acts as the inverse of $$f$$ on such points.
+In addition, we assume that there is another mapping $$g : \mathbb{R}^m → \mathbb{R}^n$$, such that for every $$x \in \mathcal{M}$$, it follows that $$f(g(x)) = x$$, which means that $$g$$ acts as the inverse of $$f$$ on such points.
 
 Given a new data point $$\bar{x} \in \mathbb{R^m}$$, we design a novelty test to assert whether $$\bar{x}$$ was sampled from model (1).  
-We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M}$$ via $$\bar{x}^{||} = f(\bar{z}), where $$\bar{z} = g(\bar{x})$$.  
+We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M}$$ via $$\bar{x}^{||} = f(\bar{z})$$, where $$\bar{z} = g(\bar{x})$$.  
 Assuming f to be smooth enough, we perform a linearization based on its first-order Taylor expansion
 
 $$f(z) = f(\bar{z}) + J_{f}(\bar{z})(z − \bar{z}) + O(||z − \bar{z}||^2) , \qquad \qquad (2) $$
