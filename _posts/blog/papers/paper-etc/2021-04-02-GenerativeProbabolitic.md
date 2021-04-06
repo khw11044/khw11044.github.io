@@ -206,7 +206,7 @@ Assuming f to be smooth enough, we perform a linearization based on its first-or
 
 $$f(z) = f(\bar{z}) + J_{f}(\bar{z})(z − \bar{z}) + O(||z − \bar{z}||^2) , \qquad \qquad (2) $$
 
-where $$J_f(\bar{z})$$ is the Jacobi matrix computed at $$\bar{z}$$, and $$\|\|·\|\|$$ is the $$L_2$$ norm.   
+where $$J_f(\bar{z})$$ is the Jacobi matrix computed at $$\bar{z}$$, and $$\|·\|$$ is the $$L_2$$ norm.   
 We note that $$\mathcal{T}$$ = span$$(J_f (\bar{z}))$$ represents the tangent space of $$f$$ at $$\bar{x}^{||}$$ that is spanned by the $$n$$ independent column vectors of $$J_f(\bar{z})$$, see Figure 1.  
 Also, we have $$\mathcal{T}$$ = span($$U^{||}$$), where $$J_f(\bar{z}) = U^{||}SV^⊤$$ is the singular value decomposition (SVD) of the Jacobi matrix.   
 The matrix $$U^{||}$$ has rank $$n$$, and if we define $$U^{⊥}$$ such that $$U = [U^{||}U^{⊥}]$$ is a unitary matrix, we can represent the data point \bar{x} with respect to the local coordinates that define the tangent space $$\mathcal{T}$$ , and its orthogonal complement $$\mathcal{T}^⊥$$.  
