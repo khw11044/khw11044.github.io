@@ -193,7 +193,7 @@ Therefore, it can be applied for the case when in-distribution data is represent
 
 We assume that training data points $$x_1, . . . , x_N$$, where $$xi \in R_m$$, are sampled, possibly with noise $$ξ_i$$, from the model
 
-$$x_i = f(z_i) + ξ_i    i=1,...,N, \qquad \qquad (1) $$
+$$x_i = f(z_i) + ξ_{i} \qquad   i=1,...,N, \qquad \qquad (1) $$
 
 where $$z_i \in \Omega \subset \mathbb{R^n}$$.  
 The mapping $$f : \Omega → \mathbb{R^m}$$ defines $$\mathcal{M} ≡ f(\Omega)$$, which is a parameterized manifold of dimension $$n$$, with $$n < m$$.  
