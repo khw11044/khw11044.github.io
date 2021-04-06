@@ -129,8 +129,7 @@ More recently, [23] introduced the Kernel Null Foley-Sammon Transform (KNFST) fo
 [24] improves on previous approaches by proposing an incremental procedure called Incremental Kernel Null Space Based Discriminant Analysis (IKNDA).
 
 > 통계적 방법[18, 19, 15, 16]은 일반적으로 확률을 정의하는 매개 변수를 학습하여 inliers의 distribution를 modeling하는 데 초점을 맞추고 있으며, outliers는 학습된 model에서 낮은 probability를 가진 것으로 식별된다.  
-Distance 기반 outlier detection 방법[20, 17, 21]은 outliers를 neighboring examples까지의 distance로 식별한다.   
-inliers는 서로 가깝지만 abnormal samples는 nearest neighbors과 멀리 떨어져 있다고 가정한다.  
+Distance 기반 outlier detection 방법[20, 17, 21]은 outliers를 neighboring examples까지의 distance로 식별한다. inliers는 서로 가깝지만 abnormal samples는 nearest neighbors과 멀리 떨어져 있다고 가정한다.  
 이 category의 known work는 k-nearest neighbors과 density based estimation을 기반으로 하는 LOF [22]이다.  
 보다 최근에 [23]은 multi-class novelty detection를 위한 Kernel Null Foley-Sammon Transform (KNFST)을 도입했는데, 여기서 알려진 각 category의 training samples이 null space의 single point에 projected된 다음 test sample projection과 class representatives 사이의 distances가 novelty measure을 얻기 위해 사용된다.  
 [24]는 Incremental Kernel Null Space Based Discriminant Analysis (IKNDA)로 불리는 incremental procedure를 제안하여 이전 approaches을 개선한다.
