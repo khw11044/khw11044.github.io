@@ -524,3 +524,5 @@ In addition, with a relatively simple architecture we have shown how GPND provid
 ### Acknowledgments
 This material is based upon work supported by the National Science Foundation under Grant No.
 IIS-1761792.
+
+> [참고할만한 블로그](https://kh-kim.github.io/blog/2019/12/15/Autoencoder-based-anomaly-detection.html)
