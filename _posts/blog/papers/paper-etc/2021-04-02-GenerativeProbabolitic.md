@@ -195,7 +195,7 @@ We assume that training data points $$x_1, . . . , x_N$$, where $$xi \in R_m$$, 
 
 $$x_i = f(z_i) + ξ_{i} \qquad   i=1,...,N, \qquad \qquad (1) $$
 
-where $$z_i \in \Omega \subset \mathbb{R^n}$$.  
+where $$z_i \in \Omega \subset \mathbb{R^{n}}$$.  
 The mapping $$f : \Omega → \mathbb{R^m}$$ defines $$\mathcal{M} ≡ f(\Omega)$$, which is a parameterized manifold of dimension $$n$$, with $$n < m$$.  
 We also assume that the Jacobi matrix of $$f$$ is full rank at every point of the manifold.  
 In addition, we assume that there is another mapping $$g : \mathbb{R^m} → \mathbb{R^n}$$, such that for every $$x \in \mathcal{M}$$, it follows that $$f(g(x)) = x$$, which means that $$g$$ acts as the inverse of $$f$$ on such points.
