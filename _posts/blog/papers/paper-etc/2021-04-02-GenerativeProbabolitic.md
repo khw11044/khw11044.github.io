@@ -69,9 +69,6 @@ Novelty detection는 의학 진단[2], 약물 발견[3]과 같은 응용 분야�
 우리는 novelty detection에 대한 general review를 위해 [9]를 참조한다.  
 가장 최근의 접근 방식은 deep network 아키텍처 학습[10, 11]을 기반으로 하며, one-class classifier [12, 11]를 학습하거나, [13, 7]에 기반한 encoder-decoder아키텍처의 reconstruction error, novelty score로 활용하는 경향이 있다.
 
-> [9] A review of novelty detection.Signal Processing, 99:215 – 249, 2014.
-[10] Abnormal event detection in videos using generative adversarial nets. arXiv preprint arXiv:1708.09644,2017.
-[11] Adversarially learned one-class classifier for novelty detection
 
 
 In this work, we introduce a new encoder-decoder architecture as well, which is based on adversarial autoencoders [14].  
