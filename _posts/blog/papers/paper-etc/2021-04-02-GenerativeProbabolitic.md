@@ -191,7 +191,7 @@ Therefore, it can be applied for the case when in-distribution data is represent
 
 ### 3 Generative Probabilistic Novelty Detection
 
-We assume that training data points $$x_1, . . . , x_N$$, where $$xi \in R_m$$, are sampled, possibly with noise $$ξ_i$$, from the model
+We assume that training data points $$x_1, . . . , x_N$$, where $$x_i \in R_m$$, are sampled, possibly with noise $$ξ_i$$, from the model
 
 $$x_i = f(z_i) + ξ_{i} \qquad   i=1,...,N, \qquad \qquad (1) $$
 
@@ -199,6 +199,12 @@ where $$z_i \in \Omega \subset \mathbb{R}^n$$.
 The mapping $$f : \Omega → \mathbb{R^m}$$ defines $$\mathcal{M} ≡ f(\Omega)$$, which is a parameterized manifold of dimension $$n$$, with $$n < m$$.  
 We also assume that the Jacobi matrix of $$f$$ is full rank at every point of the manifold.  
 In addition, we assume that there is another mapping $$g : \mathbb{R}^m → \mathbb{R}^n$$, such that for every $$x \in \mathcal{M}$$, it follows that $$f(g(x)) = x$$, which means that $$g$$ acts as the inverse of $$f$$ on such points.
+
+> 주어진 data sample $$x$$는 매니폴드 $$f(z)$$에 노이즈 $$ξ$$를 더해진 형태로 나타낼수 있다.  
+이때 저차원 공간에서 고차원 공간으로의 mapping 함수 $$f$$에 의해서 정의된 매니폴드 $$\mathcal{M}$$에 $$f(z)$$가 속하는 것을 알수 있다.  
+저차원의 $$z$$가 속하는 공간 $$\Omega$$ : 정상 데이터들의 집합임을 알수 있음.  
+즉 인코더를 통과시키는 과정은 고차원에서 저차원으로의 맵필 과정일 뿐만 아니라 노이즈 $$ξ$$를 제거하는 작업(denoising)임을 알 수 있고, 이 노이즈의 크기에 따라서 정상이냐 비정상이냐를 결정하는 것이라고 생각해 볼 수 있을 것이다.  
+다르게 표현하면, 오토인코더에 샘플을 통과시키는 것은 매니폴드 표면 $$\mathcal{M}$$에 투사(projection)하는 과정이라고 볼 수 있고, 이는 디노이징이라고 볼 수 있으며, 그 결과 reconstruction error가 발생하는 것이라고 볼 수 있다.
 
 Given a new data point $$\bar{x} \in \mathbb{R^m}$$, we design a novelty test to assert whether $$\bar{x}$$ was sampled from model (1).  
 We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M}$$ via $$\bar{x}^{||} = f(\bar{z})$$, where $$\bar{z} = g(\bar{x})$$.  
@@ -223,7 +229,7 @@ U^{⊥^⊤}\bar{x}
 \bar{w}^⊥
 \end{bmatrix} \qquad \qquad \qquad (3)$$
 
-where the rotated coordinates $$\bar{w}$$ are decomposed into $$\bar{w}^{||} $$, which are parallel to $$\mathcal{T}$$ , and $$\bar{w}^⊥$$ which are orthogonal to $$\mathcal{T}$$ .
+where the rotated coordinates $$\bar{w}$$ are decomposed into $$\bar{w}^{\|} $$, which are parallel to $$\mathcal{T}$$ , and $$\bar{w}^⊥$$ which are orthogonal to $$\mathcal{T}$$ .
 
 We now indicate with $$p_X(x)$$ the probability density function describing the random variable $$X$$, from which training data points have been drawn.  
 Also, $$p_W(w)$$ is the probability density function of the random variable $$W$$ representing $$X$$ after the change of coordinates.  
