@@ -202,6 +202,8 @@ In addition, we assume that there is another mapping $$g : \mathbb{R}^m → \mat
 
 > $$f$$는 저차원에서 고차원으로 mapping, $$\mathcal{M}$$은 f에 의해 저차원에서 고차원으로 mapping된 manifold
 $$g$$는 $$f$$의 inverse mapping으로 고차원에서 저차원으로 mapping
+즉 $$x$$는 고차원, $$z$$는 저차원, $$ξ$$는 노이즈  
+$$f$$의 Jacobi matrix는 manifold의 모든 point로 모두 순위가 매겨진다.
 
 > 주어진 data sample $$x$$는 매니폴드 $$f(z)$$에 노이즈 $$ξ$$를 더해진 형태로 나타낼수 있다.  
 이때 저차원 공간에서 고차원 공간으로의 mapping 함수 $$f$$에 의해서 정의된 매니폴드 $$\mathcal{M}$$에 $$f(z)$$가 속하는 것을 알수 있다.  
@@ -211,6 +213,11 @@ $$g$$는 $$f$$의 inverse mapping으로 고차원에서 저차원으로 mapping
 
 Given a new data point $$\bar{x} \in \mathbb{R^m}$$, we design a novelty test to assert whether $$\bar{x}$$ was sampled from model (1).  
 We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M}$$ via $$\bar{x}^{||} = f(\bar{z})$$, where $$\bar{z} = g(\bar{x})$$.  
+
+>  new data point $$\bar{x} \in \mathbb{R^m}$$
+$$\bar{x}$$가 model (1)에서 sampled되었는지 아닌지를 주장하는 novelty test를 설계
+manifold $$\mathcal{M}$$에 속하는 $$\bar{x}^{||}$$로 non-linearly projected 될 수 있는지를 관찰
+
 Assuming $$f$$ to be smooth enough, we perform a linearization based on its first-order Taylor expansion
 
 $$f(z) = f(\bar{z}) + J_{f}(\bar{z})(z − \bar{z}) + O(||z − \bar{z}||^2) , \qquad \qquad (2) $$
@@ -263,9 +270,9 @@ $$p_{W^{||}} (w^{||}) = |det^{S−1}| p_Z(z) , \qquad \qquad (6) $$
 
 since $$V$$ is a unitary matrix. We note that $$p_Z(z)$$ is a quantity that is independent from the linearization (2), and therefore it can be learned offline, as explained in Section 5.
 
-In order to compute $$p_{W^⊥}(w^⊥)$$, we approximate it with its average over the hypersphere $$\mathcal{S}^{m−n−1}$$ of radius $$||w^{⊥}$$, giving rise to
+In order to compute $$p_{W^⊥}(w^⊥)$$, we approximate it with its average over the hypersphere $$\mathcal{S}^{m−n−1}$$ of radius $$\|w^{⊥}\|$$, giving rise to
 
-$$p_{W^⊥}(w^⊥) ≈ \frac{\Gamma(\frac{m-n}{2})}{2\pi^{\frac{m-n}{2}}||w^⊥||^{m-n}}p_{||W^⊥||} (w^⊥), \qquad \qquad (7)$$
+$$p_{W^⊥}(w^⊥) ≈ \frac{\Gamma(\frac{m-n}{2})}{2\pi^{\frac{m-n}{2}}\|w^⊥\|^{m-n}}p_{\|W^⊥\|} (\|w^⊥\|), \qquad \qquad (7)$$
 
 ,where $$\Gamma(·)$$ represents the gamma function.  
 This is motivated by the fact that noise of a given intensity will be equally present in every direction.  
