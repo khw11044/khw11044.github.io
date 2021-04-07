@@ -182,7 +182,7 @@ This is done by either simply thresholding the maximum softmax score [34], or by
 While these approaches require labels for the in-distribution data to train the classifier network, our method does not use label information.  
 Therefore, it can be applied for the case when in-distribution data is represented by one class or label information is not available.
 
-> 최근의 연구는 pre-trained deep neural network [33, 34, 35, 36]에 의해 이루어진 prediction의 output entropy를 분석하여 out-of-distribution samples을 감지하는 데 초점을 맞추고 있다[33, 34, 35, 36].  
+> 최근의 연구는 pre-trained deep neural network에 의해 이루어진 prediction의 output entropy를 분석하여 out-of-distribution samples을 감지하는 데 초점을 맞추고 있다[33, 34, 35, 36].  
 이는 단순히 maximum softmax score의 threshold를 지정하거나, 먼저 input에 대해 기울기에 비례하여 스케일링된 perturbations to the input을 적용한 다음, Out-of-distribution Image Detection in Neural Networks (ODIN) [36]에서 수행하는 것처럼 softmax score를 temperature scaling과 결합함으로써 이루어진다.  
 이러한 approaches는 classifier network를 훈련시키기 위해 in-distribution data에 대한 labels을 요구하지만, 우리의 method는 label 정보를 사용하지 않는다.   
 따라서 in-distribution data가 one class로 represented되거나 label 정보를 사용할 수 없는 경우에 적용할 수 있다.
