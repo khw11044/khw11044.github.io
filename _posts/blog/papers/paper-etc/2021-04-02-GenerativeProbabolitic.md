@@ -328,19 +328,21 @@ Similarly to [43, 11] we add an adversarial training criterion to match the outp
 This allows to reduce blurriness and add more local details to the generated images.  
 Moreover, we also combine the adversarial training criterion with AAEs, which results in having two adversarial losses: one to impose a prior on the latent space distribution, and the second one to impose a prior on the output distribution.
 
-> [43, 11]과 유사하게, 우리는 디코더의 출력과 실제 데이터의 분포를 일치시키기 위해 적대적 훈련 기준을 추가한다.  
-이렇게 하면 흐릿함을 줄이고 생성된 이미지에 더 많은 로컬 세부 정보를 추가할 수 있습니다.  
-또한 적대적 훈련 기준을 AAE와 결합함으로써 잠재 공간 분포에 선행 조건을 부과하는 것과 출력 분포에 선행 조건을 부과하는 두 번째 것, 두 번째 적대적 손실이 발생한다.
+> [43, 11]과 유사하게, 우리는 decoder의 output과 real data의 distribution을 match하기 위해 적대적 훈련 기준을 추가한다.   
+이렇게 하면 blurriness를 줄이고 생성된 이미지에 더 많은 local details를 추가할 수 있다.  
+또한 적대적 훈련 기준을 두가지 adversarial losses를 가지는 AAE와 결합한다: 하나는 latent space distribution에 prior를 부과하는 것, 둘은 output distribution에 prior를 부과하는 것.
 
 Our full objective consists of three terms.  
 First, we use an adversarial loss for matching the distribution of the latent space with the prior distribution, which is a normal with 0 mean, and standard deviation 1, $$\mathcal{N}(0, 1)$$.  
 Second, we use an adversarial loss for matching the distribution of the decoded images from $$z$$ and the known, training data distribution.  
-Third, we use an autoencoder loss between the decoded images and the encoded input image. Figure 3 shows the architecture configuration.
+Third, we use an autoencoder loss between the decoded images and the encoded input image.  
+Figure 3 shows the architecture configuration.
 
-> 우리의 전체 목표는 세 가지 용어로 구성되어 있다.  
-먼저, 우리는 평균이 0인 정규 분포와 표준 편차 1, $\mathcal{N}(0, 1)$인 잠재 공간의 분포를 일치시키기 위해 적대적 손실을 사용한다.  
-둘째, 우리는 $z$에서 디코딩된 이미지의 분포와 알려진 훈련 데이터 분포를 일치시키기 위해 적대적 손실을 사용한다.  
-셋째, 디코딩된 이미지와 인코딩된 입력 이미지 간에 자동 인코더 손실을 사용한다. 그림 3은 아키텍처 구성을 보여줍니다.
+> 우리의 전체 목표는 세 가지 terms으로 구성되어 있다.  
+첫째, 우리는 평균이 0이고 표준 편차 1인 정규 분포 $$\mathcal{N}(0, 1)$$인, prior distribution를 가지는 latent space의 distribution을 일치시키기 위해 adversarial loss를 사용한다.   
+둘째, 우리는 $$z$$에서 디코딩된 이미지의 분포와 알려진 훈련 데이터 분포를 일치시키기 위해 adversarial loss를 사용한다.  
+셋째, 디코딩된 이미지와 인코딩된 입력 이미지 간에 autoencoder loss를 사용한다.  
+Figure 3은 아키텍처 구성을 보여줍니다.
 
 ### 4.1 Adversarial losses
 
@@ -558,6 +560,6 @@ In addition, with a relatively simple architecture we have shown how GPND provid
 This material is based upon work supported by the National Science Foundation under Grant No.
 IIS-1761792.
 
-> [참고할만한 블로그1](https://kh-kim.github.io/blog/2019/12/15/Autoencoder-based-anomaly-detection.html)
-[참고할만한 블로그2](https://kh-kim.github.io/)
-[매니폴드](https://deepinsight.tistory.com/124)
+> [참고할만한 블로그1](https://kh-kim.github.io/blog/2019/12/15/Autoencoder-based-anomaly-detection.html)  
+[참고할만한 블로그2](https://kh-kim.github.io/)  
+[매니폴드](https://deepinsight.tistory.com/124)  
