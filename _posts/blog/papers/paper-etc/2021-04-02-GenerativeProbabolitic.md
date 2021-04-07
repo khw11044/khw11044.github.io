@@ -175,7 +175,7 @@ It is not suitable for image compression, and while its generative nature allows
 raw pixels의 joint distribution를 순차적 상관 관계(sequential correlation)와 함께 모델링하기 때문에, image 압축에 사용할 수 있다.  
 known samples의 probability distribution를 모델링할 수도 있지만,  patch-based 방식으로 local scale로 작동하므로 non-local pixels이 느슨하게 correlated된다.  
 대신 우리의 approach은 individual pixels의 probability density 모델링을 허용하지 않지만 전체 이미지와 함께 작동한다.  
-이미지 압축에는 적합하지 않으며, generative nature은 원칙적으로 novel images를 생성할 수 있지만, 본 연구에서는 test samples에 대한 inlier probability distribution를 평가하여 novelty detection에만 초점을 맞춘다.
+generative nature은 원칙적으로 novel images를 생성할 수 있지만, 이미지 압축에는 적합하지 않으며, 본 연구에서는 test samples에 대한 inlier probability distribution를 평가하여 novelty detection에만 초점을 맞춘다.
 
 A recent line of work has focussed on detecting out-of-distribution samples by analyzing the output entropy of a prediction made by a pre-trained deep neural network [33, 34, 35, 36].  
 This is done by either simply thresholding the maximum softmax score [34], or by first applying perturbations to the input, scaled proportionally to the gradients w.r.t. to the input and then combining the softmax score with temperature scaling, as it is done in Out-of-distribution Image Detection in Neural Networks (ODIN) [36].  
