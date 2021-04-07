@@ -187,9 +187,11 @@ Therefore, it can be applied for the case when in-distribution data is represent
 이러한 approaches는 classifier network를 훈련시키기 위해 in-distribution data에 대한 labels을 요구하지만, 우리의 method는 label 정보를 사용하지 않는다.   
 따라서 in-distribution data가 one class로 represented되거나 label 정보를 사용할 수 없는 경우에 적용할 수 있다.
 
-![Fig1](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Fig1.JPG)
-
 ### 3 Generative Probabilistic Novelty Detection
+
+![Fig3](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Fig3.JPG)
+
+![Fig1](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Fig1.JPG)
 
 We assume that training data points $$x_1, . . . , x_N$$, where $$x_i \in R_m$$, are sampled, possibly with noise $$ξ_i$$, from the model
 
@@ -280,35 +282,47 @@ Moreover, its computation depends on $$p_{||W^⊥||}(||w^⊥||)$$, which is the 
 
 ## 4 Manifold learning with adversarial autoencoders
 
-In this section we describe the network architecture and the training procedure for learning the mapping $$f$$ that define the parameterized manifold $$\mathcal{M}$$, and also the mapping $$g$$.  
+In this section we describe the network architecture and the training procedure for learning the mapping $$f$$ that define the parameterized manifold $$\mathcal{M}$$, and also the mapping $$g$$.   
 The mappings $$g$$ and $$f$$ represent and are modeled by an encoder network, and a decoder network, respectively.  
-Similarly to previous work on novelty detection [38, 39, 40, 7, 11, 13], such networks are based on autoencoders [41, 42].
 
-![Fig3](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/Fig3.JPG)
+> 이 section에서는 매개 변수화된 manifold $$\mathcal{M}$$을 정의하는 mapping $$f$$를 학습하기 위한 network 아키텍처 및 training 절차와 mapping $$g$$에 대해 설명한다.  
+mappings $$g$$ 및 $$f$$는 각각 encoder network 및 decoder network에 의해 표시되고 모델링된다.
+
+Similarly to previous work on novelty detection [38, 39, 40, 7, 11, 13], such networks are based on autoencoders [41, 42].
 
 The autoencoder network and training should be such that they reproduce the manifold $$\mathcal{M}$$ as closely as possible.  
 For instance, if $$\mathcal{M}$$ represents the distribution of images depicting a certain object category, we would want the estimated encoder and decoder to be able to generate images as if they were drawn from the real distribution.  
 Differently from previous work, we require the latent space, represented by $$z$$, to be close to a known distribution, preferably a normal distribution, and we would also want each of the components of $$z$$ to be maximally informative, which is why we require them to be independent random variables.  
 Doing so facilitates learning a distribution $$p_Z(z)$$ from training data mapped onto the latent space $$\Omega$$.  
-This means that the auto-enoder has generative properties, because by sampling from $$p_Z(z)$$ we would generate data points $$x \in M$$. Note that differently from GANs [29] we also require an encoder function $$g$$.  
+This means that the auto-enoder has generative properties, because by sampling from $$p_Z(z)$$ we would generate data points $$x \in M$$.  
+Note that differently from GANs [29] we also require an encoder function $$g$$.  
+
+> autoencoder 네트워크와 training은 manifold $$\mathcal{M}$$을 가능한 가깝게 reproduce하는 것이어야 한다.  
+예를 들어, $$\mathcal{M}$$가 특정 객체 범주를 묘사하는 이미지의 분포distribution을 나타낸다면, 우리는 estimated된 encoder와 decoder가 real distribution에서 끌어온 것처럼 이미지를 생성할 수 있기를 원할 것이다.  
+이전 연구와 달리, 우리는  $$z$$로 대표되는 latent space가 known distribution에, 가급적 normal distribution에 가까울 것을 요구하고, $$z$$의 각 구성 요소가 최대한 정보를 제공하기를 원하기 때문에, independent random variables가 될 것을 요구한다.  
+그렇게 하면 latent space $$\Omega$$에 매핑된 training data로부터 $$p_Z(z)$$ 분포를 쉽게 학습할 수 있다.  
+이는 auto-enoder에 generative properties이 있음을 의미하는데, 이는 $$p_Z(z)$$에서 샘플링함으로써 우리는 데이터 포인트 $$x \in M$$를 생성할 것이기 때문이다.  
+GANs[29]와 달리 우리는 encoder 함수 $$g$$도 필요하다.
 
 Variational Auto-Encoders (VAEs) [44] are known to work well in presence of continuous latent variables and they can generate data from a randomly sampled latent space.  
 VAEs utilize stochastic variational inference and minimize the Kullback-Leibler (KL) divergence penalty to impose a prior distribution on the latent space that encourages the encoder to learn the modes of the prior distribution.  
 Adversarial Autoencoders (AAEs) [14], in contrast to VAEs, use an adversarial training paradigm to match the posterior distribution of the latent space with the given distribution.  
 One of the advantages of AAEs over VAEs is that the adversarial training procedure encourages the encoder to match the whole distribution of the prior.  
 
-> 가변 자동 인코더(VAE) [44]는 연속 잠재 변수가 있는 경우 잘 작동하는 것으로 알려져 있으며 랜덤하게 샘플링된 잠재 공간에서 데이터를 생성할 수 있다.  
-VAE는 확률적 변동 추론을 활용하고 Kullback-Libler(KL) 발산 패널티를 최소화하여 인코더가 이전 분포의 모드를 학습하도록 유도하는 잠재 공간에 사전 분포를 부과한다.  
-적대적 자동 인코더(AAE)[14]는 VAE와 대조적으로 적대적 훈련 패러다임을 사용하여 잠재 공간의 후방 분포를 주어진 분포와 일치시킨다.  
-VAE에 비해 AAE의 장점 중 하나는 적대적 훈련 절차가 인코더가 이전의 전체 분포와 일치하도록 장려한다는 것이다.
+> Variational Auto-Encoders (VAEs)[44]는 continuous latent variables가 있는 경우 잘 작동하는 것으로 알려져 있으며 랜덤하게 샘플링된 latent space에서 data를 생성할 수 있다.  
+VAE는 확률적 변동 추론을 활용하고 Kullback-Libler(KL) 발산 패널티를 최소화하여 encoder가  prior distribution의 모드를 학습하도록 유도하는 latent space에 posterior distribution를 부과한다.   
+Adversarial Autoencoders (AAEs)[14]는 VAE와 대조적으로 적대적 훈련 패러다임을 사용하여 latent space의 posterior distribution을 given distribution과 일치시킨다.  
+VAE에 비해 AAE의 장점 중 하나는 적대적 훈련 절차는 encoder가 prior의 전체 distribution과 일치하도록 장려한다는 것이다.
 
 Unfortunately, since we are concerned with working with images, both AAEs and VAEs tend to produce examples that are often far from the real data manifold.  
 This is because the decoder part of the network is updated only from a reconstruction loss that is typically a pixel-wise cross-entropy between input and output image.  
-Such loss often causes the generated images to be blurry, which has a negative effect on the proposed approach. Similarly to AAEs, PixelGAN autoencoders [45] introduce the adversarial component to impose a prior distribution on the latent code, but the architecture is significantly different, since it is conditioned on the latent code.
+Such loss often causes the generated images to be blurry, which has a negative effect on the proposed approach.  
+Similarly to AAEs, PixelGAN autoencoders [45] introduce the adversarial component to impose a prior distribution on the latent code, but the architecture is significantly different, since it is conditioned on the latent code.
 
-> 안타깝게도, 우리는 이미지 작업에 관심이 있기 때문에, AAE와 VAE 모두 종종 실제 데이터 매니폴드와 거리가 먼 예제를 생성하는 경향이 있다.  
-이는 네트워크의 디코더 부분이 일반적으로 입력 이미지와 출력 이미지 사이의 픽셀 단위 교차 엔트로피인 재구성 손실에서만 업데이트되기 때문이다.  
-이러한 손실은 종종 생성된 이미지를 흐리게 만들어 제안된 접근 방식에 부정적인 영향을 미친다. AAE와 유사하게, 픽셀GAN 자동 인코더[45]는 잠재 코드에 사전 분포를 부과하기 위해 적대적 구성요소를 도입하지만, 잠재 코드에 따라 조건화되기 때문에 아키텍처는 크게 다르다.
+> 안타깝게도, 우리는 이미지 작업에 관심이 있기 때문에, AAE와 VAE 모두 종종 실제 데이터 매니폴드와 거리가 먼 examples를 생성하는 경향이 있다.  
+이는 network의 decoder 부분이 일반적으로 input 이미지와 output 이미지 사이의 pixel-wise cross-entropy reconstruction loss에서만 업데이트되기 때문이다.   
+이러한 손실은 종종 생성된 이미지를 blurry하게 만들어 제안된 approach에 부정적인 영향을 미친다.  
+AAE와 유사하게, PixelGAN autoencoders[45]는 latent code에 prior distribution를 부과하기 위해 adversarial component를 도입하지만, latent code에 따라 조건화되기 때문에 아키텍처는 크게 다르다.
 
 Similarly to [43, 11] we add an adversarial training criterion to match the output of the decoder with the distribution of real data.  
 This allows to reduce blurriness and add more local details to the generated images.  
