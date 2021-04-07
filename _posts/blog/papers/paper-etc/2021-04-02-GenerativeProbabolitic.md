@@ -211,7 +211,7 @@ $$g$$는 $$f$$의 inverse mapping으로 고차원에서 저차원으로 mapping
 
 Given a new data point $$\bar{x} \in \mathbb{R^m}$$, we design a novelty test to assert whether $$\bar{x}$$ was sampled from model (1).  
 We begin by observing that $$\bar{x}$$ can be non-linearly projected onto $$\bar{x}^{||} \in \mathcal{M}$$ via $$\bar{x}^{||} = f(\bar{z})$$, where $$\bar{z} = g(\bar{x})$$.  
-Assuming f to be smooth enough, we perform a linearization based on its first-order Taylor expansion
+Assuming $$f$$ to be smooth enough, we perform a linearization based on its first-order Taylor expansion
 
 $$f(z) = f(\bar{z}) + J_{f}(\bar{z})(z − \bar{z}) + O(||z − \bar{z}||^2) , \qquad \qquad (2) $$
 
