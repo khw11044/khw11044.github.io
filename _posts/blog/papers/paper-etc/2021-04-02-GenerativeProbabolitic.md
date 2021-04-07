@@ -215,7 +215,7 @@ $$f(z) = f(\bar{z}) + J_{f}(\bar{z})(z − \bar{z}) + O(||z − \bar{z}||^2) , \
 where $$J_f(\bar{z})$$ is the Jacobi matrix computed at $$\bar{z}$$, and $$\|·\|$$ is the $$L_2$$ norm.   
 We note that $$\mathcal{T}$$ = span$$(J_f (\bar{z}))$$ represents the tangent space of $$f$$ at $$\bar{x}^{||}$$ that is spanned by the $$n$$ independent column vectors of $$J_f(\bar{z})$$, see Figure 1.  
 Also, we have $$\mathcal{T}$$ = span($$U^{||}$$), where $$J_f(\bar{z}) = U^{||}SV^⊤$$ is the singular value decomposition (SVD) of the Jacobi matrix.   
-The matrix $$U^{||}$$ has rank $$n$$, and if we define $$U^{⊥}$$ such that $$U = [U^{||}U^{⊥}]$$ is a unitary matrix, we can represent the data point \bar{x} with respect to the local coordinates that define the tangent space $$\mathcal{T}$$ , and its orthogonal complement $$\mathcal{T}^⊥$$.  
+The matrix $$U^{||}$$ has rank $$n$$, and if we define $$U^{⊥}$$ such that $$U = [U^{||}U^{⊥}]$$ is a unitary matrix, we can represent the data point $$\bar{x}$$ with respect to the local coordinates that define the tangent space $$\mathcal{T}$$ , and its orthogonal complement $$\mathcal{T}^⊥$$.  
 
 This is done by computing
 
@@ -246,7 +246,7 @@ From (4), given a new data point $$\bar{x}$$, we propose to perform novelty dete
 
 ![5](/assets/img/Blog/papers/GenerativeProbabilisticNoveltyDetection/5.JPG)
 
-where $$γ$$ is a suitable threshold.
+where $$\gamma$$ is a suitable threshold.
 
 ### 3.1 Computing the distribution of data samples
 
@@ -374,12 +374,15 @@ $$J_f$$ is computed numerically, around the test sample representation \hat{z} a
 
 ## 6 Experiments
 
-We evaluate our novelty detection approach, which we call Generative Probabilistic Novelty De-
-tection (GPND), against several state-of-the-art approaches and with several performance measures.  
-We use the $$F_1$$ measure, the area under the ROC curve (AUROC), the FPR at 95% TPR (i.e., the
-probability of an outlier to be misclassified as inlier), the Detection Error (i.e., the misclassification probability when TPR is 95%), and the area under the precision-recall curve (AUPR) when inliers (AUPR-In) or outliers (AUPR-Out) are specified as positives.  
-All reported results are from our publicly available implementation1, based on the deep machine learning framework PyTorch [46].  
+We evaluate our novelty detection approach, which we call Generative Probabilistic Novelty Detection (GPND), against several state-of-the-art approaches and with several performance measures.  
+We use the $$F_1$$ measure, the area under the ROC curve (AUROC), the FPR at 95% TPR (i.e., the probability of an outlier to be misclassified as inlier), the Detection Error (i.e., the misclassification probability when TPR is 95%), and the area under the precision-recall curve (AUPR) when inliers (AUPR-In) or outliers (AUPR-Out) are specified as positives.  
+All reported results are from our publicly available implementation, based on the deep machine learning framework PyTorch [46].  
 An overview of the architecture is provided in Figure 3.
+
+> 우리는 GPND(Generative Probabilitical Newnasty Detection)라고 하는 우리의 novelty detection approach을 몇 가지 최첨단 접근 방식과 몇 가지 성능 측정으로 평가한다.  
+우리는 $$F_1$$ 측정, AUROC, the FPR at 95% TPR(즉, inlier에서 misclassified된 outlier의 probability),the Detection Error (i.e., the misclassification probability when TPR is 95%), inliers (AUPR-In) or outliers (AUPR-Out)가 positives로 구분될때 AUPR을 사용한다.
+보고된 모든 결과는 deep machine learning framework PyTorch [46]를 기반으로 공개적으로 사용 가능한 구현에서 나온 것이다.  
+아키텍처 개요는 Figure 3에 나와 있다.
 
 ### 6.1 Datasets
 
@@ -522,10 +525,10 @@ Unlike prior deep learning based methods, GPND detects that a given sample is an
 We have shown how each architectural and model components are essential to the novelty detection.  
 In addition, with a relatively simple architecture we have shown how GPND provides state-of-the-art performance using different measures, different datasets, and different protocols, demonstrating to compare favorably also with the out-of-distribution literature.
 
-> 초기 분포의 기본 구조를 포착하는 매개 변수화된 매니폴드 $\mathcal{M}$를 정의하는 학습 매핑 $f$와 $g$를 기반으로 하는 새로운 탐지를 위한 접근 방식 및 네트워크 아키텍처인 GPND를 소개했다.  
-이전의 딥 러닝 기반 방법과 달리 GPND는 초기 확률 분포를 평가하여 주어진 표본이 특이치임을 감지한다.  
-우리는 각 아키텍처 및 모델 구성요소가 새로움 탐지에 어떻게 필수적인지 보여주었다.  
-또한, 우리는 비교적 간단한 아키텍처를 사용하여 GPND가 다른 측정, 다른 데이터 세트 및 다른 프로토콜을 사용하여 어떻게 최첨단 성능을 제공하는지를 보여 주었으며, 분포 외 문헌과도 잘 비교되는 것을 보여주었다.
+> inlier distribution의 underlying structure를 포착하는 매개 변수화된 매니폴드 $$\mathcal{M}$$를 정의하는 학습 매핑 $$f$$와 $$g$$를 기반으로 하는 novelty detection을 위한 approach 및 network 아키텍처인 GPND를 소개했다.  
+이전의 deep learning based method과 달리, GPND는 inlier probability distribution를 평가하여 주어진 sample이 outlier임을 감지한다.  
+우리는 각 아키텍처 및 모델 components가 novelty detection에 어떻게 필수적인지 보여주었다.  
+또한, 우리는 비교적 간단한 아키텍처를 사용하여 GPND가 다른 measures, 다른 datasets, 다른 protocols을 사용하여 어떻게 state-of-the-art performance를 제공하는지를 보여 주었으며, out-of-distribution literature과도 잘 비교되는 것을 보여주었다.
 
 ### Acknowledgments
 This material is based upon work supported by the National Science Foundation under Grant No.
@@ -533,3 +536,4 @@ IIS-1761792.
 
 > [참고할만한 블로그1](https://kh-kim.github.io/blog/2019/12/15/Autoencoder-based-anomaly-detection.html)
 [참고할만한 블로그2](https://kh-kim.github.io/)
+[매니폴드](https://deepinsight.tistory.com/124)

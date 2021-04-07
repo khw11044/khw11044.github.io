@@ -44,7 +44,7 @@ Differently from prior works, our proposal does not make any assumption about th
 
 > 우리는 정상 샘플의 reconstruction과 함께 최적화된 maximum likelihood 목표가 latent vectors에 의해 확장된 distribution의 differential entropy를 최소화함으로써 당면한 task에 대한 정규화 역할을 효과적으로 수행함을 보여준다.   
 매우 일반적인 공식을 제공할 뿐만 아니라, 공개적으로 사용 가능한 datasets에 대한 모델의 광범위한 실험은 단일 클래스 및 비디오 이상 탐지 설정의 state-of-the-art methods과 비교할 때 동등하거나 우수한 성능을 제공한다.   
-이전 연구와 달리, 우리의 제안은 novelties의 nature에 대한 어떠한 가정도 하지 않아 우리의 작업이 다양한 맥락에 쉽게 적용될 수 있게 한다.
+이전 연구와 달리, 우리의 제안은 novelties의 nature에 대한 어떠한 가정도 하지 않아, 우리의 작업이 다양한 맥락에 쉽게 적용될 수 있게 한다.
 
 ## 1. Introduction
 
@@ -52,31 +52,33 @@ Novelty detection is defined as the identification of samples which exhibit sign
 The awareness of an autonomous system to recognize unknown events enables applications in several domains, ranging from video surveillance [7, 11], to defect detection [19] to medical imaging [35].  
 Moreover, the surprise inducted by unseen events is emerging as a crucial aspect in reinforcement learning settings, as an enabling factor in curiosity-driven exploration [31].
 
-> 새로움 탐지는 정규성의 기본 모델과 관련하여 현저하게 다른 특성을 보이는 샘플의 식별로 정의되며, 정상 샘플 컬렉션에서 구축된다.  
-알려지지 않은 이벤트를 인식하기 위한 자율 시스템의 인식은 비디오 감시[7, 11]에서 결함 감지[19] 및 의료 영상[35]에 이르는 여러 영역에서 응용 프로그램을 가능하게 한다.  
-더욱이, 보이지 않는 사건들에 의해 야기된 놀라움은 호기심 중심 탐구의 활성화 요인으로 강화 학습 설정에서 중요한 측면으로 떠오르고 있다[31].  
+> Novelty detection는 정규성의 기본 모델과 관련하여 현저하게 다른 특성을 보이는 샘플의 identification으로 정의되며, 정상 샘플 컬렉션에서 구축된다.  
+알려지지 않은 이벤트를 인식하기 위한 autonomous system의 인식은 비디오 감시[7, 11]에서 결함 감지[19] 및 의료 영상[35]에 이르는 여러 영역에서 응용 프로그램을 가능하게 한다.  
+더욱이, 보이지 않는 사건들에 의해 야기된 surprise는 curiosity-driven exploration [31]의 활성화 요인으로 reinforcement learning 설정에서 중요한 측면으로 떠오르고 있다.  
 
 However, in this setting, the definition and labeling of novel examples are not possible.  
 Accordingly, the literature agrees on approximating the ideal shape of the boundary separating normal and novel samples by modeling the intrinsic characteristics of the former.  
 Therefore, prior works tackle such problem by following principles derived from the unsupervised learning paradigm [9, 34, 11, 23, 27].  
 Due to the lack of a supervision signal, the process of feature extraction and the rule for their normality assessment can only be guided by a proxy objective, assuming the latter will define an appropriate boundary for the application at hand.
 
-> 그러나 이 설정에서는 새로운 예제의 정의와 라벨링이 가능하지 않다.  
-따라서, 문헌은 전자의 본질적인 특성을 모델링하여 정규 샘플과 새로운 샘플을 분리하는 경계의 이상적인 모양을 근사화하는 데 동의한다.  
-따라서 이전 연구는 비지도 학습 패러다임에서 도출된 원칙을 준수함으로써 그러한 문제를 해결한다[9, 34, 11, 23, 27].   
-감독 신호의 부족으로 인해, 특징 추출 프로세스와 정규성 평가에 대한 규칙은 후자가 당면한 응용 프로그램에 대한 적절한 경계를 정의한다고 가정했을 때, 프록시 목표를 통해서만 안내될 수 있다.
+> 그러나 이 설정에서는 novel examples의 정의와 라벨링이 가능하지 않다.   
+따라서, literature은 former의 본질적인 특성을 모델링하여 normal 샘플과 novel 샘플을 분리하는 경계의 이상적인 모양을 근사화하는 데 동의한다.  
+따라서 이전 연구는 unsupervised learning 패러다임에서 도출된 원칙을 준수함으로써 그러한 문제를 해결한다[9, 34, 11, 23, 27].   
+supervision signal의 부족으로 인해, feature extraction process와 정규성 평가에 대한 규칙은 후자가 당면한 응용 프로그램에 대한 적절한 경계를 정의한다고 가정했을 때, proxy 목표를 통해서만 안내될 수 있다.
 
 According to cognitive psychology [4], novelty can be expressed either in terms of capabilities to remember an event or as a degree of surprisal [39] aroused by its observation.  
 The latter is mathematically modeled in terms of low probability to occur under an expected model, or by lowering a variational free energy [15].  
 In this framework, prior models take advantage of either parametric [46] or nonparametric [13] density estimators.  
-Differently, remembering an event implies the adoption of a memory represented either by a dictionary of normal prototypes - as in sparse coding approaches [9] - or by a low dimensional representation of the input space, as in the self-organizing maps [18] or, more recently, in deep autoencoders.  
+
+
+Differently, remembering an event implies the adoption of a memory represented either by a dictionary of normal prototypes - as in sparse coding approaches [9] - or by a low dimensional representation of the input space, as in the self-organizing maps [18] or, more recently, in deep autoencoders.   
 Thus, in novelty detection, the remembering capability for a given sample is evaluated either by measuring reconstruction errors [11, 23] or by performing discriminative in-distribution tests [34].
 
-> 인지 심리학[4]에 따르면, 새로움은 사건을 기억하는 능력의 측면에서 또는 관찰에 의해 유발된 놀라움의 정도[39]로 표현될 수 있다.  
-후자는 기대 모델에서 발생하거나 변동 자유 에너지를 낮춤으로써 발생할 낮은 확률의 관점에서 수학적으로 모델링된다[15].  
+> 인지 심리학[4]에 따르면, novelty는 사건을 기억하는 능력의 측면에서 또는 관찰에 의해 유발된 surprisal의 정도[39]로 표현될 수 있다.  
+후자는 기대 모델에서 발생하거나 변동 자유 에너지를 낮춤으로써 발생할 low probability의 관점에서 수학적으로 모델링된다[15].  
 이 프레임워크에서 이전 모델은 모수 [46] 또는 비모수 [13] 밀도 추정기를 활용합니다.  
-다르게, 이벤트를 기억한다는 것은 희소 코딩 접근 방식에서와 같이 일반 프로토타입 사전으로 표현되는 메모리 채택 또는 자체 구성 맵[18]에서처럼 입력 공간의 저차원 표현으로 표현되는 메모리 채택을 암시한다.  
-따라서 신기한 검출에서는 재구성 오류[11, 23]를 측정하거나 구별되는 분포 내 테스트를 수행하여 특정 샘플에 대한 기억 능력을 평가한다[34].
+다르게, 이벤트를 기억한다는 것은 sparse coding approaches [9]에서와 같이 normal prototypes의 dictionary로 표현되는 메모리 채택 또는 self-organizing maps[18]에서처럼 input space의 저차원 표현으로 표현되는 메모리 채택 또는 최근 deep autoencoders을 암시한다.  
+따라서 novelty detection에서는 reconstruction errors[11, 23]를 측정하거나 구별되는 in-distribution tests를 수행하여 주어진 샘플에 대한 기억 능력을 평가한다[34].
 
 Our proposal contributes to the field by merging remembering and surprisal aspects into a unique framework: we design a generative unsupervised model (i.e., an autoencoder, represented in Fig. 1i) that exploits end-to-end training in order to maximize remembering effectiveness for normal samples whilst minimizing the surprisal of their latent representation.  
 This latter point is enabled by the maximization of the likelihood of latent representations through an autoregressive density estimator, which is performed in conjunction with the reconstruction error minimization.  
@@ -85,12 +87,12 @@ While entropy minimization approaches have been adopted in deep neural compressi
 In memory terms, our procedure resembles the concept of prototyping the normality using as few templates as possible.  
 Moreover, evaluating the output of the estimator enables the assessment of the surprisal aroused by a given sample.
 
-> 우리의 제안은 기억과 놀라움 측면을 고유한 프레임워크로 병합함으로써 현장에 기여한다. 우리는 일반적인 샘플에 대한 기억 효과를 최대화하는 동시에 잠재된 재현성의 놀라움을 최소화하기 위해 종단 간 훈련을 활용하는 생성 비지도 모델(즉, 그림 1i에 표시된 자동 인코더)을 설계한다.판결문  
-이 후자 포인트는 재구성 오류 최소화와 함께 수행되는 자동 회귀 밀도 추정기를 통해 잠재 표현의 가능성을 최대화함으로써 활성화된다.  
-우리는 두 항을 공동으로 최적화함으로써 모델이 암묵적으로 기억력/재구성 능력을 유지하는 최소 엔트로피 표현을 추구한다는 것을 보여준다.  
-엔트로피 최소화 접근법이 심층 신경 압축[3]에서 채택되었지만, 우리가 아는 바로는 이것이 새로운 탐지에 맞춘 첫 번째 제안이다.  
-메모리 용어로, 우리의 절차는 가능한 한 적은 템플릿을 사용하여 정규성을 프로토타이핑하는 개념과 유사하다.  
-또한 추정기의 출력을 평가하면 주어진 표본에 의해 유발된 놀라움의 평가가 가능하다.
+> 우리의 제안은 remembering과 surprisal 측면을 unique framework로 병합함으로써 현장에 기여한다: 우리는 normal samples에 대한 기억 효과를 최대화하는 동시에 latent representation의 surprisal을 최소화하기 위해 end-to-end training을 활용하는 generative unsupervised model(즉, Fig. 1i에 표시된 autoencoder)을 설계한다.  
+이 후자 포인트는 reconstruction error 최소화와 함께 수행되는 autoregressive density estimator를 통해 latent representations의 likelihood를 최대화함으로써 활성화된다.  
+우리는 두 terms을 jointly 최적화함으로써, model이 암묵적으로 remembering/reconstructive 능력을 유지하는 minimum entropy representations을 추구한다는 것을 보여준다.  
+엔트로피 최소화 접근법이 deep neural compression [3]에서 채택되었지만, 우리가 아는 바로는 이것이 novelty detection에 첫 번째 맞춤 제안이다.  
+memory terms에, 우리의 procedure은 가능한 한 적은 템플릿을 사용하여 normality을 prototyping하는 개념과 유사하다.  
+또한 estimator의 output을 평가하면 주어진 sample에 의해 유발된 surprisal의 평가가 가능하다.
 
 ## 2. Related work
 
@@ -106,15 +108,15 @@ This choice is coherent with recent works from the density estimation community 
 However, to the best of our knowledge, our work is the first advocating for the importance of such a design choice for novelty detection.
 
 > **Reconstruction-based methods.**
-한편, 많은 연구는 특이치가 더 높은 잔차를 산출한다고 가정하여 정규 데이터의 모수 투영 및 재구성을 학습하는 데 기울고 있습니다.  
-기존의 희소 부호화 알고리듬[45, 9, 24]은 그러한 프레임워크를 고수하며, 새로운 예가 학습된 하위 공간에서 희소하지 않은 표현을 나타낸다는 가설 아래 몇 가지 기본 구성 요소의 선형 조합으로 정규 패턴을 나타낸다.  
-최근 연구에서 투영 단계는 일반적으로 심층 자동 인코더에서 도출된다[11].  
-[27]에서 저자는 학습된 표현에 희소성 정규화를 부과하여 희소 코딩 원칙을 회복하는 한편, 반복 신경망은 시간 차원을 따라 부드러움을 시행한다.  
-[34]에서 대신, 저자는 구별기 네트워크가 실제 신기한 검출기로 채택되는 적대적 프레임워크를 활용하여 이산 분포 내 테스트를 수행하여 이상 징후를 포착한다.  
-반대로, 미래 프레임 예측[23]은 과거 프레임에 대한 지식을 활용하는 다음 프레임에 대한 기대치를 최대화한다. 테스트 시간에 예측된 콘텐츠에 대한 관측된 편차에 대한 이상 조언이다.  
-위에서 언급한 연구와 달리, 우리의 제안은 잠재 표현의 사전 분포를 모델링하는 데 의존한다.  
-이러한 선택은 밀도 추정 커뮤니티의 최근 연구와 일관된다 [38, 6].  
-그러나 우리가 아는 한, 우리의 작업은 새로운 탐지를 위한 그러한 설계 선택의 중요성을 주장하는 첫 번째 것이다.
+한편, 많은 연구는 outliers가 더 높은 residuals를 산출한다고 가정하여 normal data의 parametric projection 및 reconstruction을 학습하는 데 기울고 있습니다.  
+Traditional sparse-coding algorithms [45, 9, 24]은 그러한 framework를 고수하며, novel examples가 학습된 subspace에서 non-sparse representation을 나타낸다는 hypotheses 아래 몇 가지 basis components의 linear combination으로 normal patterns을 나타낸다.  
+최근 연구에서 projection 단계는 일반적으로 deep autoencoders [11]에서 도출된다.  
+[27]에서 저자는 학습된 representations에 sparsity regularization을 부과하여 sparse coding principles을 recover하는 한편, recurrent neural network은 시간 차원을 따라 smoothness을 시행한다.  
+[34]에서 대신, 저자는 discriminator network가 실제 novelty detector로 사용되는 adversarial framework를 활용하여 discrete in-distribution test를 수행하여 anomalies를 포착한다.  
+반대로, future frame prediction[23]은 past frame에 대한 지식을 활용하는 next frame에 대한 expectation을 최대화한다; 테스트 시간에 predicted content에 대한 관측된 deviations는 abnormality에 advise한다.  
+위에서 언급한 연구와 달리, 우리의 제안은 latent representations의 prior distribution를 모델링하는 데 의존한다.  
+이러한 선택은 density estimation community [38, 6]의 최근 연구와 일관된다.  
+그러나 우리가 아는 한, 우리의 작업은 novelty detection을 위한 그러한 설계 선택의 중요성에 대한 첫번째 주장이다.
 
 **Probabilistic methods.**  
 A complementary line of research investigates different strategies to approximate the density function of normal appearance and motion features.  
@@ -123,30 +125,32 @@ In this respect, prior works involve handcrafted features such as optical flow o
 Modern approaches rely on deep representations (e.g., captured by autoencoders), as in Gaussian classifiers [33] and Gaussian Mixtures [46].  
 In [13] the authors involve a Kernel Density Estimator (KDE) modeling activations from an auxiliary object detection network.  
 A recent research trend considers training Generative Adversarial Networks (GANs) on normal samples.  
-However, as such models approximate an implicit density function, they can be queried for new samples but not for likelihood values. Therefore, GAN-based models employ different heuristics for the evaluation of novelty.  
+However, as such models approximate an implicit density function, they can be queried for new samples but not for likelihood values.  
+Therefore, GAN-based models employ different heuristics for the evaluation of novelty.  
 For instance, in [35] a guided latent space search is exploited to infer it, whereas [32] directly queries the discriminator for a normality score.
 
 > **Probabilistic methods.**
-보완적인 연구 라인은 정상적인 외관과 움직임 특징의 밀도 함수를 근사하기 위한 다양한 전략을 조사한다.  
-이 분야에서 제기되는 주요 문제는 고차원적이고 복잡한 특징 공간에서 그러한 밀도를 추정하는 방법에 관한 것이다.  
-이러한 측면에서 이전 연구는 광학 흐름 또는 궤적 분석과 같은 수작업 기능을 포함하며, 그 외에도 비모수 [1] 및 모수 [5, 28, 22] 추정기와 그래픽 모델링[16, 20]을 모두 사용한다.  
-현대의 접근 방식은 가우스 분류기[33] 및 가우스 혼합기[46]에서와 같이 심층 표현(예: 자동 인코더에 의해 캡처)에 의존한다.  
-[13]에서 저자는 보조 객체 감지 네트워크의 커널 밀도 추정기(KDE) 모델링 활성화를 포함한다.  
-최근의 연구 경향은 정상적인 샘플에 대한 GAN(Generative Adversarial Network) 훈련을 고려한다.  
-그러나 이러한 모델은 암묵적 밀도 함수에 근사하므로 새로운 표본에 대해 쿼리할 수 있지만 우도 값은 쿼리할 수 없다. 따라서 GAN 기반 모델은 신규성 평가를 위해 서로 다른 휴리스틱을 사용한다.  
-예를 들어 [35]에서는 유도 잠재 공간 검색이 이를 추론하기 위해 이용되는 반면, [32]에서는 판별기에 정규성 점수를 직접 쿼리한다.
+보완적인 연구 라인은 normal appearance와 motion features의 density function을 근사하기 위한 다양한 전략을 조사한다.  
+이 분야에서 제기되는 주요 문제는 고차원적이고 복잡한 feature space에서 그러한 밀도를 추정하는 방법에 관한 것이다.  
+이러한 측면에서 이전 연구는 optical flow 또는 궤적 분석과 같은 handcrafted features을 포함하며, 그 외에도 비모수 [1] 및 모수 [5, 28, 22] estimators와 graphical modeling [16, 20]을 모두 사용한다.  
+현대의 접근 방식은 Gaussian classifiers [33] 및 Gaussian Mixtures [46]에서와 같이 deep representations(예: autoencoders에 의한 캡처)에 의존한다.  
+[13]에서 저자는 auxiliary object detection network의 Kernel Density Estimator(KDE) modeling activations를 포함한다.  
+최근의 연구 경향은 normal samples에 대한 GAN(Generative Adversarial Network) 훈련을 고려한다.  
+그러나 이러한 모델은 implicit density function에 근사하므로 새로운 표본에 대해 쿼리할 수 있지만 likelihood values은 쿼리할 수 없다.  
+따라서  GAN-based models은 novelty 평가를 위해 서로 다른 heuristics을 사용한다.  
+예를 들어 [35]에서는 guided latent space search가 이를 추론하기 위해 이용되는 반면, [32]에서는 discriminator에 normality score를 직접 쿼리한다.
 
 ## 3. Proposed model
 
 Maximizing the probability of latent representations is analogous to lowering the surprisal of the model for a normal configuration, defined as the negative log-density of a latent variable instance [39].  
 Conversely, remembering capabilities can be evaluated by the reconstruction accuracy of a given sample under its latent representation.
 
-> 잠재 표현의 확률을 최대화하는 것은 잠재 변수 인스턴스의 음의 로그 밀도로 정의되는 정상적인 구성에 대한 모델의 놀라움을 낮추는 것과 유사하다[39].  
-반대로 기억 능력은 잠재 표현 하에서 주어진 샘플의 재구성 정확도로 평가할 수 있다.
+> latent representations의 probability를 최대화하는 것은 latent variable instance [39]의 negative log-density로 정의되는 normal configuration에 대한 model의 surprisal을 낮추는 것과 유사하다.  
+반대로 기억 능력은 latent representation 하에서 given sample의 reconstruction accuracy로 평가할 수 있다.
 
-We model the aforementioned aspects in a latent variable model setting, where the density function of training samples $$p(\mathbf{x})$$ is modeled through an auxiliary random variable z, describing the set of causal factors underlying all observations.  
+We model the aforementioned aspects in a latent variable model setting, where the density function of training samples $$p(\mathbf{x})$$ is modeled through an auxiliary random variable **z**, describing the set of causal factors underlying all observations.  
 
-> 우리는 앞에서 언급한 측면을 잠재 변수 모델 설정에서 모델링하는데, 여기서 훈련 샘플 $$p(\mathbf{x})$$의 밀도 함수는 보조 무작위 변수 z를 통해 모델링되며, 모든 관찰의 기반이 되는 일련의 인과적 요인을 설명한다.  
+> 우리는 앞에서 언급한 측면을 latent variable model setting에서 모델링하는데, 여기서 training samples $$p(\mathbf{x})$$의 밀도 함수는 auxiliary random variable **z**를 통해 모델링되며, 모든 관찰의 기반이 되는 일련의 인과적 요인을 설명한다.  
 
 By factorizing
 
@@ -154,35 +158,75 @@ $$p(\mathbf{x}) = \int p(\mathbf{x}|\mathbf{z})p(\mathbf{z})d\mathbf{z} \qquad \
 
 ,where $$p(\mathbf{x}|\mathbf{z})$$ is the conditional likelihood of the observation given a latent representation $$\mathbf{z}$$ with prior distribution $$p(\mathbf{z})$$, we can explicit both the memory and surprisal contribution to novelty.
 
+> $$\mathbf{z}$$ : latent representation
+$$p(\mathbf{z})$$ : prior distribution of latent vector **z**
+$$p(\mathbf{x}|\mathbf{z})$$ : observation given **z**의 conditional likelihood  
+우리는 novelty에 memory contribution과 surprisal contribution 모두 명시한다.
+
 We approximate the marginalization by means of an inference model responsible for the identification of latent space vector for which the contribution of $$p(\mathbf{x}|\mathbf{z})$$ is maximal.  
-Formally, we employ a deep autoencoder, in which the reconstruction error plays the role of the negative logarithm of $$p(\mathbf{x}|\mathbf{z})$$, under the hypothesis that$$p(\mathbf{x}|\mathbf{z}) = \mathcal{N}(x|\tilde{x}, I)$$ where $$\tilde{x}$$ denotes the output reconstruction.  
+
+> $$p(\mathbf{x}|\mathbf{z})$$의 contribution이 최대인 latent space vector의 identification을 담당하는 inference model을 사용하여 marginalization을 근사화한다.
+
+Formally, we employ a deep autoencoder, in which the reconstruction error plays the role of the negative logarithm of $$p(\mathbf{x}\|\mathbf{z})$$, under the hypothesis that $$p(\mathbf{x}\|\mathbf{z}) = \mathcal{N}(x\|\tilde{x}, I)$$ where $$\tilde{x}$$ denotes the output reconstruction.  
+
+> $$\tilde{x}$$이 output reconstruction인 hypothesis $$p(\mathbf{x}\|\mathbf{z}) = \mathcal{N}(x\|\tilde{x}, I)$$에서 reconstruction error가 $$p(\mathbf{x}\|\mathbf{z})$$의 negative logarithm 역할을 하는 deep autoencoder를 사용한다.
+$$\tilde{x}$$ : output reconstruction
+
+
 Additionally, surprisal is injected in the process by equipping the autoencoder with an auxiliary deep parametric estimator learning the prior distribution $$p(\mathbf{z})$$ of latent vectors, and training it by means of Maximum Likelihood Estimation (MLE).  
+
+> 또한, autoencoder에 latent vectors의 prior distribution $$p(\mathbf{z})$$를 학습하는 auxiliary deep parametric estimator를 장착하고 Maximum Likelihood Estimation(MLE)을 통해 이를 훈련시킴으로써 이 과정에서 surprisal이 주입된다.
+
 Our architecture is therefore composed of three building blocks (Fig. 1i): an encoder $$f(x; \theta_f )$$, a decoder $$g(z; \theta_g)$$ and a probabilistic model $$h(z; \theta_h)$$:
 
 $$f(x; \theta_f) : \mathbb{R^m} → \mathbb{R^d}, g(z; \theta_{g}) : \mathbb{d} → \mathbb{m}, h(z; \theta_h): \mathbb{R^d} → [0,1].  $$
 
-The encoder processes input $$x$$ and maps it into a compressed representation $$z = f(x; \theta_{f} )$$, whereas the decoder provides a reconstructed version of the input $$\tilde{x} = g(z; \theta_{g})$$. The probabilistic model $$h(z; \theta_h)$$ estimates the density in $$\mathbf{z}$$ via an autoregressive process, allowing to avoid the adoption of a specific family of distributions (i.e., Gaussian), potentially unrewarding for the task at hand.  
+> 우리의 architecture는 3개의 building blocks (Fig. 1i)를 구성한다 :  
+$$f(x; \theta_f )$$ : encoder  
+$$g(z; \theta_g)$$ : decoder  
+$$h(z; \theta_h)$$ : probabilistic model
+
+The encoder processes input $$x$$ and maps it into a compressed representation $$z = f(x; \theta_{f} )$$, whereas  
+the decoder provides a reconstructed version of the input $$\tilde{x} = g(z; \theta_{g})$$.  
+The probabilistic model $$h(z; \theta_h)$$ estimates the density in $$\mathbf{z}$$ via an autoregressive process, allowing to avoid the adoption of a specific family of distributions (i.e., Gaussian), potentially unrewarding for the task at hand.  
 On this latter point, please refer to supplementary materials for comparison w.r.t. variational autoencoders [17].
 
-With such modules, at test time, we can assess the two sources of novelty: elements whose observation is poorly explained by the causal factors inducted by normal samples (i.e., high reconstruction error); elements exhibiting good reconstructions whilst showing surprising underlying representations under the learned prior.
+> encoder는 input $$x$$를 처리하고 이를 compressed representation $$z = f(x; \theta_{f} )$$로 매핑하는 반면,  
+decoder는 input $$\tilde{x} = g(z; \theta_{g})$$의 재구성 버전을 제공한다.  
+probabilistic model $$h(z; \theta_h)$$은 autoregressive process를 통해 $$\mathbf{z}$$의 density를 추정하여, 당면한 task에 대한 potentially unrewarding한 특정 분포 계열(즉, Gaussian)의 채택을 피할 수 있다.   
+이 latter point에 대해서는 variational autoencoders[17]에 대한 비교를 위한 보충 자료를 참조해 주십시오 [17].
+
+With such modules, at test time, we can assess the two sources of novelty:  
+elements whose observation is poorly explained by the causal factors inducted by normal samples (i.e., high reconstruction error);  
+elements exhibiting good reconstructions whilst showing surprising underlying representations under the learned prior.
+
+> 그러한 모듈을 사용하여, 테스트 시간에, 우리는 novelty의 두 가지 sources를 평가할 수 있다:  
+normal samples에 의해 유발된 인과 요소에 의해 관찰이 제대로 설명되지 않는 elements(즉, high reconstruction error);  
+좋은 reconstructions를 보여주는 elements이며 학습된 prior의 underlying representations을 보여준다.
 
 ![Fig1](/assets/img/Blog/papers/LatentSpace/Fig1.JPG)
 
 **Autoregressive density estimation.**  
 Autoregressive models provide a general formulation for tasks involving sequential predictions, in which each output depends on previous observations [25, 29].  
 We adopt such a technique to factorize a joint distribution, thus avoiding to define its landscape a priori [21, 40].  
+
+> Autoregressive models은 sequential predictions과 관련된 tasks에 대한 일반적인 공식을 제공하며, 각 출력은 이전 관찰에 따라 달라진다 [25, 29].  
+우리는 joint distribution를 factorize하기 위해 그러한 기술을 채택하여, 그 landscape를 priori(우선순위?)[21, 40]로 정의하는 것을 피한다.
+
 Formally, $$p(\mathbf{z})$$ is factorized as
 
-$$p(\mathbf{z}) = \prod_{i=1}^d p(z_i|\mathbf{z}_{<i}) \qquad \qquad (3) $$
+$$p(\mathbf{z}) = \prod_{i=1}^d p(z_i\|\mathbf{z}_{<i}) \qquad \qquad (3) $$
 
-so that estimating $$p(\mathbf{z})$$ reduces to the estimation of each single Conditional Probability Density (CPD) expressed as $$p(z_i|\mathbf{z}_{<i})$$, where the symbol $$<$$ implies an order over random variables.  
+so that estimating $$p(\mathbf{z})$$ reduces to the estimation of each single Conditional Probability Density (CPD) expressed as $$p(z_i\|\mathbf{z}_{<i})$$, where the symbol $$<$$ implies an order over random variables.  
+
+
 Some prior models obey handcrafted orderings [43, 42], whereas others rely on order agnostic training [41, 10].  
 Nevertheless, it is still not clear how to estimate the proper order for a given set of variables.  
 In our model, this issue is directly tackled by the optimization.  
 Indeed, since we perform auto-regression on learned latent representations, the MLE objective encourages the autoencoder to impose over them a pre-defined causal structure.  
 Empirical evidence of this phenomenon is given in the supplementary material.
 
-From a technical perspective, the estimator $$h(z; theta_{h})$$ outputs parameters for d distributions $$p(z_i|\mathbf{z}_{<i})$$.  
+From a technical perspective, the estimator $$h(z; theta_{h})$$ outputs parameters for d distributions $$p(z_i\|\mathbf{z}_{<i})$$.  
 In our implementation, each CPD is modeled as a multinomial over B=100 quantization bins.  
 To ensure a conditional estimate of each underlying density, we design proper layers guaranteeing that the CPD of each symbol $$z_i$$ is computed from inputs $$\{z_1, . . . , z_{i−1}\}$$ only.
 
