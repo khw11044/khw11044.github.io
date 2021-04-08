@@ -25,6 +25,15 @@ Lane Department of Computer Science and Electrical Engineering
 West Virginia University,Morgantown,WV 26506
 
 ---
+> [참고할만한 블로그1](https://kh-kim.github.io/blog/2019/12/15/Autoencoder-based-anomaly-detection.html)  
+[참고할만한 블로그2](https://kh-kim.github.io/)  
+[매니폴드](https://deepinsight.tistory.com/124)  
+[VAE](https://ratsgo.github.io/generative%20model/2018/01/27/VAE/)
+[AAE](https://greeksharifa.github.io/generative%20model/2020/08/23/AAE/)
+[AutoEncoder의 모든것](https://deepinsight.tistory.com/123)
+
+---
+
 
 * toc
 {:toc}
@@ -559,7 +568,3 @@ In addition, with a relatively simple architecture we have shown how GPND provid
 ### Acknowledgments
 This material is based upon work supported by the National Science Foundation under Grant No.
 IIS-1761792.
-
-> [참고할만한 블로그1](https://kh-kim.github.io/blog/2019/12/15/Autoencoder-based-anomaly-detection.html)  
-[참고할만한 블로그2](https://kh-kim.github.io/)  
-[매니폴드](https://deepinsight.tistory.com/124)  
