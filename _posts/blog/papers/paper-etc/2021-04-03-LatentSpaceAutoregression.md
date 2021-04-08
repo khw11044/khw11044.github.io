@@ -156,14 +156,14 @@ By factorizing
 
 $$p(\mathbf{x}) = \int p(\mathbf{x}|\mathbf{z})p(\mathbf{z})d\mathbf{z} \qquad \qquad (1) $$
 
-,where $$p(\mathbf{x}|\mathbf{z})$$ is the conditional likelihood of the observation given a latent representation $$\mathbf{z}$$ with prior distribution $$p(\mathbf{z})$$, we can explicit both the memory and surprisal contribution to novelty.
+,where $$p(\mathbf{x}\|\mathbf{z})$$ is the conditional likelihood of the observation given a latent representation $$\mathbf{z}$$ with prior distribution $$p(\mathbf{z})$$, we can explicit both the memory and surprisal contribution to novelty.
 
 > $$\mathbf{z}$$ : latent representation
 $$p(\mathbf{z})$$ : prior distribution of latent vector **z**
 $$p(\mathbf{x}|\mathbf{z})$$ : observation given **z**의 conditional likelihood  
 우리는 novelty에 memory contribution과 surprisal contribution 모두 명시한다.
 
-We approximate the marginalization by means of an inference model responsible for the identification of latent space vector for which the contribution of $$p(\mathbf{x}|\mathbf{z})$$ is maximal.  
+We approximate the marginalization by means of an inference model responsible for the identification of latent space vector for which the contribution of $$p(\mathbf{x}\|\mathbf{z})$$ is maximal.  
 
 > $$p(\mathbf{x}|\mathbf{z})$$의 contribution이 최대인 latent space vector의 identification을 담당하는 inference model을 사용하여 marginalization을 근사화한다.
 
@@ -285,11 +285,11 @@ In such operation, named Masked Stacked Convolution (MSC, Fig. 3-(b)), the $$i$$
 
 where j indexes the temporal axis and k the code axis.  
 Every single convolution yields a column vector, as a result of its stride along time.  
-The set of column vectors resulting from the application of the d convolutions to the input tensor $$h \in \mathbb{R}^{t \times d \times ci}$$ are horizontally stacked to build the output tensor $$\mathrm{o} ∈ \mathbb{R}^{t \times d \times co}$$, as follows:
+The set of column vectors resulting from the application of the d convolutions to the input tensor $$h \in \mathbb{R}^{t \times d \times c_i}$$ are horizontally stacked to build the output tensor $$\mathrm{o} ∈ \mathbb{R}^{t \times d \times co}$$, as follows:
 
 ![8](/assets/img/Blog/papers/LatentSpace/8.JPG)
 
-where $$||$$ represents the horizontal concatenation operation.
+where $$\|$$ represents the horizontal concatenation operation.
 
 ![Fig3](/assets/img/Blog/papers/LatentSpace/Fig3.JPG)
 
