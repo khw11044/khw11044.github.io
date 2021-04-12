@@ -156,20 +156,20 @@ By factorizing
 
 $$p(\mathbf{x}) = \int p(\mathbf{x}|\mathbf{z})p(\mathbf{z})d\mathbf{z} \qquad \qquad (1) $$
 
-,where $$p(\mathbf{x}\|\mathbf{z})$$ is the conditional likelihood of the observation given a latent representation $$\mathbf{z}$$ with prior distribution $$p(\mathbf{z})$$, we can explicit both the memory and surprisal contribution to novelty.
+,where $$p(\mathbf{x}\vert \mathbf{z})$$ is the conditional likelihood of the observation given a latent representation $$\mathbf{z}$$ with prior distribution $$p(\mathbf{z})$$, we can explicit both the memory and surprisal contribution to novelty.
 
-> $$\mathbf{z}$$ : latent representation
-$$p(\mathbf{z})$$ : prior distribution of latent vector **z**
-$$p(\mathbf{x}|\mathbf{z})$$ : observation given **z**의 conditional likelihood  
+> $$\mathbf{z}$$ : latent representation  
+$$p(\mathbf{z})$$ : prior distribution of latent vector **z**  
+$$p(\mathbf{x}|\mathbf{z})$$ : observation given **z**의 conditional likelihood   
 우리는 novelty에 memory contribution과 surprisal contribution 모두 명시한다.
 
-We approximate the marginalization by means of an inference model responsible for the identification of latent space vector for which the contribution of $$p(\mathbf{x}\|\mathbf{z})$$ is maximal.  
+We approximate the marginalization by means of an inference model responsible for the identification of latent space vector for which the contribution of $$p(\mathbf{x}\vert \mathbf{z})$$ is maximal.  
 
-> $$p(\mathbf{x}|\mathbf{z})$$의 contribution이 최대인 latent space vector의 identification을 담당하는 inference model을 사용하여 marginalization을 근사화한다.
+> $$p(\mathbf{x}\vert \mathbf{z})$$의 contribution이 최대인 latent space vector의 identification을 담당하는 inference model을 사용하여 marginalization을 근사화한다.
 
-Formally, we employ a deep autoencoder, in which the reconstruction error plays the role of the negative logarithm of $$p(\mathbf{x}\|\mathbf{z})$$, under the hypothesis that $$p(\mathbf{x}\|\mathbf{z}) = \mathcal{N}(x\|\tilde{x}, I)$$ where $$\tilde{x}$$ denotes the output reconstruction.  
+Formally, we employ a deep autoencoder, in which the reconstruction error plays the role of the negative logarithm of $$p(\mathbf{x}\vert \mathbf{z})$$, under the hypothesis that $$p(\mathbf{x}\vert \mathbf{z}) = \mathcal{N}(x\vert \tilde{x}, I)$$ where $$\tilde{x}$$ denotes the output reconstruction.  
 
-> $$\tilde{x}$$이 output reconstruction인 hypothesis $$p(\mathbf{x}\|\mathbf{z}) = \mathcal{N}(x\|\tilde{x}, I)$$에서 reconstruction error가 $$p(\mathbf{x}\|\mathbf{z})$$의 negative logarithm 역할을 하는 deep autoencoder를 사용한다.
+> $$\tilde{x}$$이 output reconstruction인 hypothesis $$p(\mathbf{x}\vert \mathbf{z}) = \mathcal{N}(x\vert \tilde{x}, I)$$에서 reconstruction error가 $$p(\mathbf{x}\|\mathbf{z})$$의 negative logarithm 역할을 하는 deep autoencoder를 사용한다.
 $$\tilde{x}$$ : output reconstruction
 
 
@@ -215,9 +215,9 @@ We adopt such a technique to factorize a joint distribution, thus avoiding to de
 
 Formally, $$p(\mathbf{z})$$ is factorized as
 
-$$p(\mathbf{z}) = \prod_{i=1}^d p(z_i\|\mathbf{z}_{<i}) \qquad \qquad (3) $$
+$$p(\mathbf{z}) = \prod_{i=1}^d p(z_i\vert\mathbf{z}_{<i}) \qquad \qquad (3) $$
 
-so that estimating $$p(\mathbf{z})$$ reduces to the estimation of each single Conditional Probability Density (CPD) expressed as $$p(z_i\|\mathbf{z}_{<i})$$, where the symbol $$<$$ implies an order over random variables.  
+so that estimating $$p(\mathbf{z})$$ reduces to the estimation of each single Conditional Probability Density (CPD) expressed as $$p(z_i\vert \mathbf{z}_{<i})$$, where the symbol $$<$$ implies an order over random variables.  
 
 
 Some prior models obey handcrafted orderings [43, 42], whereas others rely on order agnostic training [41, 10].  
@@ -226,7 +226,7 @@ In our model, this issue is directly tackled by the optimization.
 Indeed, since we perform auto-regression on learned latent representations, the MLE objective encourages the autoencoder to impose over them a pre-defined causal structure.  
 Empirical evidence of this phenomenon is given in the supplementary material.
 
-From a technical perspective, the estimator $$h(z; theta_{h})$$ outputs parameters for d distributions $$p(z_i\|\mathbf{z}_{<i})$$.  
+From a technical perspective, the estimator $$h(z; theta_{h})$$ outputs parameters for d distributions $$p(z_i\vert \mathbf{z}_{<i})$$.  
 In our implementation, each CPD is modeled as a multinomial over B=100 quantization bins.  
 To ensure a conditional estimate of each underlying density, we design proper layers guaranteeing that the CPD of each symbol $$z_i$$ is computed from inputs $$\{z_1, . . . , z_{i−1}\}$$ only.
 
