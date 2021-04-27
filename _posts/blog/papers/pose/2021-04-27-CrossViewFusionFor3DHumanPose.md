@@ -24,7 +24,8 @@ ICCV 2019 [paper](https://openaccess.thecvf.com/content_ICCV_2019/papers/Qiu_Cro
 ## Abstract
 We present an approach to recover absolute 3D human poses from multi-view images by incorporating multi-view geometric priors in our model. It consists of two separate steps: (1) estimating the 2D poses in multi-view images and (2) recovering the 3D poses from the multi-view 2D poses.  
 
-> 우리는 모델에 multi-view geometric 사전확률을 통합하여 multi-view images에서 absolute 3D human poses를 복구하는 접근 방식을 제시한다.   이 단계는 두 단계로 구성됩니다. (1) 멀티 뷰 영상에서 2D 포즈를 추정하는 것과 (2) 멀티 뷰 2D 포즈에서 3D 포즈를 복구하는 것입니다.
+> 우리는 모델에 multi-view geometric 사전확률을 통합하여 multi-view images에서 absolute 3D human poses를 recover하는 접근 방식을 제시한다.   
+이 단계는 두 단계로 구성됩니다. (1) multi-view images에서 2D poses를 estimating하는 것과 (2) multi-view 2D poses에서 3D poses를 recovering하는 것입니다.
 
 
 First, we introduce a cross-view fusion scheme into CNN to jointly estimate 2D poses for multiple views.  
