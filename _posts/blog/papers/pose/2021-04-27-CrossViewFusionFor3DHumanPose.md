@@ -35,7 +35,7 @@ It gradually improves the accuracy of 3D pose with affordable computational cost
 We test our method on two public datasets H36M and Total Capture.  
 The Mean Per Joint Position Errors on the two datasets are 26mm and 29mm, which outperforms the state-of-the-arts remarkably (26mm vs 52mm, 29mm vs 35mm).
 
-> 첫째, 우리는 multiple views에 대한 2D poses를 jointly로 estimate하기 위해 CNN에 cross-view fusion scheme를 도입한다.  
+> 첫째, 우리는 multiple views를 위해 2D poses를 jointly로 estimate하기 위해 CNN에 cross-view fusion scheme를 도입한다.  
 결과적으로 각 view에 대한 2D pose estimation은 이미 다른 뷰에서 이익을 얻는다.  
 둘째, multi-view 2D poses에서 3D pose를 recover하기 위한 recursive Pictorial Structure Model을 제시한다.  
 저렴한 계산 비용으로 3D 포즈의 정확도를 단계적으로 향상시킨다.  
