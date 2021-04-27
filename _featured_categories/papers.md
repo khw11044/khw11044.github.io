@@ -15,9 +15,11 @@ description: >
 
 * [PointCloud]{:.heading.flip-title} --- PointCloud
 * [FashionAI]{:.heading.flip-title} --- FashionAI
+* [Pose]{:.heading.flip-title} --- Pose
 * [Paper-Etc]{:.heading.flip-title} --- 기타
 
 
 [PointCloud]: /pointcloud/
 [FashionAI]: /fashionai/
+[Pose]: /pose/
 [Paper-Etc]: /paper-etc/

@@ -1,14 +1,14 @@
 ---
 layout: post
 category: papers
-bigtitle: paper-etc
+bigtitle: pose-estimation
 description: >
-  paper-etc
+  human pose estimation papers
 related_posts:
   -
 addons:
   - related
   - comments
 list: true
-order: 4
+order: 3
 ---
