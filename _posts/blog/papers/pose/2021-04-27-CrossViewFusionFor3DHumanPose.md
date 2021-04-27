@@ -167,3 +167,9 @@ Figure 1은 two-view fusion을 위한 pipeline이다.
 우리의 fusion 접근법의 핵심은 한 쌍의 views 사이에서 상응하는 features을 찾는 것이다.
 
 ![Fig2](/assets/img/Blog/papers/Pose/CrossViewFusion/Fig2.JPG)
+
+Suppose there is a point $$P$$ in 3D space.  
+See Figure 2.  
+Its projections in view $$u$$ and $$v$$ are $$Y_P^u \in \mathcal{Z}^u$$ and $$Y^v_P \in Z^v$$,
+respectively where $$\mathcal{Z}^u$$ and $$\mathcal{Z}^v$$ denote all pixel locations in the two views, respectively.  
+The heatmaps of view u and v are $$\mathcal{F}^u = {x_1^u, ... , x^u_{\vert \mathcal{Z}^u \vert}$$ and $$\mathcal{F}^v = {x_1^v, ... , x^v_{\vert \mathcal{Z}^v \vert}$$.
