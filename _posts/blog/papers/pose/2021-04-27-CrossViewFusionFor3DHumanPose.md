@@ -175,9 +175,17 @@ Its projections in view $$u$$ and $$v$$ are $$Y_P^u \in \mathcal{Z}^u$$ and $$Y^
 respectively where $$\mathcal{Z}^u$$ and $$\mathcal{Z}^v$$ denote all pixel locations in the two views, respectively.  
 The heatmaps of view $$u$$ and $$v$$ are $$\mathcal{F}^u = {x^u_1, ..., x^u_{\vert \mathcal{Z}^u \vert}}$$ and $$\mathcal{F}^v = {x^v_1, ..., x^v_{\vert \mathcal{Z}^v \vert}}$$.
 
+> 3D space에 point P가 있다고 가정하자
+$$Z^u$$는 view $$u$$의 모든 pixel locations,  
+$$Z^v$$는 view $$v$$의 모든 pixel locations  
+$$Y^u_P$$와 $$Y^v_P$$는 Point $$P$$를 각각 $$\mathcal{Z}^u$$와 $$\mathcal{Z}^v$$에 projection 한것
+view $$u$$의 heatmap : $$\mathcal{F}^u = {x^u_1, ..., x^u_{\vert \mathcal{Z}^u \vert}}$$,
+view $$v$$의 heatmap : {F}^v = {x^v_1, ..., x^v_{\vert \mathcal{Z}^v \vert}}$$
+
+
 The core idea of fusing a feature in view $$u$$, say $$x^u_i$$ , with the features from $$\mathcal{F}^v$$ is to establish the correspondence between the two views:
 
-> $$x^u_i$$말하는, view $$u$$의 feature를 $$\mathcal{F}^v$$의 features과 융합하는 핵심 아이디어는 다음 두 views 사이의 correspondence를 설정하는 것이다.
+> view $$u$$의 feature,즉 $$x^u_i$$를 $$\mathcal{F}^v$$의 features과 융합하는 핵심 아이디어는 다음 두 views 사이의 correspondence를 설정하는 것이다.
 
 $$x^u_i \leftarrow x^u_i + \sum^{\vert \mathcal{Z^v} \vert }_{j=1}\omega_{j,i} \cdot x^v_j , \; \forall i \in \mathcal{Z^u}, \; \; \; (1) $$  
 
