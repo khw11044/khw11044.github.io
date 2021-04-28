@@ -578,7 +578,7 @@ We use a smaller number of bins here than that of the first iteration, because i
 In our experiments, repeating the above process for ten iterations only takes about 0.4 seconds.  
 This is very light weight compared to the first iteration which takes about 8 seconds.
 
-> $$t ≥ 1$$인 다음 반복의 경우, 우리는 크기 $$s_t = \frac{2000}{16x2^{(t-1))}$$인 공간을 _각각 추정 공동 위치_ 주위에 2 × 2 x 2 빈으로 나눈다.  
+> $$t ≥ 1$$인 다음 반복의 경우, 우리는 크기 $$s_t = \frac{2000}{16 \times 2^{(t-1)}}$$인 공간을 _각각 추정 공동 위치_ 주위에 2 × 2 x 2 빈으로 나눈다.  
 각 조인트의 공간 크기 $$s_t$$는 이전 반복에서 단일 빈의 크기와 같다는 점에 유의한다.  
 여기서는 첫 번째 반복의 빈 수보다 더 적은 수의 빈을 사용하는데, 이는 쌍별 전위를 즉시 계산하는 시간을 크게 줄일 수 있기 때문이다.  
 우리의 실험에서, 위의 과정을 10번 반복하는 것은 0.4초 밖에 걸리지 않는다.  
