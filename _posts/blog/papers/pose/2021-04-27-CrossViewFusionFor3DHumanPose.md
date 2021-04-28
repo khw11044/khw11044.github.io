@@ -293,7 +293,7 @@ multi-view 2D pose heatmaps : $$\mathcal{F}$$
 posterior : (2)  
 $$Z(\mathcal{F})$$ : partition function
 $$\varepsilon$$ : graph edges
-unary potential functions : $$\phi^{\text{conf}}_i(J_i,\mathcal{F}) 는 이전에 estimated된 multi-view 2D pose heatmaps $$\mathcal{F}$$  
+unary potential functions : $$\phi^{\text{conf}}_i(J_i,\mathcal{F})$$ 는 이전에 estimated된 multi-view 2D pose heatmaps $$\mathcal{F}$$  
 pairwise potential functions $$\psi^{\text{limb}}(J_m,J_n)$$은 joints 간의 팔다리 길이 제약을 인코딩
 
 **Discrete state space**  
