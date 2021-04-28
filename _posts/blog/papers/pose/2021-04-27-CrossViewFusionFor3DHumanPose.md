@@ -180,7 +180,7 @@ $$Z^u$$는 view $$u$$의 모든 pixel locations,
 $$Z^v$$는 view $$v$$의 모든 pixel locations  
 $$Y^u_P$$와 $$Y^v_P$$는 Point $$P$$를 각각 $$\mathcal{Z}^u$$와 $$\mathcal{Z}^v$$에 projection 한것
 view $$u$$의 heatmap : $$\mathcal{F}^u = {x^u_1, ..., x^u_{\vert \mathcal{Z}^u \vert}}$$,
-view $$v$$의 heatmap : {F}^v = {x^v_1, ..., x^v_{\vert \mathcal{Z}^v \vert}}$$
+view $$v$$의 heatmap : $${F}^v = {x^v_1, ..., x^v_{\vert \mathcal{Z}^v \vert}}$$
 
 > (P는 view $$u$$에 $$Y^u_P$$로 투영되고 view $$u$$의 카메라는 $$C_u$$이고 카메라 $$C_u$$와 $$C_v$$를 잇는 선과 영상 평면 view $$u$$와 $$v$$가 만나는 점을 epipole라고 부르고 epipole점과 투영점 ($$Y^u_P, Y^v_P$$)을 잇는 직선을 epipolar line이라고 부른다.)
 
