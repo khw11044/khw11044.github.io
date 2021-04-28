@@ -285,7 +285,7 @@ Given a configuration of 3D pose $$\mathcal{J}$$ and multi-view 2D pose heatmaps
 $$p(\mathcal{J} \vert \mathcal{F}) = \frac{1}{Z(\mathcal{F})}	\prod_{i=1}^M \phi^{\text{conf}}_i(J_i,\mathcal{F}) \prod_{(m,n) \in \varepsilon} \psi^{\text{limb}}(J_m,J_n), \; (2)$$
 
 where $$Z(\mathcal{F})$$ is the partition function and $$\varepsilon$$ are the graph edges as shown in Figure 4.  
-The unary potential functions $$\phi^{\text{conf}}_i(J_i,\mathcal{F}) are computed based on the previously estimated multi-view 2D pose heatmaps $$\mathcal{F}$$.  
+The unary potential functions $$\phi^{\text{conf}}_i(J_i,\mathcal{F})$$ are computed based on the previously estimated multi-view 2D pose heatmaps $$\mathcal{F}$$.  
 The pairwise potential functions $$\psi^{\text{limb}}(J_m,J_n)$$ encode the limb length constraints between the joints.
 
 > 3D pose의 configuration : $$\mathcal{J}$$  
