@@ -367,7 +367,8 @@ Some researchers claim the superiority of their model based on a metric they dev
 
 1) Percentage of Correct Parts (PCP): this metric measures the detection rate of limbs.  
 A limb (body part) is considered detected if the distance between the two predicted joint locations and the true limb joint locations is less than half of the limb length [46].  
-PCP commonly referred also as PCP@0.5. Recently, PCP has not been preferred as an evaluation metric even though it was initially regarded as the go-to metric.  
+PCP commonly referred also as PCP@0.5.  
+Recently, PCP has not been preferred as an evaluation metric even though it was initially regarded as the go-to metric.  
 This is because PCP penalizes shorter limbs. The higher the PCP the better the model.
 
 2) Percentage of Detected Joints (PDJ): this metric is proposed to address the limitations observed in PCP.  
@@ -391,7 +392,7 @@ The PCKh@0.5 ($$ \alpha = 0.5$$) score is reported [63].
 To make the metric articulation independent, one probably better chooses to use the head size.
 
 5) Area Under the Curve (AUC) measures the different range PCK thresholds (E.g., when $$\alpha$$ varies from 0 to 0.5) entirely.  
-It informs howthe model is capable of distinguishing each body's joints.  
+It informs how the model is capable of distinguishing each body's joints.  
 The higher the AUC, the better the model.
 
 6) Object Keypoint Similarity (OKS) gives a measure of how a predicted keypoint is close to ground truth.  
@@ -457,21 +458,38 @@ However, it has been very helpful for recent SOTA researches to change the chall
 In this paper [70], ConvNet architecture, multi-resolution CNN architecture is proposed to generate discrete heatmaps instead of continuous regression that predicts the probability of the location of individual joints in monocular RGB images.  
 In ConvNet pose, different scale features are captured simultaneously using multiple resolution CNN architectures in parallel.
 
-> 본 논문에서는 단안 RGB 이미지에서 개별 접합의 위치 확률을 예측하는 연속 회귀 분석 대신 이산 히트 맵을 생성하기 위해 다중 해상도 CNN 아키텍처를 제안한다.
-ConvNet 포즈에서는 여러 해상도 CNN 아키텍처를 병렬로 사용하여 다양한 스케일 기능이 동시에 캡처된다.
+> 본 논문에서는 monocular RGB images에서 individual join의 위치 확률을 예측하는 continuous regression 대신 discrete heatmaps을 생성하기 위해 multi-resolution CNN architecture를 제안한다.  
+ConvNet 포즈에서는 multiple resolution CNN architectures를 병렬로 사용하여 different scale features이 동시에 캡처된다.
 
 This model implements a sliding window detector that produces a coarse heatmap output and this coarse heatmap is refined by 'pose refinement' ConvNet to get better localization which improves in recovering the spatial accuracy lost due to pooling in the initial model.  
 This means the model contains a module (a convolutional network) for coarse localization, a module for sampling and cropping the features of ConvNet for each joint at a specified location (x, y), and also a module for fine-tuning as shown in Fig.9 which displays the model's overall network structure.
 
+> 이 모델은 coarse heatmap 출력을 생성하는 sliding window detector를 구현하고, 이 coarse heatmap는 initial model의 pooling으로 인해 손실된 공간 정확도를 recovering을 개선하는 더 나은 localization을 얻기 위해 'pose refinement' ConvNet에 의해 정제된다.  
+이는 모델에  
+1. coarse localization을 위한 module(a convolutional network),  
+2. 지정된 location(x, y)에서 각 joint에 대한 ConvNet의 features를 sampling하고 cropping을 위한 module,  
+3. 그리고 모델의 전체 network 구조를 나타내는 그림 9에 표시된 것처럼 fine-tuning을 위한 module이  
+포함되어 있다는 것을 의미한다.
+
 This model has shown the use of a ConvNet and a graphical model jointly.  
 The spatial relationship between the joints is typically learned by the graphical model [71].  
 The performance of the model is evaluated using PCK and PCKh@0.5 on FLIC [61] and MPII [22] dataset respectively in which outperformed the previous SOTA models.
+
+> 이 모델은 ConvNet과 graphical model을 jointly(공동)하게 사용하는 것을 보여주었다.  
+joints 사이의 공간 관계는 일반적으로 graphical model에 의해 학습된다[71].  
+모델의 성능은 각각 이전 SOTA 모델을 능가한 FLIC [61] 및 MPII [22] dataset에서 PCK 및 PCKh@0.5를 사용하여 평가된다.
 
 This model implemented the joint use of a convolutional network and graphical model.  
 Also, it revealed heatmaps are preferable than direct joint regression.  
 Human poses are structured because of physical connections (like knees are rigidly related to hips and ankles), body part proportions, joint limits (like knees do not bend forward), left-right symmetries, interpenetration constraints, and others.  
 Thus, modeling this structure realizes that detecting visible keypoints is easier and this directs on estimating the occluded keypoints which are very hard to detect.  
 However, this model lacks structure modeling.
+
+> 이 모델은 convolutional network와 graphical model의 공동 사용을 구현했다.  
+또한, heatmaps이 direct joint regression보다 더 바람직하다는 것을 밝혀냈습니다.  
+Human poses는 신체 연결(무릎은 발목과 엉덩이에 강하게 관련되는 것처럼), body part 비율, 관절 한계(무릎이 앞으로 구부러지지 않음), 좌-우 대칭, 삽입 제약 등으로 인해 구조화된다.  
+따라서, 이 구조를 모델링하는 것은 가시적인 keypoints를 detect하는 것이 더 쉽다는 것을 깨닫고 이것은 detect하기 매우 어려운 occluded(가려진) keypoints를 추정하는 데 도움이 된다.  
+그러나 이 모델에는 구조 모델링이 없다.
 
 ### C. CPM: CONVOLUTIONAL POSE MACHINES
 
@@ -484,47 +502,178 @@ Thus, the image features and belief maps produced by the previous stage are give
 One of the basic motivations for CPM is learning long-range spatial relationships and this is done using large receptive fields.  
 Also, CPM used intermediate supervision after each stage to avoid the problem of vanishing gradients.
 
-The overall network structure and receptive field of CPM are shown in Fig.10. CPM network is divided into multiple stages (the stage is used as hyper-parameter, usually D3) and at each stage, the confidence (belief) map of each keypoint is computed. Fig.10, (a) and (b) show the structures in the pose machine, (c) and (d) show the corresponding convolutional networks respectively, while (e) shows the receptive fields at different stages.
+> CPM [29]은 각 키포인트 위치에 대한 2D 믿음 맵을 생성하는 일련의 컨볼루션 네트워크로 구성된다.  
+CPM이 제공하는 순차적 예측 프레임워크는 풍부한 암묵적 공간 정보와 이미지의 특징 표현을 동시에 학습하는 데 도움이 된다.  
+CPM은 완전히 차별화되며 다단계 아키텍처를 종단 간 훈련할 수 있다.  
+따라서 이전 단계에서 생성된 영상 특징과 신념 맵은 CPM의 다음 단계(1단계 제외)에 대한 입력으로 제공된다.  
+CPM의 기본 동기 중 하나는 장거리 공간 관계를 학습하는 것이며 이는 대규모 수용 필드를 사용하여 수행된다.  
+또한, CPM은 각 단계마다 중간 감독을 사용하여 구배 현상이 사라지는 문제를 피했다.
 
-At the first stage a basic convolutional network, a classic VGG structure represented by X predicts the belief maps of each keypoint from the original input image. This leads to the condition that if the individual in the image has p joint points, then the belief map has p layers with each layer representing the joint point heatmap. Each layer's loss is added up as a total loss to achieve intermediate supervision which helped them in vanishing gradients.
+The overall network structure and receptive field of CPM are shown in Fig.10.  
+CPM network is divided into multiple stages (the stage is used as hyper-parameter, usually D3) and at each stage, the confidence (belief) map of each keypoint is computed.
+Fig.10, (a) and (b) show the structures in the pose machine, (c) and (d) show the corresponding convolutional networks respectively, while (e) shows the receptive fields at different stages.
 
-For subsequent stages, stage $$>= 2$$, the structure is the same except the input to the network are two data: a belief map output from the previous stage and the result of the original image passed through X'. In addition to that, CPM showed that increasing the receptive field increases the accuracy of the prediction of keypoints. Furthermore, CPM implemented intermediate supervision after each stage to solve the vanishing gradients.
+> 전체적인 network 구조와 CPM의 receptive field는 그림 10과 같다.  
+CPM network는 multiple stages(stage가 hyper-parameter, 보통 D3으로 사용됨)로 나뉘며, 각 stage에서 각 keypoint의 confidence (belief) map을 계산한다.  
+Fig.10, (a) 및 (b)는 pose machine의 구조를 보여주고, (c)와 (d)는 각각 대응하는 convolutional networks를 보여주고, (e)는 다른 stages에서 receptive fields를 보여준다.
 
-CPM implemented their model on three known datasets: MPII, LSP, and FLIC using evaluation metrics of PCK@0.1, PCK@0.2, and PCKh@0.5. It is noteworthy to mention that CPM achieved a PCKh@0.5 score of 10.76% higher than the previous SOTA on the most challenging part, the ankle.
+At the first stage a basic convolutional network, a classic VGG structure represented by X predicts the belief maps of each keypoint from the original input image.  
+This leads to the condition that if the individual in the image has p joint points, then the belief map has p layers with each layer representing the joint point heatmap.  
+Each layer's loss is added up as a total loss to achieve intermediate supervision which helped them in vanishing gradients.
 
-CPM is the integration of the convolutional network to pose machines to learn image features and image-dependant spatial models to estimate human poses. Nevertheless, this work implemented a top-down approach on single person pose estimation, which leads to known errors and complexities of the top-down approach discussed earlier.
+> 첫 번째 stage에서 기본 convolutional network, X로 나타내는 classic VGG 구조는 original input image에서 각 keypoint의 belief maps을 예측한다.   
+이것은 만약 영상의 개인이 p joint points을 가지고 있다면, belief map은 joint point heatmap을 나타내는 각 레이어를 가지고 있다는 조건으로 이어진다.  
+vanishing gradients문제를 돕는 intermediate supervision을 하기위해 각 layer의 loss는 total loss로 합산된다.
+
+For subsequent stages, stage $$\ge 2$$, the structure is the same except the input to the network are two data: a belief map output from the previous stage and the result of the original image passed through X'.  
+In addition to that, CPM showed that increasing the receptive field increases the accuracy of the prediction of keypoints.  
+Furthermore, CPM implemented intermediate supervision after each stage to solve the vanishing gradients.
+
+> 후속 stages(stage $$\ge 2$$)의 경우, 이전 단계의 belief map output과 X'를 통과하는 original image의 결과라는 두 가지 데이터가 network에서 input인것을 제외하면 구조는 동일하다.  
+또한, CPM은 수용 필드를 늘리면 keypoints 예측의 정확도가 높아진다는 것을 보여주었다.  
+또한, CPM은 각 stage마다 intermediate supervision을 실시하여 vanishing gradients 문제를 해결하였다.
+
+CPM implemented their model on three known datasets: MPII, LSP, and FLIC using evaluation metrics of PCK@0.1, PCK@0.2, and PCKh@0.5.  
+It is noteworthy to mention that CPM achieved a PCKh@0.5 score of 10.76% higher than the previous SOTA on the most challenging part, the ankle.
+
+> CPM은 PCK@0.1, PCK@0.2, PCKh@0.5의 평가 지표를 사용하여 MPII, LSP, FLIC의 three known datasets에 모델을 구현했다.  
+가장 어려운 부분인 발목에서 CPM이 기존 SOTA보다 10.76%의 높은 PCKh@0.5 score을 달성했다는 점은 주목할 만하다.
+
+CPM is the integration of the convolutional network to pose machines to learn image features and image-dependant spatial models to estimate human poses.  
+Nevertheless, this work implemented a top-down approach on single person pose estimation, which leads to known errors and complexities of the top-down approach discussed earlier.
+
+> CPM은 image features를 학습하기 위한 pose machines인 convolutional network와 human poses를 estimate하기 위한 image-dependant spatial models을 통합한 것이다.
+그럼에도 불구하고, 이 연구는 single person pose estimation에 대해 top-down approach로 구현했고, 이는 앞에서 논의한 top-down approach의 알려진 errors와 복잡성으로 이어진다.
 
 ### D. STACKED HOURGLASS NETWORKS FOR HUMAN POSE ESTIMATION
 
 ![Fig11](/assets/img/Blog/papers/Pose/survey_2020/Fig11.JPG)
 
-Stacked hourglass network [27], exactly lookalike of an hourglass stacked which are composed as steps of pooling and upsampling layers, is on the basic motivation of capturing information at every scale. In human pose estimation: an individual's orientation, limb arrangements, the relationship between adjacent joints, and other many cues that are best identified at different scales in a given image.
+Stacked hourglass network [27], exactly lookalike of an hourglass stacked which are composed as steps of pooling and upsampling layers, is on the basic motivation of capturing information at every scale.  
+In human pose estimation: an individual's orientation, limb arrangements, the relationship between adjacent joints, and other many cues that are best identified at different scales in a given image.
 
-Thus, the stacked hourglass network is performing a repeated use of bottom-up (from high resolution to low resolution using pooling), top-down (from low resolution to high resolution using upsampling), and intermediate supervision to improve the network performance. The overall network structure of stacked hourglass modules is given in Fig.12. The hourglass stacked helps them to capture information on every scale means both global and local information is captured. It means skip connections are used to preserve spatial information in every resolution and pass it for upsampling.
+> Stacked hourglass network[27]는 pooling 및 upsampling layers의 steps로 구성된 쌓여진 모래시계와 정확히 유사하며, 모든 scale의 정보를 캡처하는 기본 motivation에 있다.   
+human pose estimation에서: 개인의 방향, 사지 배열, 인접 관절 사이의 관계, 주어진 이미지에서 다른 scales로 가장 잘 식별되는 다른 많은 단서들.
 
-Fig.11 displays a single hourglass module in which a single box represents a residual module. The primary module in an hourglass structure, residual or recurrent learning, is used for the bypass addition structure. This residual learning, composed of three convolutional layers with different scales in which batch normalization and ReLu inserted between them, extracts higher-level features while maintaining the primary level of information. The second path skips the path and contains only one kernel, A convolution layer with a scale of 1. Thus, only the data depth is changed not the data size.
+Thus, the stacked hourglass network is performing a repeated use of bottom-up (from high resolution to low resolution using pooling), top-down (from low resolution to high resolution using upsampling), and intermediate supervision to improve the network performance.  
+The overall network structure of stacked hourglass modules is given in Fig.12.  
+The hourglass stacked helps them to capture information on every scale means both global and local information is captured.  
+It means skip connections are used to preserve spatial information in every resolution and pass it for upsampling.
 
-For each hourglass module, a fourth-order residual module is used. The 4th-order Hourglass sub-network extracts features from the original scale to the 1/16 scale. It does not change the data size, only the data depth. The hourglass module is used to capture local information contained in pictures at different scales. At different scales, it may contain a lot of useful information, such as the position of the human body, the movements of the limbs, the relationship between adjacent joint points, and so on. First, the Conv layer and Max Pooling layer are used to scale features to a small resolution. At each Max Pooling (down-sampling), the network forks (branches) and convolves the features with the original pre-pooled resolution; After getting the lowest resolution features, the network starts up-sampling, and gradually combines feature information of different scales. The lower resolution here uses the nearest neighbor upsampling method, and two different feature sets are added element by element (which performs two different feature sets Add elements).
+> 따라서 stacked hourglass network는 network 성능을 향상시키기 위해 bottom-up (pooling을 사용하여 high resolution부터  low resolution까지), top-down (upsampling을 사용하여 low resolution에서 high resolution까지), 그리고 intermediate supervision을 반복적으로 사용하여 수행하고 있다.  
+stacked hourglass modules의 전체적인 network 구조는 Fig.12에 제시되어 있다.  
+hourglass stacked은 그것들이 global과 local 정보가 모두 캡처된다는 것을 의미하는 모든 scale의 정보를 캡처하는 것을 돕는다..  
+즉, skip connections은 모든 resolution에서 공간 정보를 보존하고 그것을 upsampling해서 전달하기 위해 사용된다.
 
-In stacked hourglass down-sampling uses max pooling, and up-sampling uses nearest-neighbor interpolation. The original image is down-sampled and input into the Hourglass sub-net. The output of Hourglass goes through two linear modules to get the final response graph. During this period, the Residual module and the convolutional layer are used to gradually extract features. The secondary used network centered around two Hourglass and repeats the second (latter) half of the primary network. The input of the second Hourglass contains three channels (paths): the input data of the first Hourglass, the output data of the first Hourglass, and the first-level prediction result. These three channels of data are fused by concat and add, and their scales are different, which reflects the currently popular idea of skip-level (jump) structure.
+Fig.11 displays a single hourglass module in which a single box represents a residual module.  
+The primary module in an hourglass structure, residual or recurrent learning, is used for the bypass addition structure.  
+This residual learning, composed of three convolutional layers with different scales in which batch normalization and ReLu inserted between them, extracts higher-level features while maintaining the primary level of information.  
+The second path skips the path and contains only one kernel, A convolution layer with a scale of 1.  
+Thus, only the data depth is changed not the data size.
 
-In the Stacked hourglass network both high-resolution to low-resolution processing and low-resolution to highresolution processing are symmetrical. The stacked hourglass was tested on MPII and FLIC dataset benchmarks using PCK@0.2 and PCKh@0.5 evaluation metrics in which surpassed all previous SOTA performance. In addition, this work has improved accuracy from 4-5%. on the joints difficult to detect (knees and ankles).
+> Fig.11은 single box가 residual module을 나타내는 single hourglass module을 보여준다.  
+hourglass 구조의 primary module인 residual 또는 recurrent learning은 bypass 추가 구조에 사용된다.  
+배치 정규화와 ReLu 사이에 삽입된 서로 다른 척도의 세 개의 컨볼루션 레이어로 구성된 이 잔류 학습은 기본 수준의 정보를 유지하면서 상위 수준의 특징을 추출한다.  
+두 번째 경로는 경로를 건너뛰고 하나의 커널, 즉 척도가 1인 컨볼루션 계층만 포함합니다.  
+따라서 데이터 크기만 변경되지 않고 데이터 깊이만 변경됩니다.
+
+For each hourglass module, a fourth-order residual module is used.  
+The 4th-order Hourglass sub-network extracts features from the original scale to the 1/16 scale.  
+It does not change the data size, only the data depth.  
+The hourglass module is used to capture local information contained in pictures at different scales.  
+At different scales, it may contain a lot of useful information, such as the position of the human body, the movements of the limbs, the relationship between adjacent joint points, and so on.  
+First, the Conv layer and Max Pooling layer are used to scale features to a small resolution.  
+At each Max Pooling (down-sampling), the network forks (branches) and convolves the features with the original pre-pooled resolution;  
+After getting the lowest resolution features, the network starts up-sampling, and gradually combines feature information of different scales.  
+The lower resolution here uses the nearest neighbor upsampling method, and two different feature sets are added element by element (which performs two different feature sets Add elements).
+
+> 각 hourglass module에 대해 4차 residual module이 사용된다.  
+4th-order Hourglass sub-network는 original scale에서 1/16 scale까지의 features을 추출한다.  
+data size는 변경되지 않고 data depth만 변경됩니다.  
+hourglass module은 사진에 포함된 local 정보를 다양한 scales로 캡처하는 데 사용됩니다.  
+다른 scales에서, 그것은 human body의 position, 팔다리의 움직임, 인접한 관절 points들 사이의 관계 등과 같은 많은 유용한 정보를 포함할 수 있다.  
+First,  Conv layer와 Max Pooling layer는 scale features를 small resolution로 사용된다.  
+각 Max Pooling(down-sampling)에서 network는 original pre-pooled resolution로 features을 forks(branches)하고 convolves한다.  
+lowest resolution features을 얻은 후, network는 up-sampling을 시작하고 다양한 scales의 feature 정보를 점차 결합한다.  
+여기서 lower resolution는 nearest neighbor upsampling method을 사용하며, 요소별로 두 개의 다른 feature sets가 element by element로 추가됩니다(두 개의 다른 feature sets 추가 elements 수행).
+
+In stacked hourglass down-sampling uses max pooling, and up-sampling uses nearest-neighbor interpolation.  
+The original image is down-sampled and input into the Hourglass sub-net.  
+The output of Hourglass goes through two linear modules to get the final response graph.  
+During this period, the Residual module and the convolutional layer are used to gradually extract features.  
+The secondary used network centered around two Hourglass and repeats the second (latter) half of the primary network.  
+The input of the second Hourglass contains three channels (paths): the input data of the first Hourglass, the output data of the first Hourglass, and the first-level prediction result.  
+These three channels of data are fused by concat and add, and their scales are different, which reflects the currently popular idea of skip-level (jump) structure.
+
+> stacked hourglass down-sampling에서는 max pooling을 사용하고 up-sampling에서는 nearest-neighbor interpolation을 사용한다.  
+original image은 down-sample되어 Hourglass sub-net에 입력된다.  
+Hourglass의 output은 두 개의 linear modules을 통해 final response graph를 얻는다.  
+이 기간 동안 Residual module과 convolutional layer가 점진적으로 features을 추출하는 데 사용된다.  
+secondary는 두 개의 Hourglass를 중심 network를 사용하고 primary network의 두 번째(나중에) half를 반복합니다.  
+second Hourglass의 input에는 다음 three channels (paths)를 포함한다 : 첫 번째 Hourglass의 input data, 첫 번째 Hourglass의 output data, first-level 예측 결과  
+이 data의 three channels은 concat과 add에 의해 융합되며, 그 scales은 서로 다르며, 이는 현재 널리 알려진 skip-level (jump) 구조의 개념을 반영한다.
+
+In the Stacked hourglass network both high-resolution to low-resolution processing and low-resolution to high-resolution processing are symmetrical.  
+The stacked hourglass was tested on MPII and FLIC dataset benchmarks using PCK@0.2 and PCKh@0.5 evaluation metrics in which surpassed all previous SOTA performance.  
+In addition, this work has improved accuracy from 4-5%. on the joints difficult to detect (knees and ankles).
+
+> Stacked hourglass network에서는 high-resolution to low-resolution processing 과 low-resolution to high-resolution processing가 모두 대칭이다.  
+stacked hourglass는 이전의 모든 SOTA 성능을 능가하는 PCK@0.2 및 PCKh@0.5 평가 지표를 사용하여 MPII 및 FLIC ataset benchmarks에서 테스트되었다.  
+또한 이 작업은 감지하기 어려운 관절(골반과 발목)에 대해 정확도가 4-5%로 향상되었다.
 
 ### E. DeeperCut: A DEEPER, STRONGER, AND FASTER MULTI-PERSON POSE ESTIMATION MODEL
 
 ![Fig12](/assets/img/Blog/papers/Pose/survey_2020/Fig12.JPG)
 
-DeeperCut [33] is a more similar and an upgrade version of the approach presented in DeepCut [52]. DeeperCut has implied a strong body part detectors to generate effective bottom-up proposals for body joints and adapted the extremely deep Residual Network (ResNet [38]) for human body detection whereas DeepCut adapted Fast R-CNN [48] for the task. The proposed keypoints are assembled into a variable number of consistent body part configurations using image-conditioned pairwise terms.
+DeeperCut [33] is a more similar and an upgrade version of the approach presented in DeepCut [52].  
+DeeperCut has implied a strong body part detectors to generate effective bottom-up proposals for body joints and adapted the extremely deep Residual Network (ResNet [38]) for human body detection whereas DeepCut adapted Fast R-CNN [48] for the task.  
+The proposed keypoints are assembled into a variable number of consistent body part configurations using image-conditioned pairwise terms.
 
-Unlike DeepCut, DeeperCut used an incremental optimization strategy that explores the search space more efficiently which leads to both better performance and speed-up factors. Adapting ResNet allowed this work to tackle the problem of vanishing gradients because ResNet tackles the problem bypassing the state though identity layers and modeling residual functions.
+> DeepCut[33]은 DeepCut[52]에 제시된 approach의 업그레이드 버전이며 꽤 유사하다.  
+DeeperCut은 body joints에 대한 효과적인 bottom-up proposals을 생성하기 위해 strong body part detectors를 암시했으며 human body detection을 위해 deep Residual Network (ResNet)를 채택한 반면 DeepCut은 이 작업에 Fast R-CNN을 채택했다.  
+proposed keypoints는 image-conditioned pairwise terms를 사용하여 다양한 수의 일관된 body part configurations으로 조립된다.
 
-Similar to DeepCut, DeeperCut jointly estimates the poses of every individual appeared in an image by minimizing a joint objective based on Integer Linear Programming (ILP). The authors started by making a set of body joint candidates (D) generated by body part detectors and a set of body joint classes(C) such as head, shoulder, and knee in which each candidate's joint has a unary score for every joint class. Adapting ResNet to the fully convolutional model for the sliding window-based body part detection usually brings a stride of 32px which is too coarse for effective joint localization. The authors showed by reducing the stride from 32px to 8px. Besides, to tackling the problem of vanishing gradients in adapting ResNet, DeeeperCut also achieves a large receptive field size which allows them to incorporate context when predicting locations of individual body joints.
+Unlike DeepCut, DeeperCut used an incremental optimization strategy that explores the search space more efficiently which leads to both better performance and speed-up factors.  
+Adapting ResNet allowed this work to tackle the problem of vanishing gradients because ResNet tackles the problem bypassing the state though identity layers and modeling residual functions.
 
-After detecting the keypoints, DeeperCut implemented image-conditioned pairwise terms on proposed keypoints. First, an individual in the image is randomly selected and then the location is fixed for each keypoint at its ground truth location using the learned regression. Second, an individual pairwise score-maps will be done and this gets the shape of a cone which extends to the direction of the correct location, but these are visually fuzzy. Finally, by applying an incremental optimization strategy that uses a branch-and-cut algorithm to incrementally solve several pairwise instances to have a valid human pose configuration.
+> DeepCut과는 달리 DeeperCut은 search space를 보다 효율적으로 탐색하여 성능과 속도 향상 요인으로 이어지는 incremental optimization strategy을 사용했다.  
+ResNet을 적응시키면 ResNet은 identity layers를 통해 상태를 우회하는 문제를 해결하고 residual functions를 모델링하기 때문에 이 작업이 vanishing gradients 문제를 해결할 수 있었다.
 
-DeeperCut employed the model on LSP, MPII, and COCO dataset using an evaluation metric of AP and mAP which outperformed most of the previous SOTA models except CPM [29] which got similar performance in some cases. Evaluation is done on both single and multi-person pose estimation.
+Similar to DeepCut, DeeperCut jointly estimates the poses of every individual appeared in an image by minimizing a joint objective based on Integer Linear Programming (ILP).  
+The authors started by making a set of body joint candidates (D) generated by body part detectors and a set of body joint classes(C) such as head, shoulder, and knee in which each candidate's joint has a unary score for every joint class.  
+Adapting ResNet to the fully convolutional model for the sliding window-based body part detection usually brings a stride of 32px which is too coarse for effective joint localization.  
+The authors showed by reducing the stride from 32px to 8px.  
+Besides, to tackling the problem of vanishing gradients in adapting ResNet, DeeeperCut also achieves a large receptive field size which allows them to incorporate context when predicting locations of individual body joints.  
 
-DeeperCut has introduced novel image-conditioned pairwise terms but still needs several minutes per given image (around 4 min/image). However, the pairwise representations are very hard to regress precisely. Additionally, it implemented the model with a batch size of 1 which increases the instability of the model.
+> DeepCut과 마찬가지로 DeepCut은 Integer Linear Programming (ILP)에 기초한 공동 목표를 최소화하여 image에 나타난 모든 개인의 poses를 공동으로 estimates한다.  
+저자들은 body part detectors에서 생성된 a set of body joint candidates(D)와 joint class마다 unary score를 가지는 각 candidate의 joint인 머리, 어깨, 무릎 등 a set of body joint candidates(C)을 만드는 것으로 시작했다.  
+sliding window 기반 body part detection를 위해 ResNet을 fully convolutional model에 적용하는것은 효과적인 joint localization에는 너무 coarse한 a stride of 32px을 보통 가져온다.  
+저자들은 stride를 32px에서 8px로 줄임으로써 보여주었다.  
+또한, DeeeperCut은 ,ResNet 조정에서 vanishing gradients 문제를 해결하기 위해, 개인 body joints의 locations를 예측할 때 context를 통합할 수 있는 큰 receptive field size를 달성한다.
+
+After detecting the keypoints, DeeperCut implemented image-conditioned pairwise terms on proposed keypoints.  
+First, an individual in the image is randomly selected and then the location is fixed for each keypoint at its ground truth location using the learned regression.  
+Second, an individual pairwise score-maps will be done and this gets the shape of a cone which extends to the direction of the correct location, but these are visually fuzzy.  
+Finally, by applying an incremental optimization strategy that uses a branch-and-cut algorithm to incrementally solve several pairwise instances to have a valid human pose configuration.
+
+> keypoints를 detecting한 후, DeepCut은 제안된 keypoints에 image-conditioned pairwise terms를 구현했다.  
+First, image의 individual을 임의로 선택한 다음 학습된 regression을 사용하여 ground truth location에서 각 keypoint에 대한 location을 고정한다.  
+Second, individual pairwise score-maps이 수행되고 이것은 correct location의 방향으로 확장되는 원뿔(cone) 모양을 얻지만, 이것들은 시각적으로 흐릿하다.  
+Finally, branch-and-cut algorithm을 사용하여 여러 pairwise의 instances를 점진적으로 해결하여 valid human pose configuration을 갖는 incremental optimization strategy을 적용함으로써.
+
+DeeperCut employed the model on LSP, MPII, and COCO dataset using an evaluation metric of AP and mAP which outperformed most of the previous SOTA models except CPM [29] which got similar performance in some cases.  
+Evaluation is done on both single and multi-person pose estimation.
+
+> DeeperCut은 AP와 mAP의 evaluation metric를 사용하여 LSP, MPII, COCO dataset에 model을 사용했으며, 일부 경우 유사한 성능을 얻은 CPM[29]을 제외한 대부분의 이전 SOTA 모델을 능가했다.  
+평가는 single-person pose estimation와 multi-person pose estimation 모두에서 이루어진다.
+
+DeeperCut has introduced novel image-conditioned pairwise terms but still needs several minutes per given image (around 4 min/image).  
+However, the pairwise representations are very hard to regress precisely.  
+Additionally, it implemented the model with a batch size of 1 which increases the instability of the model.
+
+> DeeperCut은 novel image-conditioned pairwise terms를 도입했지만 여전히 주어진 image당 몇 분(이미지 약 4분)이 필요하다.  
+그러나 pairwise representations은 정확하게 regress하기 어렵다.  
+또한 batch size가 1인 모델을 구현하여 모형의 불안정성을 높였다.
 
 ### F. IEF: HUMAN POSE ESTIMATION WITH ITERATIVE ERROR FEEDBACK
 
