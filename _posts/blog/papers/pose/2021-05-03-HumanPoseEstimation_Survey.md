@@ -229,6 +229,8 @@ ttom-up approaches은 early commitment을 극복하고 Fig.6에 표시된 것처
 
 ### C. APPLICATIONS OF POSE ESTIMATION
 
+![Fig7](/assets/img/Blog/papers/Pose/survey_2020/Fig7.JPG)
+
 Earlier human pose estimation application areas such as action recognition, human tracking, animation, and gaming [41], [42] are mentioned.  
 Video surveillance, assisted living, and advanced driver assistance systems (ADAS) [43], [44] are also included.  
 Furthermore, it may also provide game analysis in sports by describing the players' movement [45].  
