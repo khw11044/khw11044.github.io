@@ -328,7 +328,7 @@ Researchers in human pose estimation have been mainly using the following four d
 Less known datasets such as Pascal VOC [57], SURREAL [58] for single-person in both 2D and 3D pose estimation, HumanEva, Human3.6 dataset, CrowdPose [59], and JTA [60] have also been used in human pose estimation.
 
 > human pose estimation의 연구자들은 대중이 자유롭게 사용할 수 있는 다음과 같은 4개의 datasets를 주로 사용해 왔다: FLIC, LSP, MPII Human Pose, COCO.  
-Pascal VOC [57], 2D 및 3D pose estimation 모두에서 single-person을 위한 SERPRIC [58], HumanEva, Human 3.6 dataset, CrowdPose [59], JTA [60]과 같은 덜 알려진 datasets도  human pose estimation에 사용되었다.
+, 2D 및 3D pose estimation 모두에서 single-person을 위한 Pascal VOC [57], SERPRIC [58], 그리고  HumanEva, Human 3.6 dataset, CrowdPose [59], JTA [60]과 같은 덜 알려진 datasets도  human pose estimation에 사용되었다.
 
 Frames Labeled In Cinema (FLIC) [61] dataset consists of a total of 5,003 images of which 80% (around 4,000 images) are used as training and 20% (around 1016 images) are used as testing dataset.  
 FLIC dataset is acquired from popular 30 movies in Hollywood by running a person detector SOTA model on every tenth frame of 30 movies.  
