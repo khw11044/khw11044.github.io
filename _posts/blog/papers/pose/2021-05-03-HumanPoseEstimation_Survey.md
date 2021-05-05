@@ -144,11 +144,15 @@ Fig.2에서 보듯이, 다른 플랫폼들은 동일한 body joints 이미지에
 예를 들어, COCO [21] dataset는 17개의 body joints를 제공하는 반면, MPII [22]는 14개의 body joints를 제공한다.  
 Table 1에는 두 플랫폼에 대한 outputs dataset를 표시하고 있다.
 
+![Table1](/assets/img/Blog/papers/Pose/survey_2020/Table1.JPG)
+
 _The second step_ is grouping those joints into valid human pose configuration which determines the pairwise terms between body parts as seen in Fig.3.  
 Different techniques have been applied in joining the keypoint candidates [23], [24].
 
 > 두 번째 단계는 Fig.3에서 보는 바와 같이 body parts 사이의 pairwise terms을 결정하는 유효한 인체 자세 구성으로 이 joints을 그룹화하는 것이다.  
 keypoint 후보군에 합류하는 데는 다양한 기술이 적용되었다 [23], [24].
+
+![Fig3](/assets/img/Blog/papers/Pose/survey_2020/Fig3.JPG)
 
 The rest of this paper is organized as follows.  
 Section II describes the category of pose estimation based on the number of people needed to track, approaches used in pose estimation, application of pose estimation, and flaws/challenges in pose estimation.  
@@ -163,7 +167,6 @@ Section IV에서는 각  model's network procedures에 대한 자세한 discussi
 Section V는 models을 간략하게 table로 요약하고 이 글에 제시된 내용을 기반으로 discussion을 열고  
 마지막으로 Section VI는 본 논문의 작업을 마무리한다.
 
-![Table1](/assets/img/Blog/papers/Pose/survey_2020/Table1.JPG)
 
 ## II. POSE ESTIMATION PRELIMINARY
 
@@ -171,7 +174,6 @@ This section discusses the general classification of pose estimation based on th
 
 > 이 section에서는 tracking을 위한 pose estimation based on the number of people의 일반적인 분류, 가장 인기 있는 approaches 소개, pose estimation의 application, 마지막으로 여전히 새롭고 혁신적인 approaches이 필요한 challenges에 대해 설명다.
 
-![Fig3](/assets/img/Blog/papers/Pose/survey_2020/Fig3.JPG)
 
 ### A. SINGLE/MULTI-PERSON POSE ESTIMATION
 
