@@ -698,7 +698,7 @@ This procedure is done repeatedly and progressively T times until getting a refi
 
 > Fig.13의 왼쪽에는 image I와 초기에 추측된 keypoints $$y_0$$(이전 output $$y_{t-1}$$의 representation)로 구성된 input이 있다.  
 머리(빨간색), 오른쪽 손목(녹색), 왼쪽 손목(파란색)의 세 가지 keypoints를 가정한다.  
-그런 다음, input은 $$X_t = I \oplus g(y_{t-1})$$ 로,  $y_{t-1}$$는 이전 output으로 정의한다.
+그런 다음, input은 $$X_t = I \oplus g(y_{t-1})$$ 로,  $$y_{t-1}$$는 이전 output으로 정의한다.
 ConvNet으로 모델링된 function $$f(X_t)$$는 correction $$\varepsilon_t$$를 output으로 생성하며 이 output은 현재 output $$y_t$$에 추가되어 $$y_{t+1}$$을 생성하고 이것은 correction이 고려됨을 의미한다.  
 function $$g(y_{t+1})$$는 모든 keypoint position을 하나의 Gaussian heatmap channel로 변환하여 다음 iteration을 위한 image와 함께 input의 일부가 될 수 있도록 한다.  
 이 절차는 ground truth에 매우 가까운 정제된 $$y_{t+1}$$를 얻을 때까지 반복적이고 점진적으로 T번 수행된다.
