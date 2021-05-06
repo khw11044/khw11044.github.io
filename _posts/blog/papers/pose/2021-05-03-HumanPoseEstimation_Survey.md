@@ -737,58 +737,195 @@ The feed-forward model simultaneously predicts confidence maps S (shown in beige
 > Fig.14에 표시된 two-branch multi-stage CNN network는 VGG architecture의 처음 10 layers에 의해 초기화된 이미지의 feature map F의 input을 받는다.  
 feed-forward model은 각 joint $$(S = S_1, S_2, . . . , S_J)$$에 대한 "J confidence maps" 및 "affinity fields L" 또는 각 limb $$(L = L_1, L_2, . . . , L_C)$$에 해당하는 C vectors를 가지는 parts/limbs association를 encoding 하기위한 "a set of 2D vector fields" (shown in blue)를 사용하여 joints의 location을 예측하기 위한 confidence maps S (shown in beige)를 동시에 예측한다.
 
-Thus, at the end of the first stage, the network outputs a set of detection confidence maps and part affinity fields. For the consecutive stages, the inputs will be the combination of the two previous stage outputs and the feature map F. Both the confidence maps and the part affinity fields are passed by the greedy inference to have the 2D keypoints for every individual in the image, called Bipartite matching. Furthermore, this work implemented intermediate supervision after each stage to solve the vanishing gradient's problems by restoring the gradients periodically.
+Thus, at the end of the first stage, the network outputs a set of detection confidence maps and part affinity fields.  
+For the consecutive stages, the inputs will be the combination of the two previous stage outputs and the feature map F.  
+Both the confidence maps and the part affinity fields are passed by the greedy inference to have the 2D keypoints for every individual in the image, called Bipartite matching.  
+Furthermore, this work implemented intermediate supervision after each stage to solve the vanishing gradient's problems by restoring the gradients periodically.
+
+> 따라서, first stage가 끝날 때, network는 a set of detection confidence maps과 part affinity fields를 outputs다.  
+consecutive stages의 경우, inputs은 두 이전 stage outputs과 feature map F의 조합이 된다.  
+confidence maps과 part affinity fields 모두 image 내의 모든 개인에 대한 2D keypoints를 가지기 위한 Bipartite matching라고 부르는 탐욕 추론을 통과한다.  
+또한, 이 작업은 각 stage 후에 intermediate supervision을 구현하여 주기적으로 gradients를 복원하여 vanishing gradient 문제를 해결했다.
 
 This work is evaluated on COCO and MPII dataset using AP, mAP, and PCKh@0.5 evaluation metrics to achieve the best results compared to the existing SOTA models in terms of performance and efficiency.
+
+> 본 연구는 성능 및 효율성 측면에서 기존 SOTA 모델과 비교하여 최상의 결과를 얻기 위해 AP, mAP 및 PCKh@0.5 평가 지표를 사용하여 COCO 및 MPII 데이터 세트에서 평가된다.
 
 ### H. CPN: CASCADED PYRAMID NETWORK FOR MULTI-PERSON POSE ESTIMATION
 
 ![Fig15](/assets/img/Blog/papers/Pose/survey_2020/Fig15.JPG)
 
-Cascaded Pyramid Network (CPN) for multi-person pose estimation model [32] is motivated with the concept of facing the challenging problems which are called "hard keypoints". These include occlusion of keypoints (Occluded by clothes or another person), invisible keypoints, complex backgrounds, etc. The authors proposed a top-down model for multiperson pose estimation with CPN network structure as shown in Fig.15. This CPN network structure is composed of two stages: GlobalNet and RefineNet. Relatively easy keypoints are estimated by the GlobalNet while the hard keypoints estimation is done by RefineNet using online hard keypoint mining loss.
+Cascaded Pyramid Network (CPN) for multi-person pose estimation model [32] is motivated with the concept of facing the challenging problems which are called "hard keypoints".  
+These include occlusion of keypoints (Occluded by clothes or another person), invisible keypoints, complex backgrounds, etc.  
+The authors proposed a top-down model for multi-person pose estimation with CPN network structure as shown in Fig.15.  
+This CPN network structure is composed of two stages: GlobalNet and RefineNet.  
+Relatively easy keypoints are estimated by the GlobalNet while the hard keypoints estimation is done by RefineNet using online hard keypoint mining loss.
 
-CPN network structure uses a CNN model to identify some human keypoints called Visible easy keypoints, which are relatively easy to detect; for instance Nose, Left elbow, and right hand in the image below. Visible easy keypoints have somewhat a fixed shape and this helps in obtaining texture information which makes it easy to get contextual information around the location of the joints. Then there are visible hard keypoints that are obscured by clothes such as the left knee, right knee, and left hip. Additionally, some joints are hidden and hard to distinguish, not only obscured by clothes, such as the right shoulder in the image shown below. For such hard keypoints, which have no contextual information, increasing the local receptive field is required such that the context information can be further refined. Based on this concept CPN roughly categorized the human body joints into simple parts and difficult parts.
+> multi-person pose estimation model을 위한 계단식 피라미드 네트워크(CPN)는 "hard keypoints"라고 불리는 어려운 문제에 직면한다는 개념에 동기 부여가 되었다.  
+여기에는 keypoints의 occlusion(옷이나 다른 사람이 포함), invisible keypoints, 복잡한 배경 등이 포함된다.  
+저자들은 Fig.15와 같이 CPN network 구조를 가진  multi-person pose estimation을 위한 top-down model을 제안했다.  
+이 CPN network 구조는 다음 두 단계로 구성된다 : GlobalNet 및 ClearateNet.  
+비교적 easy keypoints는 GlobalNet에 의해 추정되고, hard keypoints 추정은 online hard keypoint mining loss을 사용하여 RefineNet에 의해 이루어진다.
 
-GlobalNet, composed of a forward CNN, is a simple regression model that focuses on easy to detect human keypoints usually eyes, arms, and other easy to detect parts. The purpose of RefineNet is to detect difficult-to-recognize human keypoints, called hard keypoints. RefineNet integrates multiple receptive fields information with the feature maps of the pyramid model generated by GlobalNet. Then finally all feature maps with the same size are concatenated such that a correction for ambiguous keypoints is obtained. RefineNet applies two things to mine the difficult keypoints 1) concat when using features of multiple layers and 2) online hard keypoints mining technology for the second-level network. In general, RefineNet combines low-level features and highlevel features through convolution operations.
+CPN network structure uses a CNN model to identify some human keypoints called Visible easy keypoints, which are relatively easy to detect; for instance Nose, Left elbow, and right hand in the image below.  
+Visible easy keypoints have somewhat a fixed shape and this helps in obtaining texture information which makes it easy to get contextual information around the location of the joints.  
+Then there are visible hard keypoints that are obscured by clothes such as the left knee, right knee, and left hip.  
+Additionally, some joints are hidden and hard to distinguish, not only obscured by clothes, such as the right shoulder in the image shown below.  
+For such hard keypoints, which have no contextual information, increasing the local receptive field is required such that the context information can be further refined.  
+Based on this concept CPN roughly categorized the human body joints into simple parts and difficult parts.
 
-By the use of RefineNet plus online hard keypoints mining, the model outperformed the previous SOTA models when implementing the model on the COCO dataset using AP and OKS evaluation metrics. CPN exhibits similar properties as stacked hourglass being symmetrical in both processing of high-to-low resolution and low-to-high resolution. It is easy to observe processing from high-resolution to low-resolution as part of a classification network and that it is heavy. Nevertheless, other-way processing (low-resolution to high Resolution) is relatively light.
+> CPN network 구조는 CNN model을 사용하여 상대적으로 쉽게 detect할 수 있는 Visible easy keypoints라고 하는 일부 human keypoints를 식별하는데, 예를 들어 아래 이미지에서 코, 왼쪽 팔꿈치 및 오른손을 사용한다.  
+눈에 보이는 쉬운 키포인트는 어느 정도 fixed shape를 가지고 있으며, 이는 관절의 위치 주변에서 상황 정보(contextual information)를 쉽게 얻을 수 있도록 하는 texture information를 얻는 데 도움이 된다.  
+그런 다음 왼쪽 무릎, 오른쪽 무릎, 왼쪽 엉덩이 등 옷에 가려 보이는 visible hard keypoints가 있다.  
+또한 일부 joints은 아래 보이는 것과 같이 image의 오른쪽 어깨와 같이 옷으로 가려져 구별하기 어렵다.  
+contextual information이 없는 이러한 hard keypoints의 경우 context information을 더욱 세분화할 수 있도록 local receptive field를 늘려야 한다.  
+이 개념을 바탕으로 CPN은 human body joints을 simple parts와 difficult parts으로 대략 분류했다.
+
+GlobalNet, composed of a forward CNN, is a simple regression model that focuses on easy to detect human keypoints usually eyes, arms, and other easy to detect parts.  
+The purpose of RefineNet is to detect difficult-to-recognize human keypoints, called hard keypoints.  
+RefineNet integrates multiple receptive fields information with the feature maps of the pyramid model generated by GlobalNet.  
+Then finally all feature maps with the same size are concatenated such that a correction for ambiguous keypoints is obtained.  
+RefineNet applies two things to mine the difficult keypoints 1) concat when using features of multiple layers and 2) online hard keypoints mining technology for the second-level network.  
+In general, RefineNet combines low-level features and high-level features through convolution operations.
+
+> forward CNN으로 구성된 GlobalNet은 보통 눈, 팔 및 기타 detect하기 쉬운 human keypoints을 detect하는 데 초점을 맞춘 simple regression model이다.  
+RefineNet의 목적은 hard keypoints라고 불리는  difficult-to-recognize human keypoints를 감지하는 것이다.  
+RefineNet은 GlobalNet에서 생성한 pyramid model의 feature maps과 multiple receptive fields information를 통합한다.  
+그런 다음 마지막으로 same size인 all feature maps을 연결하여 애매한 keypoints를 보정한다.  
+RefineNet은 difficult keypoints를 mine하기 위해 2가지를 적용한다 : 1) multiple layers의 features을 사용할 때 concat, 2) second-level network를 위한 online hard keypoints mining technology  
+일반적으로, RefineNet은 convolution 작업을 통해 low-level features와 high-level features을 결합한다.
+
+By the use of RefineNet plus online hard keypoints mining, the model outperformed the previous SOTA models when implementing the model on the COCO dataset using AP and OKS evaluation metrics.  
+CPN exhibits similar properties as stacked hourglass being symmetrical in both processing of high-to-low resolution and low-to-high resolution.  
+It is easy to observe processing from high-resolution to low-resolution as part of a classification network and that it is heavy.  
+Nevertheless, other-way processing (low-resolution to high Resolution) is relatively light.
+
+> RefineNet과  online hard keypoints mining을 사용하여, 모델은 AP 및 OKS 평가 지표를 사용하여 COCO dataset에 모델을 구현할 때 이전 SOTA 모델을 능가했다.  
+CPN은 high-to-low resolution 및 low-to-high resolution 모두 처리에서 대칭(symmetrical)을 이루는 stacked hourglass와 유사한 특성을 보인다.  
+classification network의 일부로 high-resolution부터 low-resolution까지의 processing를 관찰하기 쉽고 heavy하다.  
+그럼에도 불구하고 other-way processing (low-resolution to high Resolution)는 상대적으로 light하다.
 
 ### I. SIMPLE BASELINES FOR HUMAN POSE ESTIMATION AND TRACKING
 
 ![Fig16](/assets/img/Blog/papers/Pose/survey_2020/Fig16.JPG)
 
-The main motivation behind simple baselines for human pose estimation and tracking [31] is that most of the recent models on human pose estimation are very complex and look different in structure but achieving very close results. simple baselines proposed a relatively simplified and intuitive model that consists of a few deconvolutional layers at the end of ResNet to estimate the keypoints heatmap. While most human pose estimation models like stacked hourglass [27] and CPN [32] use the structure composed of upsampling and convolution to increase the low-resolution feature map, simple baselines inserts several layers of deconvolution in ResNet which is a very simple way to expand the feature map to the size of the original image to generate the keypoints heatmap as shown in Fig.16.
+The main motivation behind simple baselines for human pose estimation and tracking [31] is that most of the recent models on human pose estimation are very complex and look different in structure but achieving very close results.  
+simple baselines proposed a relatively simplified and intuitive model that consists of a few deconvolutional layers at the end of ResNet to estimate the keypoints heatmap.  
+While most human pose estimation models like stacked hourglass [27] and CPN [32] use the structure composed of upsampling and convolution to increase the low-resolution feature map, simple baselines inserts several layers of deconvolution in ResNet which is a very simple way to expand the feature map to the size of the original image to generate the keypoints heatmap as shown in Fig.16.
+
+> human pose estimation 및 tracking을 위한 simple baselines의 main motivation은 human pose estimation에 대한 대부분의 최신 모델이 매우 복잡하고 구조적으로 다르게 보이지만 매우 가까운 결과를 달성한다는 것이다.  
+simple baselines은 keypoints heatmap을 추정하기 위해 ResNet 끝의 몇 개의 deconvolutional layers로 구성된 비교적 단순하고 직관적인 모델을 제안했다.  
+stacked hourglass와 CPN과 같은 대부분의 human pose estimation models은 low-resolution feature map을 증가시키기 위해 upsampling과 convolution으로 구성된 구조를 사용하지만, simple baselines은 ResNet에 여러 layers의 deconvolution을 삽입하는데, keypoints heatmap을 생성하기 위해 feature map을 original image 크기로 확장하여는 매우 간단한 방법이다. Fig.16에서 보듯이
 
 In this article, both pose estimation and pose tracking are discussed, but our discussion focused on the former.
-As mentioned earlier this model's network structure is straightforward: add several layers of deconvolution after ResNet to generate a heatmap for the individual keypoints. The takeaway from this work is that the more the deconvolution layers, the greater the resolution of the generated heatmap.
+As mentioned earlier this model's network structure is straightforward: add several layers of deconvolution after ResNet to generate a heatmap for the individual keypoints.   
+The takeaway from this work is that the more the deconvolution layers, the greater the resolution of the generated heatmap.
 
-Simple baselines achieved better performance compared to the previous works with the COCO dataset using AP evaluation metrics simply and easily. Similar to CPN, highresolution to low-resolution processing is viewed as part of a classification network (such as ResNet and VGGNet), and this is heavy while processing low-resolution to highresolution is comparatively light.
+> 이 논문에서, pose estimation과 pose tracking 모두에 대해 모두 논의하지만, 우리의 논의는 전자에 초점을 맞췄다.
+앞에서 언급했듯이 이 모델의 network 구조는 간단하다: ResNet 이후 deconvolution layers를 여러 개 추가하여 개인 keypoints에 대한 heatmap을 생성한다.  
+이 작업의 단점은 deconvolution layers가 많을수록 생성된 heatmap의 resolution이 크다는 것이다.
+
+Simple baselines achieved better performance compared to the previous works with the COCO dataset using AP evaluation metrics simply and easily.  
+Similar to CPN, high-resolution to low-resolution processing is viewed as part of a classification network (such as ResNet and VGGNet), and this is heavy while processing low-resolution to high-resolution is comparatively light.
+
+> Simple baselines은 단순하고 쉽게 AP 평가 지표를 사용하여 COCO dataset를 사용한 이전 작업에 비해 더 나은 성능을 달성했다.  
+CPN과 유사하게, high-resolution에서 low-resolution processing은 (ResNet와 VGGNet 같은)classification network의 part로 간주되며, 이는 무거운 반면  low-resolution에서 high-resolution processing은 상대적으로 가볍다.
 
 ### J. HRNet: DEEP HIGH-RESOLUTION REPRESENTATION LEARNING FOR HUMAN POSE ESTIMATION
 
 ![Fig17](/assets/img/Blog/papers/Pose/survey_2020/Fig17.JPG)
 
-The usual trend applied in human pose estimation is downsampling high-resolution feature maps to low-resolution and then trying to recover a high-resolution value from low-resolution feature maps. Based on this motivation, this research proposed an intuitive and different model called High-Resolution Net (HRNet) to maintain a high-resolution representation throughout the process [35]. In Stacked hourglass [27] both high-to-low resolution and low-to-high resolution processes are symmetrical. Processing from high-resolution to low-resolution in both CPN [32] and simple baselines [31] considered as part of a classification network by the backbone architecture which is heavy, but the reverse process is relatively light.
+The usual trend applied in human pose estimation is downsampling high-resolution feature maps to low-resolution and then trying to recover a high-resolution value from low-resolution feature maps.  
+Based on this motivation, this research proposed an intuitive and different model called High-Resolution Net (HRNet) to maintain a high-resolution representation throughout the process [35].  
+In Stacked hourglass [27] both high-to-low resolution and low-to-high resolution processes are symmetrical.  
+Processing from high-resolution to low-resolution in both CPN [32] and simple baselines [31] considered as part of a classification network by the backbone architecture which is heavy, but the reverse process is relatively light.  
 
-There is a high-resolution sub-network at the first stage of this network architecture, as shown in Fig.17. Then gradually a high-to-low resolution sub-networks are added one by one to acquire the output of multiple stages. Finally, the output of multiple resolution sub-networks in parallel are connected. It performs repeated multi-scale fusions such that each high-resolution to low-resolution feature map representation can receive information from other parallel representation branches, again and again, to obtain a more informative high-resolution representation. In the end, the keypoints heatmap of the network output and the spatial resolution are more accurate. Because of repeated multi-scale fusions, HRNet does not need to use intermediate heatmap supervision, unlike the previous works.
+> human pose estimation에 적용되는 일반적인 trend는 high-resolution feature maps을 low-resolution feature maps으로 downsampling한 다음 low-resolution feature maps에서 high-resolution value을 복구하려고 시도하는 것이다.  
+이러한 motivation을 바탕으로, 본 연구는 process 전반에 걸쳐 high-resolution representation을 유지하기 위해 High-Resolution Net(HRNet)로 불리는 직관적이고 차별되는 model을 제안했다.  
+Stacked hourglass에서 high-to-low resolution 와 low-to-high resolution processes 모두는 대칭이다.  
+CPN과 simple baselines 모두에서 high-resolution부터 low-resolution까지의 Processing은 무거운 backbone 아키텍처에 의해 classification network의 part로 간주되지만, reverse process는 비교적 가볍다.
 
-HRNet consists of parallel high-to-low resolution subnetworks with repeated information exchange across multiresolution sub-networks (multi-scale fusion). The horizontal and vertical directions correspond to the depth of the network and the scale of the feature maps, respectively. There are three scale branches in total. The resolution of the feature map will not change during the forward propagation of each scale branch. Even though there will be information exchange between each scale branch, the three branches are different. For instance, in the forward process, branch 1 (the top branch in the figure) will downsample its feature map and then transfer it to branch 2. Branch 2 will also send the enlarged feature to branch 1 through upsampling. Two operations can be performed in the same stage.
+There is a high-resolution sub-network at the first stage of this network architecture, as shown in Fig.17.  
+Then gradually a high-to-low resolution sub-networks are added one by one to acquire the output of multiple stages.  
+Finally, the output of multiple resolution sub-networks in parallel are connected.  
+It performs repeated multi-scale fusions such that each high-resolution to low-resolution feature map representation can receive information from other parallel representation branches, again and again, to obtain a more informative high-resolution representation.  
+In the end, the keypoints heatmap of the network output and the spatial resolution are more accurate.  
+Because of repeated multi-scale fusions, HRNet does not need to use intermediate heatmap supervision, unlike the previous works.
 
-HRNet is evaluated on COCO and MPII dataset using AP, mAP, PCKh@0.5 evaluation metrics to achieve better performance. HRNet introduced the connection of the outputs of high-to-low resolution sub-networks in parallel rather than the usual serial connection. This means it does not require to restore the resolution because high-resolution representations are maintained always.
+> Fig.17과 같이 이 network 아키텍처의 first stage에는 high-resolution sub-network가 있다.  
+그런 다음 gradually하게 high-to-low resolution sub-networks가 하나씩 추가되어 multiple stages의 output을 얻는다.  
+마지막으로, multiple resolution sub-networks의 output이 병렬로 연결된다.  
+그것은 high-resolution to low-resolution feature map representation 각각이 다른 parallel representation branches에서 정보를 수신하여 보다 유익한 high-resolution representation을 얻을 수 있도록 반복된 multi-scale fusions을 수행한다.
+결국, network output의 keypoints heatmap과 spatial resolution가 더 정확하다.  
+반복된 multi-scale fusions 때문에 HRNet은 이전 작업과 달리 intermediate heatmap supervision을 사용할 필요가 없다.
+
+HRNet consists of parallel high-to-low resolution subnetworks with repeated information exchange across multi-resolution sub-networks (multi-scale fusion).  
+The horizontal and vertical directions correspond to the depth of the network and the scale of the feature maps, respectively.  
+There are three scale branches in total.  
+The resolution of the feature map will not change during the forward propagation of each scale branch.  
+Even though there will be information exchange between each scale branch, the three branches are different.  
+For instance, in the forward process, branch 1 (the top branch in the figure) will downsample its feature map and then transfer it to branch 2.  
+Branch 2 will also send the enlarged feature to branch 1 through upsampling.  
+Two operations can be performed in the same stage.
+
+> HRNet은 multi-resolution sub-networks (multi-scale fusion)를 통한 반복적인 정보 교환이 있는 parallel high-to-low resolution subnetworks로 구성된다.  
+수평 방향과 수직 방향은 각각 network의 depth와 feature maps의 scale에 해당한다.  
+총 3개의 scale branches가 있다.  
+각 scale branch의 forward propagation 중에는 feature map의 resolution이 변경되지 않는다.  
+각 scale branch마다 정보 교환이 이루어지겠지만, three branches는 다르다.  
+예를 들어, forward process에서, branch 1 (the top branch in the figure)은 그것의 feature map을 downsample하고 그것을 branch 2로 전환할 것이다.
+Branch 2는 또한 확대된 feature을 upsampling을 통해 branch 1로 보낸다.  
+동일한 stage에서 두 가지 작업을 수행할 수 있다.
+
+HRNet is evaluated on COCO and MPII dataset using AP, mAP, PCKh@0.5 evaluation metrics to achieve better performance.  
+HRNet introduced the connection of the outputs of high-to-low resolution sub-networks in parallel rather than the usual serial connection.  
+This means it does not require to restore the resolution because high-resolution representations are maintained always.
+
+> HRNet은 더 나은 성능을 달성하기 위해 AP, mAP, PCKh@0.5 평가 지표를 사용하여 COCO 및 MPII dataset에서 평가된다.  
+HRNet은 일반적인 직렬 연결이 아닌 병렬로 high-to-low resolution sub-networks의 outputs 연결을 도입했다.   
+즉, high-resolution representations이 항상 유지되므로 resolution을 복원할 필요가 없다.
 
 ### K. CFA: CASCADE FEATURE AGGREGATION FOR HUMAN POSE ESTIMATION
 
 ![Fig18](/assets/img/Blog/papers/Pose/survey_2020/Fig18.JPG)
 
-CFA proposed a cascaded multiple hourglass and aggregates low, medium, and high-level features to better capture local detailed information and global semantic information [26]. The motivation behind CFA network architecture is combining the concept implied in the network architecture of Stacked hourglass [27], CPN [32], and HRNet [35].
+CFA proposed a cascaded multiple hourglass and aggregates low, medium, and high-level features to better capture local detailed information and global semantic information [26].  
+The motivation behind CFA network architecture is combining the concept implied in the network architecture of Stacked hourglass [27], CPN [32], and HRNet [35].
 
-The overall network structure of CFA is displayed in Fig.18. CFA consists of multiple hourglass networks that are summed up by elements. Feature aggregation shows that the hourglass network at each stage will predict the feature map, and the output of the previous layer is used as an input to the next stage at the same time.
+> CFA는 cascaded multiple hourglass를 제안하고 local detailed information와 global semantic information을 더 잘 capture하기 위해서 low, medium, high-level features을 통합한다.  
+CFA network 아키텍처의 motivation은 Stacked hourglass, CPN, HRNet의 network 아키텍처에 내포된 개념을 결합하는 것이다.
 
-In each stage of CFA, ResNet based hourglass network is applied, which is an encoder-decoder model designed based on the hourglass. The basic structure used for the encoder part is ResNet and the connection employed from the encoder to the decoder is highway connection. There are three different feature aggregations in all stages of the CFA model: Lowlevel feature aggregation, middle-level feature aggregation, and high-level feature aggregation.
+The overall network structure of CFA is displayed in Fig.18.  
+CFA consists of multiple hourglass networks that are summed up by elements.  
+Feature aggregation shows that the hourglass network at each stage will predict the feature map, and the output of the previous layer is used as an input to the next stage at the same time.
 
-Fig.19 briefly describes the feature aggregation between different stages of CFA. Detailed local information is accommodated in low-level features which help them in localizing the exact location of human joints. On the other side, to refine the localization in case of complex backgrounds and partial occlusions, there are high-level features that contain semantic information. Finally, all these different feature aggregations are forwarded as input for the next stage which brings prediction more stable.
+> CFA의 전체 network구조는 Fig.18에 표시되어 있다.  
+CFA는 elements로 요약되는 multiple hourglass networks로 구성된다.  
+Feature aggregation은 각 stage의 hourglass network가 feature map을 예측한다는 것을 보여주며, 이전 layer의 output이 다음 단계의 input으로 동시에 사용된다.
 
-CFA evaluated their model on the LIP and MPII datasets using only PCKh@0.5 evaluation metrics. This paper is currently at the top of the 2019 CVPR article based on the MPII dataset PCKh@0.5 evaluation index in the field of single person pose estimation.
+In each stage of CFA, ResNet based hourglass network is applied, which is an encoder-decoder model designed based on the hourglass.  
+The basic structure used for the encoder part is ResNet and the connection employed from the encoder to the decoder is highway connection.  
+There are three different feature aggregations in all stages of the CFA model: Low-level feature aggregation, middle-level feature aggregation, and high-level feature aggregation.
+
+> CFA의 각 stage에서, ResNet 기반 hourglass network가 적용되며, 이것은 hourglass를 기반으로 설계된 encoder-decoder model이다.  
+encoder 부분에 사용되는 기본 구조는 ResNet이고 encoder에서 decoder로 연결되는 연결은 highway connection이다.  
+CFA 모델의 모든 stages에는 Low-level feature aggregation, middle-level feature aggregation, high-level feature aggregation라는 세 가지 다른 feature 집계가 있습니다.
+
+Fig.19 briefly describes the feature aggregation between different stages of CFA.  
+Detailed local information is accommodated in low-level features which help them in localizing the exact location of human joints.  
+On the other side, to refine the localization in case of complex backgrounds and partial occlusions, there are high-level features that contain semantic information.  
+Finally, all these different feature aggregations are forwarded as input for the next stage which brings prediction more stable.
+
+> Fig.19는 CFA의 서로 다른 stages 사이의 feature aggregation를 간략하게 설명한다.  
+Detailed local information은 human joints의 정확한 location을 localizing하는 데 도움이 되는 low-level features에 수용된다.  
+한편, 복잡한 배경과 부분적 occlusions의 경우 localization을 개선하기 위해, 의미 정보를 포함하는  high-level features이 있다.  
+마지막으로, 이러한 모든 다른 feature 집계는 예측을 보다 안정적으로 하는 다음 stage를 위한 input으로 전달된다.
+
+CFA evaluated their model on the LIP and MPII datasets using only PCKh@0.5 evaluation metrics.  
+This paper is currently at the top of the 2019 CVPR article based on the MPII dataset PCKh@0.5 evaluation index in the field of single person pose estimation.
+
+> CFA는 PCKh@0.5 평가 지표만 사용하여 LIP 및 MPII datasets에서 모델을 평가했다.  
+본 논문은 현재 single person pose estimation에서 MPII dataset PCKh@0.5 평가 지수를 기반으로 한 2019년 CVPR 논문의 상위권에 있다.
 
 ![Fig19](/assets/img/Blog/papers/Pose/survey_2020/Fig19.JPG)
 
@@ -796,48 +933,182 @@ CFA evaluated their model on the LIP and MPII datasets using only PCKh@0.5 evalu
 
 ![Fig20](/assets/img/Blog/papers/Pose/survey_2020/Fig20.JPG)
 
-This model proposed in the motivation of estimating the pose of individuals in real-world crowded areas [73]. The challenges of estimating poses in such densely populated areas include people close to each other, mutual occlusions, and partial visibility. The method is a two-stage, top-down approach that localizes the individual first and then performs a single-person pose estimation for every detected person. This model proposed two occlusion detection networks Occlusion Net (OccNet) and Occlusion Net Cross Branch (OccNetCB) as shown in Fig.20, the backbone network is ResNet shown in beige.
+This model proposed in the motivation of estimating the pose of individuals in real-world crowded areas [73].  
+The challenges of estimating poses in such densely populated areas include people close to each other, mutual occlusions, and partial visibility.  
+The method is a two-stage, top-down approach that localizes the individual first and then performs a single-person pose estimation for every detected person.  
+This model proposed two occlusion detection networks Occlusion Net (OccNet) and Occlusion Net Cross Branch (OccNetCB) as shown in Fig.20,  
+the backbone network is ResNet shown in beige.
 
-In OccNet, to learn a joint representation in the previous layers the network splits after two transposed convolutions. OccNet produces two sets of heatmaps for the location of keypoints per pose: a heatmap for visible keypoints and a heatmap for occluded keypoints. The other architecture, OccNetCB, splits after only one transposed convolution. In OccNetCB, both branches have the opportunity to get information extracted by one another because in OccNetCB the output from both layers is shared.
+> 이 모델은 실제 밀집 지역에서 개인의 pose를 추정하는 motivation에서 제안되었다.  
+이러한 인구 밀집 지역에서 poses를 추정하는 challenges에는 서로 가까운 사람, mutual occlusions, partial visibility가 포함된다.  
+이 방법은 two-stage, top-down approach으로, 먼저 개인을 localize한 다음 detect된 모든 사람에 대해 single-person pose estimation을 수행한다.  
+이 모델은 Fig.20과 같이 두 개의 occlusion detection networks Occlusion Net(OccNet)과 Occlusion Net Cross Branch (OccNetCB)를 제안했다.  
+backbone network는 베이지색으로 표시된 ResNet이다.
+
+In OccNet, to learn a joint representation in the previous layers the network splits after two transposed convolutions.  
+OccNet produces two sets of heatmaps for the location of keypoints per pose: a heatmap for visible keypoints and a heatmap for occluded keypoints.  
+The other architecture, OccNetCB, splits after only one transposed convolution.  
+In OccNetCB, both branches have the opportunity to get information extracted by one another because in OccNetCB the output from both layers is shared.
+
+> OccNet에서 이전 layers에서 joint representation을 학습하기 위해 두 개의 transposed convolutions 후 network가 분할된다.  
+OccNet은 pose당 keypoints의 location를 위한 두 세트의 heatmaps을 생성한다: 즉, visible keypoints를 위한 heatmap과 occluded keypoints를 위한 heatmap   
+다른 아키텍처인 OccNetCB는 단 하나의 transposed convolution 후에 분할된다.  
+OccNetCB에서는 OccNetCB에서 layers 모두에서 output이 공유되기 때문에 두 branches는 서로 추출한 정보를 얻을 수 있다.
 
 The model has been evaluated on two datasets annotated on the crowded real-world situation: CrowdPose and JTA datasets using OKS and AP evaluation metrics.
+
+> 모델은 혼잡한 실제 상황에 대해 라벨을 단 두 개의 datasets에서 평가되었다: OKS 및 AP 평가 지표를 사용하는 CrowdPose 및 JTA datasets.
 
 ### M. DarkPose: DISTRIBUTION-AWARE COORDINATE REPRESENTATION FOR HUMAN POSE ESTIMATION
 
 ![Fig21](/assets/img/Blog/papers/Pose/survey_2020/Fig21.JPG)
 
-The main motivation behind the Distribution-Aware Coordinate Representation of Keypoint (DarkPose) is that the coordinate representation of the heatmap [30]. The assumption is that heatmap is never systematically investigated. Based on this concept, the authors have shown design limitations on the existing standard coordinate decoding method, and propose a principled distribution-aware decoding method. In addition to that, an accurate heatmap distribution for the unbiased model training instead of the usual coordinate encoding process is generated (i.e. transforming ground-truth coordinates to heatmaps).
+The main motivation behind the Distribution-Aware Coordinate Representation of Keypoint (DarkPose) is that the coordinate representation of the heatmap [30].  
+The assumption is that heatmap is never systematically investigated.  
+Based on this concept, the authors have shown design limitations on the existing standard coordinate decoding method, and propose a principled distribution-aware decoding method.  
+In addition to that, an accurate heatmap distribution for the unbiased model training instead of the usual coordinate encoding process is generated (i.e. transforming ground-truth coordinates to heatmaps).
 
-Standard label representation in existing methods is coordinate heatmap as a 2-dimensional Gaussian distribution centered at the labeled coordinate of each keypoint of an individual. According to this work, the major obstacle in heatmap label representation and that is quadratic function's computational cost of the input image resolution which restrains CNN based models from processing the typically high-resolution raw imagery data. Hence, there is a need to down-sample all the person bounding box images into a small resolution then fed them to human pose estimation model to predict the location of each keypoint in the original image coordinate space which needs to transform to the original coordinate space, and this brings the problem of sub-pixel localization. Coordinate decoding from heatmap to coordinate is the last prediction of the location with the maximal activation. The network structure of DarkPose is shown in Fig.21.
+> Keypoint의 Distribution-Aware Coordinate Representation(DarkPose)의 main motivation는 heatmap의 좌표 표현이다.  
+heatmap은 결코 체계적으로 조사되지 않는다는 가정이다.  
+이 개념을 바탕으로 저자들은 기존 표준 좌표 디코딩 방법에 대한 설계 한계를 보여주었으며, 원칙적인 분포 인식 디코딩 방법을 제안한다.  
+또한 일반적인 좌표 인코딩 프로세스 대신 unbiased model training을 위한 정확한 heatmap 분포가 생성된다(즉, ground-truth 좌표를 heatmaps으로 변환).
 
-Coordinate representation, the problem of coordinate encoding and decoding, focused on predicting joint coordinates in a given image. Coordinate decoding is a process of translating a predicted heatmap of each individual's joint into a coordinate in the original image space. Unlike the standard method of considering the second maximum activation to upsample the heatmaps to the original image resolution, DarkPose introduced the heatmap distributional statistics for disclosing the underlying maximum more accurately as shown in Fig.21 and this is employed using Taylor-expansion way. The heatmaps, predicted by a human pose estimation model, usually present multiple peaks around the maximum activation which causes negative effects on the performance of the decoding method. To overcome this issue, DarkPose inserted modulating the heatmap distribution before resolution recovery. In coordinate decoding method, three steps employed: heatmap distribution modulation, distributionaware joint localization by Taylor-expansion as sub-pixel accuracy, and resolution recovery to the original coordinate space. A limitation similar to Coordinate decoding is also observed in coordinate encoding in reducing the resolution. Some of the existing methods start by downsampling given the original image to the model input size. Therefore, in this case, transforming the ground-truth joint coordinates accordingly was necessary before generating heatmaps and this is done by using unbiased sub-pixel centered coordinate encoding.
+Standard label representation in existing methods is coordinate heatmap as a 2-dimensional Gaussian distribution centered at the labeled coordinate of each keypoint of an individual.  
+According to this work, the major obstacle in heatmap label representation and that is quadratic function's computational cost of the input image resolution which restrains CNN based models from processing the typically high-resolution raw imagery data.  
+Hence, there is a need to down-sample all the person bounding box images into a small resolution then fed them to human pose estimation model to predict the location of each keypoint in the original image coordinate space which needs to transform to the original coordinate space, and this brings the problem of sub-pixel localization.  
+Coordinate decoding from heatmap to coordinate is the last prediction of the location with the maximal activation.  
+The network structure of DarkPose is shown in Fig.21.
+
+> 기존 methods의 표준 레이블 표현은 개인의 각 keypoint의 레이블링된 좌표를 중심으로 한 2차원 Gaussian distribution으로서 heatmap 좌표이다.  
+본 연구에 따르면, heatmap 레이블 표현의 주요 장애물이며, 이는 input image resolution에 대한 2차 함수(= quadratic function, MSE, L2 loss)의 계산 비용이며, 이는 CNN 기반 models가 일반적으로 high-resolution raw imagery data를 processing하지 못하도록 제한한다.  
+따라서 모든 person bounding box images를 small resolution로 down-sample한 다음 original 좌표 공간으로 변환해야 하는 original image 좌표 공간에서 각 keypoint의 location을 예측하기 위해 human pose estimation model에 공급해야 하며, 이로 인해 sub-pixel localization 문제가 발생한다.  
+heatmap에서 좌표까지의 좌표 decoding은 최대 활성화로 location의 마지막 예측이다.  
+DarkPose의 network 구조는 Fig.21에 나와 있다.
+
+Coordinate representation, the problem of coordinate encoding and decoding, focused on predicting joint coordinates in a given image.  
+Coordinate decoding is a process of translating a predicted heatmap of each individual's joint into a coordinate in the original image space.  
+Unlike the standard method of considering the second maximum activation to upsample the heatmaps to the original image resolution, DarkPose introduced the heatmap distributional statistics for disclosing the underlying maximum more accurately as shown in Fig.21 and this is employed using Taylor-expansion way.  
+
+> 좌표 encoding 및 decoding 문제인 좌표 표현은 given image에서 joint 좌표를 예측하는 데 초점을 맞췄다.  
+좌표 decoding은 각 개인의 joint의 예측 heatmap를 original image space에서 좌표로 translating하는 과정이다.  
+heatmap을 original image resolution로 upsample하기 위해 두 번째 maximum activation을 고려하는 표준 방법과 달리, DarkPose는 Fig.21과 같이 underlying maximum을 더 정확하게 공개하기 위한 heatmap distributional statistics를 도입했으며 이는 Taylor-expansion 방식을 사용하여 사용된다.
+
+The heatmaps, predicted by a human pose estimation model, usually present multiple peaks around the maximum activation which causes negative effects on the performance of the decoding method.  
+To overcome this issue, DarkPose inserted modulating the heatmap distribution before resolution recovery.  
+In coordinate decoding method, three steps employed: heatmap distribution modulation, distributionaware joint localization by Taylor-expansion as sub-pixel accuracy, and resolution recovery to the original coordinate space.  
+A limitation similar to coordinate decoding is also observed in coordinate encoding in reducing the resolution.  
+Some of the existing methods start by downsampling given the original image to the model input size.  
+Therefore, in this case, transforming the ground-truth joint coordinates accordingly was necessary before generating heatmaps and this is done by using unbiased sub-pixel centered coordinate encoding.
+
+> human pose estimation model에 의해 예측된 heatmaps은 일반적으로 decoding method의 성능에 부정적인 영향을 주는 maximum activation 주위에 multiple peaks를 나타낸다.  
+이 문제를 극복하기 위해, DarkPose는 resolution recovery 전에 heatmap distribution를 modulating하는 것을 삽입했다.  
+좌표 decoding method에서는 3개의 steps가 이용된다 : heatmap distribution modulation, sub-pixel accuracy로 Taylor-expansion에 의한 distributionaware joint localization, original 좌표 공간에 대한 resolution recovery  
+resolution 감소의 coordinate encoding에서도 coordinate decoding과 유사한 limitation이 관찰된다.  
+기존 방법의 일부는 original image를 model input size에 맞게 downsampling하는 것으로 시작한다.  
+따라서, 이 경우 heatmaps을 생성하기 전에 그에 따라 ground-truth joint coordinates를 변환하는 것이 필요했으며, 이는 unbiased sub-pixel centered coordinate encoding을 사용하여 수행된다.
 
 DarkPose has come up with the concept of problems facing in coordinate representation and the model was evaluated on COCO and MPII using evaluation metrics of PCK and OKS.
+
+> DarkPose는 좌표 표현에서 직면하는 문제의 개념을 고안했으며 모델은 PCK와 OKS의 평가 지표를 사용하여 COCO와 MPII에서 평가되었다.
 
 ## V. SUMMARY AND DISCUSSION
 
 ![Table2](/assets/img/Blog/papers/Pose/survey_2020/Table2.JPG)
 
-This paper reviewed the progress made in pose estimations for human beings with selected and most notable researches made to our knowledge. This discussion started from Deep- Pose [46], the first well known and has been as reference for most researches in pose estimation progress. Then models have been selected based on their novelty, innovation, the influence made by the model, and other criteria. Table 2 summarizes the models with some criteria.
+This paper reviewed the progress made in pose estimations for human beings with selected and most notable researches made to our knowledge.  
+This discussion started from Deep-Pose [46], the first well known and has been as reference for most researches in pose estimation progress.  
+Then models have been selected based on their novelty, innovation, the influence made by the model, and other criteria.  
+Table 2 summarizes the models with some criteria.
 
-Human pose estimation deals with the process of inferring poses in an image [4]. To accomplish this objective different kind of techniques have been employed in each model. The techniques can be evaluated with criteria such as the backbone architecture, approaches followed, tracking single or multi-person, the dataset used, loss functions, and evaluation metrics employed.
+> 본 논문은 우리의 지식에 대해 수행된 선별적이고 가장 주목할 만한 연구를 통해 인간에 대한 pose estimations에서 이루어진 진행 상황을 검토했다.  
+이 논의는 처음 잘 알려진 Deep-Pose에서 시작되었으며 pose estimation progress에서 대부분의 연구에 reference로 사용되어 왔다.  
+그 후 모델은 새로움, 혁신, 모델에 의해 만들어진 영향, 기타 기준에 따라 선택되었다.  
+Table 2에는 몇 가지 기준이 있는 모형이 요약되어 있다.
+
+Human pose estimation deals with the process of inferring poses in an image [4].  
+To accomplish this objective different kind of techniques have been employed in each model.  
+The techniques can be evaluated with criteria such as the backbone architecture, approaches followed, tracking single or multi-person, the dataset used, loss functions, and evaluation metrics employed.
+
+> Human pose estimation은 image에서 poses를 유추하는 과정을 다룬다.  
+이러한 목적을 달성하기 위해 각 모델에는 서로 다른 종류의 기술이 사용되었다.  
+그 기술은 backbone 아키텍처, 후속 approaches, single 또는 multi-person tracking, 사용된 dataset, loss functions, 그리고 사용된 evaluation metrics과 같은 기준으로 평가할 수 있다.
 
 As shown in Table 2, ResNet [38] nowadays is a default pick as backbone architecture in most models because of its property of solving the problem of vanishing gradients in addition to its great accuracy.
 
-In tracking the number of people in a given image, models are classified as single or multi-person pose estimation. Substantial researches have been carried out in a single person pose estimation with very good results. Even though multiperson pose estimation getting attention, the challenges are still there. These challenges come from the position of each person in the image, visibility of the joints, scale difference, interaction between people, occlusion of joints by clothes, and others.
+> 표 2에서 볼 수 있듯이, ResNet은 오늘날 대부분의 모델에서 기본 backbone 아키텍처로 선택되는데, 그 이유는 뛰어난 정확성과 함께 vanishing gradients 문제를 해결하기 때문이다.
 
-As shown in Table 2, researchers are preferring Top-down approach instead of bottom-up in most cases. There are also models using both approaches simultaneously.
+In tracking the number of people in a given image, models are classified as single or multi-person pose estimation.  
+Substantial researches have been carried out in a single person pose estimation with very good results.  
+Even though multi-person pose estimation getting attention, the challenges are still there.  
+These challenges come from the position of each person in the image, visibility of the joints, scale difference, interaction between people, occlusion of joints by clothes, and others.
 
-In datasets selection, COCO and MPII are default picks in recent cases. Especially, COCO is a famous dataset by its property of having very wide human poses and an enormous number of images. LSP and FLIC datasets are also used next to COCO and MPII.
+> given image에서 사람 수를 tracking하는 경우, 모델은 single 또는 multi-person pose estimation으로 분류된다.  
+상당한 연구가 single person pose estimation으로 수행되었으며 결과는 매우 우수하다.  
+multi-person pose estimation이 주목받으면서도 여전히 난제는 남아 있다.  
+이러한 과제는 이미지에서 각 개인의 position, 관절 가시성, 스케일 차이, 사람 간의 상호 작용, 옷에 의한 관절 occlusion 등으로부터 온다.
 
-Even though the $$L_1$$ loss is not sensitive to outliers, the L2 loss function is applied in most models to evaluate their learning process. Finally, PCKh@0.5 is the number one evaluation metrics in human pose estimation before mAP and AP.
+As shown in Table 2, researchers are preferring Top-down approach instead of bottom-up in most cases.  
+There are also models using both approaches simultaneously.
 
-This article reviewed models focused on determining the full body's pose of individuals. Fascinating researches are also available in discovering only some parts of a human being. For instance: hand pose, head pose, upper body pose, and so on. Additionally, estimating the pose of only children is also presented in [74] research.
+> 표 2에서와 같이, 연구자들은 대부분의 경우 bottom-up보다는 Top-down approach를 선호한다.  
+또한 두 가지 접근 방식을 동시에 사용하는 모델도 있다.
+
+In datasets selection, COCO and MPII are default picks in recent cases.  
+Especially, COCO is a famous dataset by its property of having very wide human poses and an enormous number of images.  
+LSP and FLIC datasets are also used next to COCO and MPII.
+
+> datasets 선택에서 COCO와 MPII는 최근 사례의 기본 선택 항목이다.  
+특히 COCO는 매우 wide human poses와 엄청난 수의 이미지를 가진다는 특성으로 유명한 dataset이다.  
+LSP 및 FLIC 데이터 세트도 COCO 및 MPII 다음에 사용된다.
+
+Even though the $$L_1$$ loss is not sensitive to outliers, the L2 loss function is applied in most models to evaluate their learning process.  
+Finally, PCKh@0.5 is the number one evaluation metrics in human pose estimation before mAP and AP.
+
+> $$L_1$$ loss은 outliers에 민감하지 않지만  L2 loss function은 대부분의 모델에서 학습 과정을 평가하기 위해 적용된다.  
+마지막으로 PCKh@0.5는 mAP와 AP 이전의 human pose estimation에서 가장 중요한 평가 지표이다.
+
+This article reviewed models focused on determining the full body's pose of individuals.  
+Fascinating researches are also available in discovering only some parts of a human being.  
+For instance: hand pose, head pose, upper body pose, and so on.  
+Additionally, estimating the pose of only children is also presented in [74] research.
+
+> 이 기사는 개인에 대한 full body의 pose를 결정하는 데 초점을 맞춘 모델들을 검토했다.  
+또한 흥미로운 연구들은 인간의 일부 부분만을 발견하는 데에도 이용 가능하다.  
+예를 들어, 손 포즈, 머리 포즈, 상체 포즈 등이 있다.  
+또한, 오로지 children pose를 추정하는 연구도 제시된다.
 
 ## VI. CONCLUSION
 
-This paper presented a review of the most outstanding and influential models in human pose estimation progress. As introduced early a 2D human pose estimation has been a fundamental yet challenging problem in computer vision. The main objective of human pose estimation is to localize human anatomical keypoints (e.g., head, shoulder, elbow, wrist, etc.) or joints. This article started by introducing human pose estimation, then classified pose estimation based on tracing the number of people as a single or multi-person. Furthermore, approaches used in pose estimation are explored before discussing its applications and flaws. Finally, some significant papers on pose estimation in both cases of single or multi-person are briefly discussed.
+This paper presented a review of the most outstanding and influential models in human pose estimation progress.  
+As introduced early a 2D human pose estimation has been a fundamental yet challenging problem in computer vision.  
+The main objective of human pose estimation is to localize human anatomical keypoints (e.g., head, shoulder, elbow, wrist, etc.) or joints.  
+This article started by introducing human pose estimation, then classified pose estimation based on tracking the number of people as a single or multi-person.  
 
-Thus, this article provides a guideline for newreaders about human pose estimation. Furthermore, this paper can be a base for research to innovate new models by combining the techniques used in different papers mentioned above. This can be done by changing the backbone architecture or combining the two or three models to create new, or adding new architecture on one of the mentioned papers.
+> 본 논문은 human pose estimation progress에서 가장 탁월하고 영향력 있는 모델에 대한 리뷰를 제공했다.  
+초기에 도입된 것처럼 2D human pose estimation은 컴퓨터 비전에서 근본적이면서도 어려운 문제였다.   
+human pose estimation의 주요 목표는 인체 해부학적 keypoints(예: 머리, 어깨, 팔꿈치, 손목 등) 또는 joints을 localize하는 것이다.  
+이 기사는 human pose estimation을 소개한 다음, single 또는 multi-person 수 추적을 기반으로 pose estimation을 분류했다.  
 
-There are very large datasets publicly available on the net. Using these datasets, we have seen substantial progress in 2D human pose estimation with deep learning. However, in addition to the issues discussed in the summary and discussion section, some challenges remain to be addressed in the near future works. Such as i) occlusion of body parts by clothes and other people, ii) interactions between people, iii) human body structure constraints, and iv) barely visible joints are some of the prominent issues that need immense attention to be resolved in the coming works.
+Furthermore, approaches used in pose estimation are explored before discussing its applications and flaws.  
+Finally, some significant papers on pose estimation in both cases of single or multi-person are briefly discussed.
+
+> 또한 pose estimation에 사용되는 approaches은 applications과 결함을 논의하기 전에 탐색된다.  
+마지막으로, single 또는 multi-person인 경우 모두에서 pose estimation에 대한 일부 중요한 논문이 간략하게 논의된다.
+
+Thus, this article provides a guideline for newreaders about human pose estimation.  
+Furthermore, this paper can be a base for research to innovate new models by combining the techniques used in different papers mentioned above.  
+This can be done by changing the backbone architecture or combining the two or three models to create new, or adding new architecture on one of the mentioned papers.
+
+> 따라서 이 글은 human pose estimation에 대한 새로운 독자를 위한 지침을 제공한다.  
+또한, 본 논문은 위에서 언급한 서로 다른 논문에서 사용된 기술을 결합하여 새로운 모델을 혁신하기 위한 연구의 기반이 될 수 있다.  
+이것은 backbone 아키텍처를 변경하거나 두 세 가지 모델을 결합하여 새로운 구조를 만들거나 언급된 논문 중 하나에 새로운 아키텍처를 추가하는 방법으로 수행될 수 있다.
+
+There are very large datasets publicly available on the net.  
+Using these datasets, we have seen substantial progress in 2D human pose estimation with deep learning.  
+However, in addition to the issues discussed in the summary and discussion section, some challenges remain to be addressed in the near future works.  
+Such as i) occlusion of body parts by clothes and other people, ii) interactions between people, iii) human body structure constraints, and iv) barely visible joints are some of the prominent issues that need immense attention to be resolved in the coming works.
+
+> 네트워크에서 공개적으로 사용할 수 있는 매우 큰 datasets가 있다.  
+이러한 datasets를 사용하여, 우리는 deep learning을 통해 2D human pose estimation에서 상당한 progress을 보았다.  
+그러나 요약 및 토론 섹션에서 논의된 문제 외에도, 향후 연구에서 해결해야 할 몇 가지 과제가 남아 있다.  
+예를 들어 i) 옷과 다른 사람에 의한 신체 부위의 폐색, ii) 사람 사이의 상호작용, iii) 인체 구조 제약 및 iv) 거의 보이지 않는 관절은 다가오는 연구에서 해결되기 위해 엄청난 주의가 필요한 중요한 문제의 일부이다.
