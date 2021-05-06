@@ -679,21 +679,63 @@ Additionally, it implemented the model with a batch size of 1 which increases th
 
 ![Fig13](/assets/img/Blog/papers/Pose/survey_2020/Fig13.JPG)
 
-IEF human pose estimation [72] basically motivated on the concept of prediction, identify what is wrong on this prediction, and correct them iteratively, which is done by a top-down feedback mechanism. IEF employed a framework that extends the hierarchical feature extractor (ConvNet) to include both input and output spaces. In IEF, Error predictions are fed to the initial solution repeatedly and progressively by a self-correcting model as a replacement of directly identifying the keypoints in one go. This framework is called Iterative Error Feedback (IEF) and Fig.13 shows the implementation of IEF for human pose estimation.
+IEF human pose estimation [72] basically motivated on the concept of prediction, identify what is wrong on this prediction, and correct them iteratively, which is done by a top-down feedback mechanism.  
+IEF employed a framework that extends the hierarchical feature extractor (ConvNet) to include both input and output spaces.  
+In IEF, Error predictions are fed to the initial solution repeatedly and progressively by a self-correcting model as a replacement of directly identifying the keypoints in one go.  
+This framework is called Iterative Error Feedback (IEF) and Fig.13 shows the implementation of IEF for human pose estimation.
 
-On the left side of Fig.13, there is an input composed of the image I and the initially guessed keypoints $$y_0$$ (representation of the previous output $$y_{t-1}$$). Assume three keypoints to the head (red), the right wrist (green), and the left wrist (blue). Then, define input $$X_t = I \oplus g(y_{t-1})$$, where I represents the image and $$y_{t-1}$$ is the previous output. The function $$f(X_t)$$, modeled as a ConvNet, produces the correction $$\varepsilon_t$$ as output and this output is added to the current output $$y_t$$ to produce $$y_{t+1}$$ which means the correction is considered. The function $$g(y_{t+1})$$ converts every keypoint position into one Gaussian heatmap channel so that it can be part of the input with the image for the next iteration. This procedure is done repeatedly and progressively T times until getting a refined $$y_{t+1}$$ which is very close to the ground truth.
+> IEF human pose estimation은 기본적으로 예측의 개념에 동기를 부여하고, 이 예측에서 무엇이 잘못되었는지 식별하며, top-down feedback mechanism에 의해 수행되는 반복적 수정이다.  
+IEF는 input space와 output space를 모두 포함하도록 계층적 feature extractor(ConvNet)를 확장하는 framework를 채택했다.  
+IEF에서 오류 예측은 keypoints를 직접 한 번에 식별하는 대체물로 self-correcting model에 의해 반복적으로, 또 점진적으로 초기 솔루션에 공급된다.  
+이 framework는 반복 오류 피드백(IEF)이라고 하며 Fig.13은 human pose estimation을 위한 IEF의 구현을 보여준다.
 
-IEF human pose estimation evaluated their performance on two datasets (LSP and MPII) using a single evaluation metric PCKh@0.5. IEF introduced novelty and good work. The functions used, both $$f$$ and $$g$$, are learnable and also, $$f$$ is a ConvNet. This means $$f$$ has the ability to learn features over the joint input-output space.
+On the left side of Fig.13, there is an input composed of the image I and the initially guessed keypoints $$y_0$$ (representation of the previous output $$y_{t-1}$$).  
+Assume three keypoints to the head (red), the right wrist (green), and the left wrist (blue).  
+Then, define input $$X_t = I \oplus g(y_{t-1})$$, where I represents the image and $$y_{t-1}$$ is the previous output.  
+The function $$f(X_t)$$, modeled as a ConvNet, produces the correction $$\varepsilon_t$$ as output and this output is added to the current output $$y_t$$ to produce $$y_{t+1}$$ which means the correction is considered.  
+The function $$g(y_{t+1})$$ converts every keypoint position into one Gaussian heatmap channel so that it can be part of the input with the image for the next iteration.  
+This procedure is done repeatedly and progressively T times until getting a refined $$y_{t+1}$$ which is very close to the ground truth.
+
+> Fig.13의 왼쪽에는 image I와 초기에 추측된 keypoints $$y_0$$(이전 output $$y_{t-1}$$의 representation)로 구성된 input이 있다.  
+머리(빨간색), 오른쪽 손목(녹색), 왼쪽 손목(파란색)의 세 가지 keypoints를 가정한다.  
+그런 다음, input은 $$X_t = I \oplus g(y_{t-1})$$ 로,  $y_{t-1}$$는 이전 output으로 정의한다.
+ConvNet으로 모델링된 function $$f(X_t)$$는 correction $$\varepsilon_t$$를 output으로 생성하며 이 output은 현재 output $$y_t$$에 추가되어 $$y_{t+1}$$을 생성하고 이것은 correction이 고려됨을 의미한다.  
+function $$g(y_{t+1})$$는 모든 keypoint position을 하나의 Gaussian heatmap channel로 변환하여 다음 iteration을 위한 image와 함께 input의 일부가 될 수 있도록 한다.  
+이 절차는 ground truth에 매우 가까운 정제된 $$y_{t+1}$$를 얻을 때까지 반복적이고 점진적으로 T번 수행된다.
+
+IEF human pose estimation evaluated their performance on two datasets (LSP and MPII) using a single evaluation metric PCKh@0.5.
+IEF introduced novelty and good work.  
+The functions used, both $$f$$ and $$g$$, are learnable and also, $$f$$ is a ConvNet.  
+This means $$f$$ has the ability to learn features over the joint input-output space.
+
+> IEF human pose estimation은 single evaluation metric PCKh@0.5를 사용하여 두 datasets(LSP, MPII)에서 성능을 평가했다.  
+IEF는 novelty와 좋은 일을 소개했다.  
+사용된 함수 $$f$$와 $$g$$ 모두 학습 가능하며 $$f$$는 ConvNet이다.  
+이는 $$f$$가 joint input-output space에 걸쳐 features을 학습할 수 있다는 것을 의미한다.
 
 ### G. REALTIME MULTI-PERSON2D POSE ESTIMATION USING PART AFFINITY FIELDS
 
 ![Fig14](/assets/img/Blog/papers/Pose/survey_2020/Fig14.JPG)
 
-Realtime multi-person 2D pose estimation [34] proposed a novelty approach to connect human body parts using Part Affinity Fields (PAF), a non-parametric method, to achieve bottom-up multi-person pose estimation model. The main motivation of this research is identifying the difficulties faced on detecting individual body joints involving multi-person such as the number of people in the image (infinity), the interaction between these people, irregular scale for each individual, increasing complexity, and others.
+Realtime multi-person 2D pose estimation [34] proposed a novelty approach to connect human body parts using Part Affinity Fields (PAF), a non-parametric method, to achieve bottom-up multi-person pose estimation model.  
+The main motivation of this research is identifying the difficulties faced on detecting individual body joints involving multi-person such as the number of people in the image (infinity), the interaction between these people, irregular scale for each individual, increasing complexity, and others.
 
-The overall pipeline and architecture of this model are shown in Fig.14. For a given input image (Fig.14. a), the location of each joint is determined by part confidence maps (Fig.14. b), and the location and orientation of the body parts are determined by PAF (Fig.14. c) a 2D vector that represents the degree of association between the body parts. These body part candidates are associated with the parsing step to perform a set of bipartite matching as shown in Fig.14 (d) and finally, assembled full-body pose because of parsing results in (e).
+> Realtime multi-person 2D pose estimation은 bottom-up multi-person pose estimation model을 달성하기 위해 non-parametric method인  Part Affinity Fields (PAF)를 사용하여 human body parts를 연결하는 novelty approach을 제안했다.  
+이 연구의 main motivation은 image 내 사람 수(무한정), 이들 사람 간의 interaction, 각 개인에 대한 불규칙한 scale, 복잡성 증가 등 multi-person이 포함되는 개별 body joints을 감지하는 데 직면하는 어려움을 식별하는 것이다.
 
-The two-branch multi-stage CNN network shown in Fig.14 receives an input of a feature map F of an image initialized by the first 10 layers of VGG architecture. The feed-forward model simultaneously predicts confidence maps S (shown in beige) for predicting the location of joints with J confidence maps for each joint $$(S = S_1, S_2, . . . , S_J)$$ and affinity fields L or a set of 2D vector fields (shown in blue) for encoding parts/limbs association which has C vectors corresponding to each limb $$(L = L_1, L_2, . . . , L_C)$$.
+The overall pipeline and architecture of this model are shown in Fig.14.  
+For a given input image (Fig.14. a), the location of each joint is determined by part confidence maps (Fig.14. b), and the location and orientation of the body parts are determined by PAF (Fig.14. c) a 2D vector that represents the degree of association between the body parts.  
+These body part candidates are associated with the parsing step to perform a set of bipartite matching as shown in Fig.14 (d) and finally, assembled full-body pose because of parsing results in (e).
+
+> 이 모델의 전체적인 pipeline과 구조는 Fig.14에 나타나 있다.  
+주어진 input image (Fig.14. a)의 경우, 각 joint의 location은 part confidence maps (Fig.14. b)에 의해 결정되며, body parts의 location와 orientation은 body parts 사이의 연관 정도를 represent하는 2D vector인 PAF (Fig.14. c)에 의해 결정된다.  
+이러한 body par 후보들은 Fig.14 (d)에 표시된 대로 일련의 초당적 일치를 수행하기 위한 구문 분석 단계와 연관되어 있으며 마지막으로 (e)의 구문 분석 결과 때문에 full-body pose를 취합했다.
+
+The two-branch multi-stage CNN network shown in Fig.14 receives an input of a feature map F of an image initialized by the first 10 layers of VGG architecture.  
+The feed-forward model simultaneously predicts confidence maps S (shown in beige) for predicting the location of joints with J confidence maps for each joint $$(S = S_1, S_2, . . . , S_J)$$ and affinity fields L or a set of 2D vector fields (shown in blue) for encoding parts/limbs association which has C vectors corresponding to each limb $$(L = L_1, L_2, . . . , L_C)$$.
+
+> Fig.14에 표시된 two-branch multi-stage CNN network는 VGG architecture의 처음 10 layers에 의해 초기화된 이미지의 feature map F의 input을 받는다.  
+feed-forward model은 각 joint $$(S = S_1, S_2, . . . , S_J)$$에 대한 "J confidence maps" 및 "affinity fields L" 또는 각 limb $$(L = L_1, L_2, . . . , L_C)$$에 해당하는 C vectors를 가지는 parts/limbs association를 encoding 하기위한 "a set of 2D vector fields" (shown in blue)를 사용하여 joints의 location을 예측하기 위한 confidence maps S (shown in beige)를 동시에 예측한다.
 
 Thus, at the end of the first stage, the network outputs a set of detection confidence maps and part affinity fields. For the consecutive stages, the inputs will be the combination of the two previous stage outputs and the feature map F. Both the confidence maps and the part affinity fields are passed by the greedy inference to have the 2D keypoints for every individual in the image, called Bipartite matching. Furthermore, this work implemented intermediate supervision after each stage to solve the vanishing gradient's problems by restoring the gradients periodically.
 
