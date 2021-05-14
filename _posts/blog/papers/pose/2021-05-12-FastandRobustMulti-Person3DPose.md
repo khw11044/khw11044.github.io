@@ -24,8 +24,9 @@ IEEE 2019 [paper]()
 ## Abstract
 
 This paper addresses the problem of 3D pose estimation for multiple people in a few calibrated camera views.  
-The main challenge of this problem is to find the cross-view correspondences among noisy and incomplete 2D pose predic- tions.  
-Most previous methods address this challenge by directly reasoning in 3D using a pictorial structure model, which is inefficient due to the huge state space. We propose a fast and robust approach to solve this problem.  
+The main challenge of this problem is to find the cross-view correspondences among noisy and incomplete 2D pose predictions.  
+Most previous methods address this challenge by directly reasoning in 3D using a pictorial structure model, which is inefficient due to the huge state space.  
+We propose a fast and robust approach to solve this problem.  
 Our key idea is to use a multi-way matching algorithm to cluster the detected 2D poses in all views.  
 Each resulting cluster encodes 2D poses of the same person across different views and consistent correspondences across the keypoints, from which the 3D pose of each person can be effectively inferred.  
 The proposed convex optimization based multi-way matching algorithm is efficient and robust against missing and false detections, without knowing the number of people in the scene.  
