@@ -97,7 +97,8 @@ Then, the 3D pose can be inferred for each person separately from matched 2D pos
 However, matching 2D poses across multiple views is challenging.  
 A typical approach is to use the epipolar constraint to verify if two 2D poses are projections of the same 3D pose for each pair of views [23].  
 But this approach may fail for the following reasons.  
-First, the detected 2D poses are often inaccurate due to heavy occlusion and truncation, as shown in Figure 2(b), which makes geometric verification difficult. Second, matching each pair of views separately may produce inconsistent correspondences which violate the cycle consistency constraint, that is, two corresponding poses in two views may be matched to different people in another view.  
+First, the detected 2D poses are often inaccurate due to heavy occlusion and truncation, as shown in Figure 2(b), which makes geometric verification difficult.  
+Second, matching each pair of views separately may produce inconsistent correspondences which violate the cycle consistency constraint, that is, two corresponding poses in two views may be matched to different people in another view.  
 Such inconsistency leads to incorrect multi-view reconstructions.  
 Finally, as shown in Figure 2, different sets of people appear in different views and the total number of people is unknown, which brings additional difficulties to the matching problem.
 
