@@ -112,7 +112,7 @@ We aim at estimating the global 3D positions $$y_{j,t}$$ of a fixed set of human
 For each timestamp the frames are processed independently (i.e. without using temporal information), thus we omit the index $$t$$ for clarity.
 
 For each frame, we crop the images using the bounding boxes either estimated by available off-the-shelf 2D human detectors or from ground truth (if provided).  
-Then we feed the cropped images Ic into a deep convolutional neural network backbone based on the "simple baselines" architecture [21].
+Then we feed the cropped images $$I_c$$ into a deep convolutional neural network backbone based on the "simple baselines" architecture [21].
 
 The convolutional neural network backbone with learnable weights $$\theta$$ consists of a ResNet-152 network (output denoted by $$g_{\theta}$$), followed by a series of transposed convolutions that produce intermediate heatmaps (the output denoted by $$f_{\theta}$$) and a $$1 \times 1$$ - kernel convolutional neural network that transforms the intermediate heatmaps to interpretable joint heatmaps (output denoted by $$h_{\theta}$$; the number of output channels is equal to the number of joints $$J$$).  
 In the two following sections we describe two different methods to infer joints’ 3D coordinates by aggregating information from multiple views.
@@ -128,7 +128,7 @@ of the joints are inferred from 2D joint heatmaps by applying soft-argmax. The 2
 the algebraic triangulation module that outputs the triangulated 3D pose. All blocks allow backpropagation of the gradients, so the model
 can be trained end-to-end.
 
-In the algebraic triangulation baseline we process each joint j independently of each other.  
+In the algebraic triangulation baseline we process each joint $$j$$ independently of each other.  
 The approach is built upon triangulating the 2D positions obtained from the j-joint’s backbone heatmaps from different views: $$H_{c,j} = h_{\theta}(I_c)_j$$ (Figure 1).  
 To estimate the 2D positions we first compute the softmax across the spatial axes:
 $$H^{'}_{c,j} = \exp(\alpha H_{c,j})/ \sum^W_{r_x=1} \sum^H_{r_y=1} \exp(\alpha H_{c,j}(r))), \; \; \; (1)$$
