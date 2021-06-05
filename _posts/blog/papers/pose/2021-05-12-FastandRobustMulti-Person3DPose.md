@@ -35,9 +35,9 @@ The proposed approach achieves significant performance gains from the state-of-t
 
 <details>
 
-> 본 논문은 보정된 몇 개의 카메라 뷰에서 여러 사람에 대한 3D 포즈 추정 문제를 다룬다.  
-이 문제의 주요 과제는 노이즈가 많고 불완전한 2D 포즈 예측에서 교차 뷰 응답을 찾는 것이다.  
-대부분의 이전 방법은 그림 구조 모델을 사용하여 3D로 직접 추론함으로써 이 과제를 해결하는데, 이는 거대한 상태 공간으로 인해 비효율적이다.  
+> 본 논문은 보정된 몇 개의 카메라 views에서 여러 사람에 대한 3D pose estimation 문제를 다룬다.  
+이 문제의 주요 과제는 노이즈가 많고 불완전한 2D pose 예측에서 cross-view correspondences을 찾는 것이다.  
+대부분의 이전 방법은 pictorial structure model을 사용하여 3D로 직접 추론함으로써 이 과제를 해결하는데, 이는 거대한 상태 공간으로 인해 비효율적이다.  
 우리는 이 문제를 해결하기 위해 빠르고 강력한 접근법을 제안한다.  
 우리의 핵심 아이디어는 다방향 매칭 알고리듬을 사용하여 모든 보기에서 탐지된 2D 포즈를 클러스터링하는 것이다.  
 각 결과 클러스터는 서로 다른 관점에 걸쳐 동일인의 2D 포즈를 인코딩하고, 핵심 사항에 걸쳐 일관된 대응 방식을 통해 각 개인의 3D 포즈를 효과적으로 추론할 수 있다.  
@@ -113,7 +113,7 @@ Finally, as shown in Figure 2, different sets of people appear in different view
 
 We propose a multi-way matching algorithm to address the aforementioned challenges.  
 Our key ideas are:   
-(i) combing the geometric consistency between 2D poses with the appearance similarity among their associated image patches to reduce matching ambiguities,   
+(i) combining the geometric consistency between 2D poses with the appearance similarity among their associated image patches to reduce matching ambiguities,   
 and (ii) solving the matching problem for all views simultaneously with a cycle-consistency constraint to leverage multi-way information and produce globally consistent correspondences.  
 The matching problem is formulated as a convex optimization problem and an efficient algorithm is developed to solve the induced optimization problem.
 
@@ -233,7 +233,16 @@ Despite its state-of-the-art performance on benchmarks, the detections may be qu
 
 <details>
 
+우리는 영상에서 2D 포즈 탐지를 위해 MSCOCO [26] 데이터 세트에서 훈련된 최근 제안된 Cascaded Pyramid Network [10]을 채택한다.  
+계단식 피라미드 네트워크는 두 단계로 구성된다: GlobalNet은 대략적으로 인간의 자세를 추정하는 반면, RefleaseNet은 최적의 인간 포즈를 제공한다.  
+벤치마크에서 최첨단 성능에도 불구하고, 그림 2(b)와 같이 탐지가 상당히 시끄러울 수 있다.
+
+<br>
+<br>
+
 </details>
+
+<br>
 
 ### 3.2. Multiview correspondences
 
@@ -241,8 +250,15 @@ Before reconstructing the 3D poses, the detected 2D poses should be matched acro
 However, this is a challenging task as we discussed in the introduction.
 
 <details>
+3D 포즈를 재구성하기 전에 검출된 2D 포즈는 views 간에 일치되어야 한다.  
+즉, 동일한 사람에 속하는 2D 경계 상자를 모든 보기에서 찾아야 한다.  
+그러나 이것은 서론에서 논의한 바와 같이 어려운 과제이다.
 
+<br>
+<br>
 </details>
+
+<br>
 
 To solve this problem, we need  
 1) a proper metric to measure the likelihood that two 2D bounding boxes belong to the same person (a.k.a. affinity), and  
@@ -251,8 +267,17 @@ In particular, the matching algorithm should not place any assumption about the 
 Moreover, the output of the matching algorithm should be cycle-consistent, i.e. any two corresponding bounding boxes in two images should correspond to the same bounding box in another image.
 
 <details>
-
+이 문제를 해결하기 위해서는  
+1) 두 개의 2D 경계 상자가 동일한 사람에 속할 가능성을 측정하기 위한 적절한 메트릭(즉, 친화력)  
+2) 여러 뷰에서 경계 상자의 대응성을 설정하기 위한 일치 알고리즘.  
+특히, 매칭 알고리즘은 장면에서 실제 사람 수에 대한 가정을 하지 않아야 한다.  
+또한 일치 알고리듬의 출력은 사이클 일관성이 있어야 한다.  
+즉, 두 이미지의 해당 경계 상자 2개는 다른 이미지의 동일한 경계 상자에 대응해야 한다.
+<br>
+<br>
 </details>
+
+<br>
 
 **Problem statement:**
 
@@ -264,7 +289,11 @@ $$0 <= P_{ij}1 <= 1, 0 <= P^T_{ij}1 <= 1. \; \; \; (1)$$
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 First, we adopt a pre-trained person re-identification (re-ID) network to obtain a descriptor for a bounding box.  
 The re-ID network trained on massive re-ID datasets is expected to be able to extract discriminative appearance features that are relatively invariant to illumination and viewpoint changes.   
@@ -272,8 +301,15 @@ Specifically, we feed the cropped image of each bounding box through the publicl
 Then, we compute the Euclidean distance between the descriptors of a bounding box pair and map the distances to values in (0, 1) using the sigmoid function as the appearance affinity score of this bounding box pair.
 
 <details>
-
+먼저, 우리는 경계 상자에 대한 설명자를 얻기 위해 사전 훈련된 사람 재식별(re-ID) 네트워크를 채택한다.  
+대규모 재ID 데이터 세트에 대해 훈련된 재ID 네트워크는 조명 및 관점 변화에 상대적으로 불변하는 차별적 외관 특징을 추출할 수 있을 것으로 기대된다.   
+구체적으로, 우리는 [44]에서 제안된 공개적으로 사용 가능한 재ID 모델을 통해 각 경계 상자의 자른 이미지를 제공하고 "풀5" 계층에서 각 경계 상자의 설명자로 기능 벡터를 추출한다.  
+그런 다음, 우리는 경계 상자 쌍의 설명자 사이의 유클리드 거리를 계산하고 시그모이드 함수를 이 경계 상자 쌍의 외관 선호도 점수로 사용하여 거리를 (0, 1)의 값으로 매핑한다.
+<br>
+<br>
 </details>
+
+<br>
 
 Besides appearances, another important cue to associate two bounding boxes is that their associated 2D poses should
 be geometrically consistent.  
@@ -281,7 +317,11 @@ Specifically, the corresponding 2D joint locations should satisfy the epipolar c
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 생략
 
@@ -290,8 +330,14 @@ But when there are multiple views, solving the matching problem separately for e
 Figure 3 shows an example, where the correspondences in red are inconsistent and the ones in green are cycle-consistent as they form a closed cycle.
 
 <details>
-
+Multi-way matching with cycle consistency: 일치시킬 보기가 두 개뿐이라면 <$$P_{ij},A_{ij}$$>를 최대화하고 헝가리 알고리즘으로 최적의 일치를 찾을 수 있다.  
+그러나 보기가 여러 개 있는 경우 각 보기 쌍에 대해 일치 문제를 별도로 해결하는 것은 주기 일관성 제약 조건을 무시하고 일관되지 않은 결과를 초래할 수 있다.  
+그림 3은 빨간색의 대응성이 일관성이 없고 녹색의 대응성이 닫힌 사이클을 형성할 때 일관성이 없는 예를 보여준다.
+<br>
+<br>
 </details>
+
+<br>
 
 생략
 
@@ -303,8 +349,14 @@ This can be simply done by triangulation, but the gross errors in 2D pose estima
 In order to fully integrate uncertainties in 2D pose estimation and incorporate the structural prior on human skeletons, we make use of the 3DPS model and propose an approximate algorithm for efficient inference.
 
 <details>
-
+서로 다른 보기에서 동일인의 추정 2D 포즈를 고려하여 3D 포즈를 재구성한다.  
+이는 단순히 삼각 측량에 의해 수행될 수 있지만, 2D 포즈 추정의 총 오차는 재구성을 크게 저하시킬 수 있다.  
+2D 포즈 추정의 불확실성을 완전히 통합하고 인간 골격에 앞서 구조적인 요소를 통합하기 위해, 우리는 3DPS 모델을 사용하고 효율적인 추론을 위한 근사 알고리듬을 제안한다.
+<br>
+<br>
 </details>
+
+<br>
 
 **3D pictorial structure:**  
 
@@ -313,16 +365,28 @@ In order to fully integrate uncertainties in 2D pose estimation and incorporate 
 **Inference:** The typical strategy to maximize $$p(T \vert I)$$ is first discretizing the state space as a uniform 3D grid, and applying the max-product algorithm [6, 32]. However, the complexity of the max-product algorithm grows fast with the dimension of the state space.
 
 <details>
-
+서로 다른 보기에서 동일인의 추정 2D 포즈를 고려하여 3D 포즈를 재구성한다.
+이는 단순히 삼각 측량에 의해 수행될 수 있지만, 2D 포즈 추정의 총 오차는 재구성을 크게 저하시킬 수 있다.
+2D 포즈 추정의 불확실성을 완전히 통합하고 인간 골격에 앞서 구조적인 요소를 통합하기 위해, 우리는 3DPS 모델을 사용하고 효율적인 추론을 위한 근사 알고리듬을 제안한다.
+<br>
+<br>
 </details>
+
+<br>
 
 Instead of using grid sampling, we set the state space for each 3D joint to be the 3D proposals triangulated from all pairs of corresponding 2D joints.  
 As long as a joint is correctly detected in two views, its true 3D location is included in the proposals.  
 In this way, the state space is largely reduced, resulting in much faster inference without sacrificing the accuracy.
 
 <details>
-
+그리드 샘플링 대신, 우리는 각 3D 조인트의 상태 공간을 해당 2D 조인트의 모든 쌍에서 삼각 측량된 3D 제안으로 설정한다.  
+두 뷰에서 조인트가 올바르게 감지되는 한, 조인트의 실제 3D 위치가 제안서에 포함됩니다.  
+이렇게 하면 상태 공간이 크게 줄어들어 정확성을 희생하지 않고 훨씬 빠른 추론을 얻을 수 있다.
+<br>
+<br>
 </details>
+
+<br>
 
 ## 4.Empirical evaluation
 
@@ -330,7 +394,11 @@ We evaluate the proposed approach on three public datasets including both indoor
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 ### 4.1. Datasets
 
@@ -339,7 +407,11 @@ We follow the same evaluation protocol as in previous works [1, 3, 2, 12] and us
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 **Shelf [1]:** Compared with Campus, this dataset is more complex, which consists of four people disassembling a shelf at a close range.  
 There are five calibrated cameras around them, but each view suffers from heavy occlusion.  
@@ -347,14 +419,22 @@ The evaluation protocol follows the prior work and the evaluation metric is also
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 CMU Panoptic [20]: This dataset is captured in a studio with hundreds of cameras, which contains multiple people engaging in social activities.  
 For the lack of ground truth, we qualitatively evaluate our approach on the CMU Panoptic dataset.
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 ### 4.2. Ablation analysis
 
@@ -363,7 +443,11 @@ The Campus and Shelf datasets are used for evaluation.
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 **Appearance or geometry?**  
 As described in section 3.2, our approach combines appearance and geometry information to construct the affinity matrix.  
@@ -372,7 +456,11 @@ The detailed results are presented in Table 1.
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 On the Campus, using appearance only achieves competitive results, since the appearance difference between actors is large.  
 The result of using geometry only is worse because the cameras are far from the people, which degrades the discrimination ability of the epipolar constraint.  
@@ -382,7 +470,11 @@ In this case, the combination of appearance and geometry greatly improve the per
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 **Direct triangulation or 3DPS?**  
 Given the matched 2D poses in all views, we use a 3DPS model to infer the final 3D poses, which is able to integrate the structural prior on human skeletons.  
@@ -391,14 +483,22 @@ The result of this baseline method (‘NO 3DPS’) is presented in Table 1.
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 The result shows that when the number of cameras in the scene is relatively small, for example, in the Campus dataset (three cameras), using 3DPS can greatly improve the performance.  
 When a person is often occluded in many views, for example, actor 2 in the Shelf dataset, the 3DPS model can also be helpful.
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 
 **Matching or no matching?**  
@@ -407,7 +507,11 @@ An alternative approach in most previous works [2, 21] is to directly apply the 
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 Here, we give a comparison between them. As Belagiannis et al. [2] did not use the most recent CNN-based keypoint detectors and Joo et al. [21] did not report results on public benchmarks, we re-implement their approach with the state-of-the-art 2D pose detector [8] for a fair comparison.  
 The implementation details are given in the supplementary materials.  
@@ -420,7 +524,11 @@ Moreover, the matching step significantly reduces the size of state space and ma
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 ### 4.3. Comparison with stateoftheart
 
@@ -429,7 +537,11 @@ Ershadi-Nasab et al. [12] is a very recent method that proposed to cluster the 3
 
 <details>
 
+<br>
+<br>
 </details>
+
+<br>
 
 The results on the Campus and Shelf datasets are presented in Table 2. Note that the 2D pose detector [10] and the reID network [44] used in our approach are the released pre-trianed models without any fine-tuning on the evaluated datasets.  
 Even with the generic models, our approach outperforms the state-of-the-art methods by a large margin.  
@@ -439,6 +551,8 @@ Due to the robust and consistent matching, direct triangulation also obtains bet
 
 <details>
 
+<br>
+<br>
 </details>
 
 ### 4.4. Qualitative evaluation
@@ -449,6 +563,8 @@ The final 2D pose estimates obtained by projecting the 3D poses back to 2D views
 
 <details>
 
+<br>
+<br>
 </details>
 
 ### 4.5. Running time
@@ -459,6 +575,8 @@ Moreover, the results in Table 2 show that our approach without the 3DPS model a
 
 <details>
 
+<br>
+<br>
 </details>
 
 ## 5. Summary
@@ -469,6 +587,8 @@ This shows the effectiveness of the proposed multi-way matching algorithm, which
 
 <details>
 
+<br>
+<br>
 </details>
 
 **Acknowledgements:**
