@@ -114,7 +114,7 @@ For each timestamp the frames are processed independently (i.e. without using te
 For each frame, we crop the images using the bounding boxes either estimated by available off-the-shelf 2D human detectors or from ground truth (if provided).  
 Then we feed the cropped images Ic into a deep convolutional neural network backbone based on the "simple baselines" architecture [21].
 
-The convolutional neural network backbone with learnable weights $$\theta$$ consists of a ResNet-152 network (output denoted by $$g_{\theta}$$), followed by a series of transposed convolutions that produce intermediate heatmaps (the output denoted by $$f_{\theta}$$) and a $$1 \times 1$$ - kernel convolutional neural network that transforms the intermediate heatmaps to interpretable joint heatmaps (output denoted by $$h+{\theta}$$; the number of output channels is equal to the number of joints J).  
+The convolutional neural network backbone with learnable weights $$\theta$$ consists of a ResNet-152 network (output denoted by $$g_{\theta}$$), followed by a series of transposed convolutions that produce intermediate heatmaps (the output denoted by $$f_{\theta}$$) and a $$1 \times 1$$ - kernel convolutional neural network that transforms the intermediate heatmaps to interpretable joint heatmaps (output denoted by $$h_{\theta}$$; the number of output channels is equal to the number of joints J).  
 In the two following sections we describe two different methods to infer joints’ 3D coordinates by aggregating information from multiple views.
 
 
