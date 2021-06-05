@@ -142,7 +142,7 @@ An important feature of soft-argmax is that rather than getting the index of the
 Since the backbone was pretrained using a loss other than soft-argmax (MSE over heatmaps without softmax [16]), we adjust the heatmaps via multiplying them by an ’inverse temperature’ parameter $$\alpha = 100$$ in (1), so at the start of the training the soft-argmax gives an output close to the positions of the maximum.
 
 To infer the 3D positions of the joints from their 2D estimates $$\mathrm{x}_{c,j}$$ we use a linear algebraic triangulation approach [1].  
-The method reduces the finding of the 3D coordinates of a joint $$y_j$$ to solving the overdetermined system of equations on homogeneous 3D coordinate vector of the joint $$\tilde{y}$$:
+The method reduces the finding of the 3D coordinates of a joint $$y_j$$ to solving the overdetermined system of equations on homogeneous 3D coordinate vector of the joint $$\tilde{y}$$:  
 $$A_{j}\tilde{\mathrm{y}}_j = 0 \; \; \; (3)$$  
 
 where $$A_j \in \mathbb{R}^{(2C,4)}$$ is a matrix composed of the components from the full projection matrices and $$x_{c,j}$$ (see [1] for full details).
