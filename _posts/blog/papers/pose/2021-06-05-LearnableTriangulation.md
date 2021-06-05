@@ -119,7 +119,7 @@ In the two following sections we describe two different methods to infer jointsâ
 
 
 
-**Algebraic triangulation approach.**  
+**Algebraic triangulation approach.**   
 
 ![Fig1](/assets/img/Blog/papers/Pose/learnable/fig1.PNG)  
 Figure 1. Outline of the approach based on algebraic triangulation with learned confidences. The input for the method is a set of RGB
@@ -169,7 +169,9 @@ This allows the contribution of the each camera view to be controlled by the neu
 
 The equation (4) is solved via differentiable Singular Value Decomposition of the matrix $$B = UDV^T$$ , from which $$\tilde{\mathrm{y}}$$ is set as the last column of V.  
 The final nonhomogeneous value of $$\tilde{\mathrm{y}}$$ is obtained by dividing the homogeneous 3D coordinate vector $$\tilde{\mathrm{y}}$$ by its fourth coordinate: $$\mathrm{y} = \tilde{\mathrm{y}}/(\tilde{\mathrm{y}})_4$$.
-**Volumetric triangulation approach.**
+
+**Volumetric triangulation approach.**  
+
 
 ![Fig2](/assets/img/Blog/papers/Pose/learnable/fig2.PNG)  
 Figure 2. Outline of the approach based on volumetric triangulation. The input for the method is a set of RGB images with known camera parameters. The 2D backbone produces intermediate feature maps that are unprojected into volumes with subsequent aggreagation to a fixed size volume. The volume is passed to a 3D convolutional neural network that outputs the interpretable 3D heatmaps. The output 3D positions of the joints are inferred from 3D joint heatmaps by computing soft-argmax. All blocks allow backpropagation of the gradients, so the model can be trained end-to-end.
