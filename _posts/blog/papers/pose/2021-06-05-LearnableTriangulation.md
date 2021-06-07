@@ -100,9 +100,39 @@ Below, we review related work in monocular and multiview human pose estimation, 
 
 ## 2. Related Work
 
-**Single view 3D pose estimation.**
+**Single view 3D pose estimation.**  
+Current state-of-the-art solutions for the monocular 3D pose estimation can be divided into two sub-categories.
 
-**Multi-view view 3D pose estimation.**
+The first category is using high quality 2D pose estimation engines with subsequent separate lifting of the 2D coordinates to 3D via deep neural networks (either fully-connected, convolutional or recurrent).  
+This idea was popularized in [8] and offers several advantages: it is simple, fast, can be trained on motion capture data (with skeleton/view augmentations) and allows switching 2D backbones after training.  
+Despite known ambiguities inherent to this family of methods (i.e. orientation of arms’ joints in current skeleton models), this paradigm is adopted in the current multi-frame state of the art [13] on the Human3.6M benchmark [3].  
+
+The second option is to infer the 3D coordinates directly from the images using convolutional neural networks.  
+The present best solutions use volumetric representations of the pose, with current single-frame state-of-the-art results on Human3.6M [3], namely [16].
+
+
+
+**Multi-view view 3D pose estimation.**  
+Studies of multiview 3D human pose estimation are generally aimed at getting the ground-truth annotations for the monocular 3D human pose estimation [14, 5].  
+The work [6] proposed concatenating joints’ 2D coordinates from all views into a single batch as an input to a fully connected network that is trained to predict the global 3D joint coordinates.  
+This approach can efficiently use the information from different views and can be trained on motion capture data.  
+However, the method is by design unable to transfer the trained models to new camera setups, while the authors show that the approach is prone to strong over-fitting.
+
+the approach is prone to strong over-fitting.  
+Few works used volumetric pose representation in multiview setups[12, 5].  
+Specifically, [5] utilized unprojection of 2D keypoint probability heatmaps (obtained from a pretrained 2D keypoint detector) to volume with subsequent non-learnable aggregation.  
+Our work differs in two ways.  
+First, we process information inside the volume in a learnable way.  
+Second, we train the network end-to-end, thus adjusting the 2D backbone and alleviating the need for interpretability of the 2D heatmaps.  
+This allows to transfer several self-consistent pose hypotheses from 2D detectors to the volumetric aggregation stage (which was not possible with previous designs).
+
+The work [18] used a multi-stage approach with an external 3D pose prior [17] to infer the 3D pose from 2D joints’coordinates.  
+During the first stage, images from all views were passed through the backbone convolutional neural network to obtain 2D joints’ heatmaps.  
+The positions of maxima in the heatmaps were jointly used to infer the 3D pose via optimizing latent coordinates in 3D pose prior space.  
+In each of the subsequent stages, 3D pose was reprojected back to all camera views and fused with predictions from the previous layer (via a convolutional network).  
+Next, the 3D pose was re-estimated from the positions of heatmap maxima, and the process repeated.  
+Such procedure allowed correcting the predictions of 2D joint heatmaps via indirect holistic reasoning on a human pose.  
+In contrast to our approach, in [18] there is no gradient flow from the 3D predictions to 2D heatmaps and thus no direct signal to correct the prediction of 3D coordinates.
 
 
 ## 3. Method
