@@ -212,7 +212,7 @@ To solve this problem we propose to use a more complex and powerful triangulatio
 We unproject the feature maps produced by the 2D backbone into 3D volumes (see Figure 2).  
 This is done by filling a 3D cube around the person via projecting output of the 2D network along projection rays inside the 3D cube.  
 The cubes obtained from multiple views are then aggregated together and processed.  
-For such volumetric triangulation approach, the 2D output does not have to be interpretable as joint heatmaps, thus, instead of unprojecting $$H_c$$ themselves, we use the output of a trainable single layer convolutional neural network $$o^{\gamma}$$ with $$1 \times 1$$ kernel and $$\mathrm{K}$$ output channels (the weights of this layer are denoted by ) applied to the input from the backbone intermediate heatmaps $$f^{\theta}(I_c)$$:
+For such volumetric triangulation approach, the 2D output does not have to be interpretable as joint heatmaps, thus, instead of unprojecting $$H_c$$ themselves, we use the output of a trainable single layer convolutional neural network $$o^{\gamma}$$ with $$1 \times 1$$ kernel and $$\mathrm{K}$$ output channels (the weights of this layer are denoted by $$\gamma$$) applied to the input from the backbone intermediate heatmaps $$f^{\theta}(I_c)$$:
 
 $$M_{c,k} = o^{\gamma}(f^{\theta}(I_c))_k \; \; \; (6)$$
 
