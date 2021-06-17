@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  "Weakly-Supervised 3D Human Pse Learning via Multi-view Images in the Wild"
+bigtitle:  "Human Pose as Calibration Pattern; 3D Human Pose Estimation with Multiple Unsynchronized and Uncalibrated Cameras"
 subtitle:   "."
 categories:
     - blog
@@ -14,113 +14,105 @@ published: true
 
 
 
-# Weakly-Supervised 3D Human Pse Learning via Multi-view Images in the Wild
+# Human Pose as Calibration Pattern; 3D Human Pose Estimation with Multiple Unsynchronized and Uncalibrated Cameras
 
-Umar Iqbal, Pavlo Molchanov, Jan Kautz, NVIDIA et al. Proceedings of the IEEE/CVF International Conference on Computer Vision. 2020. [paper](https://openaccess.thecvf.com/content_CVPR_2020/html/Iqbal_Weakly-Supervised_3D_Human_Pose_Learning_via_Multi-View_Images_in_the_CVPR_2020_paper.html)
+Takahashi, Kosuke, et al. "Human pose as calibration pattern; 3D human pose estimation with multiple unsynchronized and uncalibrated cameras." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops. 2018. [paper](https://openaccess.thecvf.com/content_cvpr_2018_workshops/w34/html/Takahashi_Human_Pose_As_CVPR_2018_paper.html)
 
 * toc
 {:toc}
 
 ## Abstract
-One major challenge for monocular 3D human pose estimation in-the-wild is the acquisition of training data that contains unconstrained images annotated with accurate 3D poses.  
-In this paper, we address this challenge by proposing a weakly-supervised approach that does not require 3D annotations and learns to estimate 3D poses from unlabeled multi-view data, which can be acquired easily in in-the-wild environments.  
-We propose a novel end-to-end learning framework that enables weakly-supervised training using multi-view consistency.  
-Since multi-view consistency is prone to degenerated solutions, we adopt a 2.5D pose representation and propose a novel objective function that can only be minimized when the predictions of the trained model are consistent and plausible across all camera views.  
-We evaluate our proposed approach on two large scale datasets (Human3.6M and MPII-INF-3DHP) where it achieves state-of-the-art performance among semi-/weaklysupervised methods.
 
->  in-the-wild에서 monocular 3D human pose estimation을 위한 한 가지 주요 과제는 정확한 3D poses로 annotated된 제약 없는 images을 포함하는 training data의 획득이다.  
-본 논문에서는 3D annotations이 필요하지 않고 unlabeled multi-view data에서 3D poses를 estimate하는 방법을 학습하는 weakly-supervised approach을 제안함으로써 이 과제를 해결한다, 이는 in-the-wild 환경에서 쉽게 획득할 수 있다.  
-multi-view 일관성을 사용하여 weakly-supervised training을 가능하게 하는 새로운 end-to-end learning framework를 제안한다.  
-multi-view 일관성은 퇴화된 솔루션에 노출되기 쉽기 때문에 2.5D pose representation을 채택하고 훈련된 모델의 예측이 모든 camera views에서 일관되고 그럴듯할 때만 최소화할 수 있는 새로운 objective function를 제안한다.  
-우리는 두 개의 대규모 데이터 세트(Human3.6M and MPII-INF-3DHP)에 대해 제안된 접근 방식을 평가한다, 그것은 semi-/weaklysupervised methods 중 state-of-the-art 성능을 달성한다.
+This paper proposes a novel algorithm of estimating 3D human pose from multi-view videos captured by unsynchronized and uncalibrated cameras. In a such configuration, the conventional vision-based approaches utilize detected 2D features of common 3D points for synchronization and camera pose estimation, however, they sometimes suffer from difficulties of feature correspondences in case of wide baselines. For such cases, the proposed method focuses on that the projections of human joints can be associated each other robustly even in wide baseline videos and utilizes them as the common reference points. To utilize the projections of joint as the corresponding points, they should be detected in the images, however, these 2D joint sometimes include detection errors which make the estimation unstable. For dealing with such errors, the proposed method introduces two ideas. The first idea is to relax the reprojection errors for avoiding optimizing to noised observations. The second idea is to introduce an geometric constraint on the prior knowledge that the reference points consists of human joints. We demonstrate the performance of the proposed al- gorithm of synchronization and pose estimation with qualitative and quantitative evaluations using synthesized and real data.
 
 ## 1. Introduction
 
-Learning to estimate 3D body pose from a single RGB image is of great interest for many practical applications.  
-The state-of-the-art methods [6,16,17,28,32,39–41,52,53] in this area use images annotated with 3D poses and train deep neural networks to directly regress 3D pose from images.  
-While the performance of these methods has improved significantly, their applicability in in-the-wild environments has been limited due to the lack of training data with ample diversity.  
-The commonly used training datasets such as Human3.6M [10], and MPII-INF-3DHP [22] are collected in controlled indoor settings using sophisticated multi-camera motion capture systems.  
-While scaling such systems to unconstrained outdoor environments is impractical, manual annotations are difficult to obtain and prone to errors.  
-Therefore, current methods resort to existing training data and try to improve the generalizabilty of trained models by incorporating additional weak supervision in form of various 2D annotations for in-the-wild images [27,39,52].  
-While 2D annotations can be obtained easily, they do not provide sufficient information about the 3D body pose, especially when the body joints are foreshortened or occluded.  
-Therefore, these methods rely heavily on the ground-truth 3D annotations, in particular, for depth predictions.
+Measuring 3D human pose is important for analyzing the mechanics of the human body in various research fields, such as biomechanics, sports science and so on. In general, some additional devices, e.g. optical markers [1] and inertial sensors [2], are introduced for measuring 3D human pose. While these approaches have advantages in terms of high estimation quality, i.e. precision and robustness, it is sometimes difficult to utilize them in some practical scenarios, such as monitoring people in daily life or evaluating the performance of each player in a sports game, due to inconveniences of installing the devices.
 
-Instead of using 3D annotations, in this work, we propose to use unlabeled multi-view data for training.  
-We assume this data to be without extrinsic camera calibration.  
-Hence, it can be collected very easily in any in-the-wild setting.  
-In contrast to 2D annotations, using multi-view data for training has several obvious advantages e.g., ambiguities arising due to body joint occlusions as well as foreshortening or motion blur can be resolved by utilizing information from other views.  
-There have been only few works [14, 29, 33, 34] that utilize multi-view data to learn monocular 3D pose estimation models.  
-While the approaches [29,33] need extrinsic camera calibration, [33,34] require at least some part of their training data to be labelled with ground-truth 3D poses.  
-Both of these requirements are, however, very hard to acquire for unconstrained data, hence, limit the applicability of these methods to controlled indoor settings.  
-In [14], 2D poses obtained from multiple camera views are used to generate pseudo ground-truths for training.  
-However, this method uses a pre-trained pose estimation model which remains fixed during training, meaning 2D pose errors remain unaddressed and can propagate to the generated pseudo ground-truths.
+To estimate 3D human pose in such cases, vision-based motion capture techniques have been studied in the field of computer vision [9]. Basically, they utilize multi-view cameras or depth sensors and assume that they are synchronized and calibrated beforehand. Such synchronization and calibration are troublesome to establish and maintain; typically, the cameras are connected by wires and capture the same reference object. Some 2D local features based synchronization and calibration methods have also been proposed for easy-to-use multi-view imaging systems in case for which the preparation cannot be done. However, they sometimes suffer from difficulties of feature correspondences in case for which the multiple cameras are scattered with wide baselines, which the erroneous correspondences affect the stability and precision of estimation severely.
 
-In this work, we present a weakly-supervised approach for monocular 3D pose estimation that does not require any 3D pose annotations at all.  
-For training, we only use a collection of unlabeled multi-view data and an independent collection of images annotated with 2D poses.  
-An overview of the approach can be seen in Fig. 1.  
-Given an RGB image as input, we train the network to predict a 2.5D pose representation [12] from which the 3D pose can be reconstructed in a fully-differentiable way.  
-Given unlabeled multi-view data, we use a multi-view consistency loss which enforces the 3D poses estimated from different views to be consistent up to a rigid transformation.  
-However, naively enforcing multi-view consistency can lead to degenerated solutions.  
-We, therefore, propose a novel objective function which is constrained such that it can only be minimized when the 3D poses are predicted correctly from all camera views.  
-The proposed approach can be trained in a fully end-to-end manner, it does not require extrinsic camera calibration and is robust to body part occlusions and truncations in the unlabeled multi-view data.  
-Furthermore, it can also improve the 2D pose predictions by exploiting multi-view consistency during training.
+This paper addresses the problem of 3D human pose estimation from multi-view videos captured by unsynchronized and uncalibrated cameras with wide baselines. The key feature of this paper is its focus on using the projections of human joints to derive robust point associations for use as common reference points. To detect the projections of human joints some 2D form of pose detector is needed [7,24,25], however, 2D joint positions sometime include detection errors which make the estimation unstable. To deal with such errors, the proposed method introduces two ideas. The first idea is to relax the reprojection errors to avoid the optimization of noisy observations. The second idea is to introduce a geometric constraint based on the a priori knowledge that the reference points are actually human joints.
 
-We evaluate our approach on two large scale datasets where it outperforms existing methods for semi-/weakly supervised methods by a large margin.  
-We also show that the MannequinChallenge dataset [18], which provides in-the-wild videos of people in static poses, can be effectively exploited by our proposed method to improve the generalizability of trained models, in particular, when their is a significant domain gap between the training and testing environments.
+The key contribution of this paper is to propose a novel algorithm for 2D human joint based multi-camera synchronization, camera pose estimation and 3D human pose estimation. This algorithm enables us to obtain 3D human pose easily and stably even in a practical and challenging scenes, such as sports games.
 
-## 2. Related Work
+The reminder of this paper is organized as follow. Section 2 reviews related works in terms of synchronization, extrinsic calibration and human pose estimation. Section 3 introduces our proposed algorithm using the detected 2D joint positions as the corresponding points in multi-view images. Section 4 reports the performance evaluations and Section 5 provides discussions on the proposed method. Section 6 concludes this paper.
 
-We discuss existing methods for monocular 3D human pose estimation with varying degree of supervision.
+## 2. RelatedWorks
 
-**Fully-supervised methods**  
-aim to learn a mapping from 2D information to 3D given pairs of 2D-3D correspondences as supervision. The recent methods in this direction adopt deep neural networks to directly predict 3D poses from images [16, 17, 41, 53]. Training the data hungry neural networks, however, requires large amounts of training images with accurate 3D pose annotations which are very hard to acquire, in particular, in unconstrained scenarios. To this end, the approaches in [5, 35, 45] try to augment the training data using synthetic images, however, still need real data to obtain good performance. More recent methods try to improve the performance by incorporating additional data with weak supervision i.e., 2D pose annotations [6, 28, 32, 39, 40, 52], boolean geometric relationship between body parts [27, 31, 37], action labels [20], and temporal consistency [2]. Adverserial losses during training [50] or testing [44] have also been used to improve the performance of models trained on fully-supervised data.
+This section introduces the related works of our research in terms of (1) camera synchronization, (2) extrinsic camera calibration, and (3) human pose estimation.
 
-Other methods alleviate the need of 3D image annotations by directly lifting 2D poses to 3D without using any image information e.g., by learning a regression network from 2D joints to 3D [9, 21, 24] or by searching nearest 3D poses in large databases using 2D projections as the query [3, 11, 31]. Since these methods do not use image information for 3D pose estimation, they are prone to reprojection ambiguities and can also have discrepancies between the 2D and 3D poses.
+**Camera Synchronization**  Multiple camera synchronization significantly impacts the estimation precision of multiview applications, such as 3D reconstruction. In general, the cameras are wired and receive a trigger signal from an external sensor telling the camera when to acquire an image. However, these wired connections can be troublesome to establish when the cameras are widely scattered as happens when capturing a sports games.
 
-In contrast, in this work, we present a method that combines the benefits of both paradigms i.e., it estimates 3D pose from an image input, hence, can handle the reprojection ambiguities, but does not require any images with 3D pose annotations.
+Audio-based approaches [9,18] estimate the time shift of multi-view videos in a software post-processing step, however, the significant difference in camera position degrades the estimation precision due to the delay in sound arrival.
 
-**Semi-supervised methods**  
-require only a small subset of training data with 3D annotations and assume no or weak supervision for the rest. The approaches [33,34,51] assume that multiple views of the same 2D pose are available and use multi-view constraints for supervision. Closest to our approach in this category is [34] in that it also uses multiview consistency to supervise the pose estimation model. However, their method is prone to degenerated solutions and its solution space cannot be constrained easily. Consequently, the requirement of images with 3D annotations is inevitable for their approach. In contrast, our method is weakly-supervised. We constrain the solution space of our method such that the 3D poses can be learned without any 3D annotations. In contrast to [34], our approach can easily be applied to in-the-wild scenarios as we will show in our experiments. The approaches [43, 48] use 2D pose annotations and re-projection losses to improve the performance of models pre-trained using synthetic data. In [19], a pretrained model is iteratively improved by refining its predictions using temporal information and then using them as supervision for next steps. The approach in [30] estimates the 3D poses using a sequence of 2D poses as input and uses a re-projection loss accumulated over the entire sequence for supervision. While all of these methods demonstrate impressive results, their main limiting factor is the need of ground-truth 3D data.
+Some image-based methods [3, 22] are able to synchronize the cameras even in such cases. Cenek et al. [3] estimates the time shift by using epipolar geometry on the corresponding points in the multi-view images. Tamaki et al. [22] detected the same table tennis ball in sequential frames and utilized them to establish point correspondences for computing epipolar geometry. Given the scale of the capture environment envisaged, our method is also based on epipolar geometry and so uses detected 2D joint positions as the corresponding points.
 
-**Weakly-supervised methods**  
-do not require paired 2D- 3D data and only use weak supervision in form of motioncapture data [42], images/videos with 2D annotations [25, 47], collection of 2D poses [4, 7, 46], or multi-view images [14, 29]. Our approach also lies in this paradigm and learns to estimate 3D poses from unlabeled multi-view data. In [42], a probabilistic 3D pose model learned using motion-capture data is integrated into a multi-staged 2D pose estimation model to iteratively refine 2D and 3D pose predictions. The approach [25] uses a re-projection loss to train the pose estimation model using images with only 2D pose annotations. Since re-projection loss alone is insufficient for training, they factorize the problem into the estimation of view-point and shape parameters and provide inductive bias via a canonicalization loss. Similar in spirit, the approaches [4,7,46] use collection of 2D poses with reprojection loss for training and use adversarial losses to distinguish between plausible and in-plausible poses. In [47], non-rigid structure from motion is used to learn a 3D pose estimator from videos with 2D pose annotations. The closest to our work are the approaches of [14, 29] in that they also use unlabeled multi-view data for training. The approach of [29], however, requires calibrated camera views that are very hard to acquire in unconstrained environments. The approach [14] estimates 2D poses from multi-view images and reconstructs corresponding 3D pose using Epipolar geometry. The reconstructed poses are then used for training in a fully-supervised way.
+**Extrinsic Camera Calibration** Extrinsic camera calibration is an essential technique for 3D analysis and understanding from multi-view videos and various proposals have been made for various camera settings. Most proposals utilize detected 2D features, such as chess board corners or local features, e.g. SIFT [13], as the corresponding points. These approaches have difficulty in establishing reliable feature correspondence if the multiple cameras are scattered with wide baselines, as erroneous correspondences degrade the stability and precision of estimation severely.
 
-The main drawback of this method is that the 3D poses remain fixed throughout the training, and the errors in 3D reconstruction directly propagate to the trained models. This is, particularly, problematic if the multi-view data is captured in challenging outdoor environments where 2D pose estimation may fail easily. In contrast, in this work, we propose an end-to-end learning framework which is robust to challenges posed by the data captured in in-the-wild scenarios. It is trained using a novel objective function which can simultaneously optimize for 2D and 3D poses. In contrast to [14], our approach can also improve 2D predictions using unlabeled multi-view data. We evaluate our approach on two challenging datasets where it outperforms existing methods for semi-/weaklysupervised learning by a large margin.
+For such cases, some studies utilize a priori knowledge of the scene. Huang et al. [11] use the trajectories of pedestrians in calibrating multiple fixed cameras based on the assumption that the cameras can capture the same pedestrians for a long time. Namdar et al. [10] assume that the cameras capture a sport scene in a stadium and calibrate them by introducing vanishing points computed from the lines on the sports field.
 
-## 3. Method
+In addition, some studies [6, 16, 20] propose calibration algorithm that utilizes a priori knowledge that that the scenes contain humans. The silhouette-based approaches [5,19] establish the correspondences between special points on the silhouette boundaries, called frontier points [8], across the multiple views. These points are the projections of 3D points tangent to the epipolar plane. The epipolar geometry can be recovered from the correspondences of the frontier points.
 
-### 3.1. 2.5D Pose Representation
+Puwein et al. [16] proposed using detected 2D human joints in multi-view images as common reference points and using these points to compute the extrinsic parameters. Our method is inspired by [16]. In [16], the error function consists of reprojection error, a kinematic structure term, a smooth motion term and so on, is minimized in the bundle adjustment manner. Our work, on the other hand, introduces a relaxed reprojection error for robust estimation in the face of very noisy data; it also solves the synchronization problem.
 
-#### 3.1.1 Differentiable 3D Reconstruction
+**2D Human Pose Estimation** Conventional studies of 2D human pose estimation problem fall into two basic groups: pictral structure approach [4, 15], in which spatial correlations between each part are expressed as a tree-structured graphical model with kinematic priors that couple connected limbs, and hierarchical model approach [21, 23], which represents the relationships between parts at different scales and sizes in a hierarchical tree structure.
 
-### 3.2. 2.5D Pose Regression
+Given the rapid improvement in neural network techniques, a lot of neural network based 2D pose detectors have been proposed [7,24,25]. Toshev et al. [24] solve 2D human pose as a regression problem by introducing the AlexNet architecture, which was originally used for object recognition. Wei et al. [25] achieve high precise pose estimation by introducing CNN to the Pose Machine [17]. Caoet al. [7] consider the connectivity of each joint by introducing a part affinity field to the work of [25]; they achieve robust estimation of multi-person pose in real time.
 
-### 3.3. WeaklySupervised Training
+## 3. Proposed Method
 
-**Heatmap Loss**
+This section describes our proposed method for estimating 3D human pose with unsynchronized and uncalibrated multiple cameras with wide baselines.
 
-**Multi-View Consistency Loss**
+### 3.1. Problem Formulation
 
-**Limb Length Loss**
+#### 3.1.1 Relaxed Reprojection Error
 
-**Additional Regularization**
+#### 3.1.2 Constraints on Human Joints
 
-## 4. Experiments
+### 3.2. Algorithm
 
-### 4.1. Datasets
+Figure 4 illustrates the processing flow of the proposed method. First, it detects 2D joint positions from the input multi-view videos using a 2D pose detector such as [7,24,25]. Since the 2D pose detector output includes detection errors and joint detection sometimes fails due to selfocclusion, the proposed method applies a median filter after applying a cubic spline interpolation method to the output data. Next, select two cameras and the initial values of each parameter are estimated by the standard SfM approach using assumed time shift $d_i$; that is, it estimates the essential matrix for selected cameras, decomposes it into the extrinsic parameters, and estimates 3D joint positions through triangulation. The extrinsic camera parameters of the other cameras are estimated by solving PnP problems [12]. Then, Eq.(4) is computed using the initial parameters and minimized by the Levenberg-Marquardt algorithm over parameters $P$, $J$, and $L$. Finally, the parameters yielding the smallest value of Eq. (4) with $d_i$ are selected as the optimized parameters.
 
-### 4.2. Evaluation Metrics
+## 4. Evaluations
 
-### 4.3. Ablation Studies
+This section describes the performance evaluations of the proposed method with synthesized data and real data.
 
-### 4.4. Comparison with the State-of-the-Art
+### 4.1. Evaluations with Synthesized Data
 
-## 5. Conclusion
+#### 4.1.1 Experimental Environment
 
-We have presented a weakly-supervised approach for 3D human pose estimation in the wild.  
-Our proposed approach does not require any 3D annotations and can learn to estimate 3D poses from unlabeled multi-view data.  
-This is made possible by a novel end-to-end learning framework and a novel objective function which is optimized to predict consistent 3D poses across different camera views.  
-The proposed approach is very practical since the required training data can be collected very easily in in-the-wild scenarios.  
-We demonstrated state-of-the-art performance on two challenging datasets.
+#### 4.1.2 Results
 
-Acknowledgments: We are thankful to Kihwan Kim and Adrian Spurr for helpful discussions.
+Figure 6 plots the average errors of synchronization, extrinsic parameters, and 3D joint positions for 10 trials at each noise level. From these results, we can see that all methods estimate the time shift with error of 0.006 ∼ 0.012 seconds. As to the extrinsic parameters, the proposed method offers robust estimation even if large detection error is assumed while the conventional methods suffer degraded performace. Especially, Method2 significantly degrades in $\sigma > 1$ cases. We consider that the reason is that the Method2, which minimizes the reprojection errors strictly, is significantly affected by the noise and detection failures. The proposed method estimates 3D joint positions robustly while the Method1 degrades with noisy data. Method2 also estimates 3D joint positions with comparable precisions to the proposed method in spite of its degraded extrinsic parameters. This is considered that the adjusting the scale and initial position in case of evaluating the 3D positions absorbs this degradation.
+
+Figure 7 renders one example of the estimated camera positions and 3D joint positions in 3D space with $\sigma = 5$. This figure shows that the proposed method estimates reasonable camera positions and 3D joints.
+
+From the above, we can conclude that the proposed method is more robust than the conventional methods even if the input data includes significant noise, especially in terms of the extrinsic parameters.
+
+### 4.2. Evaluations with Real Data
+
+This section demonstrates that the proposed method works with real data in a practical scenario.
+
+#### 4.2.1 Experimental Environment
+
+Figure 8 shows the configuration of the evaluation that used real data. The two cameras (CASIO EX100) with 640 × 480 resolution and 120 fps were set with a wide baseline. Camera 0 and Camera 1 had focal lengths of 200mm and 165mm, respectively. The input video consisted of 1000 frames, that is about 8.3 seconds. These cameras captured one player throwing a ball. In the 2D pose estimation step, Cao et al. [7]’s method is
+utilized. This evaluation used, in addition to Method1 and Method2 introduced in Section 4.1, Zhang’s method [26] as benchmarks.
+
+#### 4.2.2 Results
+
+Table 1 reports the estimation error of extrinsic parameters between each method and [26]. Figure 9 visualizes the estimated camera positions and 3D joint positions in 3D space. In Figure 9, while the camera positions estimated by Method1, Zhang’s method and the proposed method are almost same, that of Method2 diverged significantly. The reason is that the detected 2D poses include severe noise and Method2, which minimizes the reprojection errors strictly, is optimized to the noisy data same as in the evaluations with synthesized data, whereas the proposed method avoids the problem by relaxing the reprojection errors.
+From these results, we can see that the proposed method works robustly with severely noise-degraded data in practical situations.
+
+## 5. Discussion
+### 5.1. Precision of 2D Human Pose Detector
+
+The 2D pose detector is utilized in the first step of the proposed method and it has significant effects on the estimation precision. Here we investigate the performance of 2D pose detector [7] utilized in this paper.
+Table shows the average, standard deviation, smallest value and biggest value of estimation error, that is euclidean norm of 2D human pose detected by [7] and its ground truth, in 700 frames with 1920 × 1080 resolutions. In the evaluations in Section 4, the $μ_p$ and $\sigma_p$ in the relaxed reprojection error are set based on these results.
+
+### 5.2. Multiplayer Cases
+
+As introduced in Section 3.1, our algorithm assume that there is a single player in the shared field-of-view of multiple cameras, however, it can be extend to multi-player cases. By considering the multi-players, it is considered that the estimation precision by the proposed method is improved because the number of constraints increase and the 2D joint positions, which are recognized as the corresponding points, cover more wide area in image planes of each camera. To deal with multi-player cases, the person identification problem and occlusion handling are to be solved in addition. This extension is included in our future works.
+
+## 6. Conclusion
+
+This paper proposed a novel 3D human joint position estimation algorithm for unsynchronized and uncalibrated cameras with wide baselines. The method focuses on the major skeleton joints and the constancy of joint separation. The 2D human pose is detected from the multi-view images and joint position estimates are used in the structure-frommotion manner. The proposed method provides an objective function consisting of a relaxed reprojection error term and human joint error term in order to achieve robust estimation even if the input data is noisy; the objective term is optimized. Evaluations using synthesized data and real data showed that the proposed method works robustly with noise-corrupted data. Future works include evaluations that use marker-based motion capture techniques and extension to the multi-player cases.
