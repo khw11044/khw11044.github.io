@@ -27,15 +27,25 @@ Training accurate 3D human pose estimators requires large amount of 3D ground-tr
 Various weakly or self supervised pose estimation methods have been proposed due to lack of 3D data.   
 Nevertheless, these methods, in addition to 2D ground-truth poses, require either additional supervision in various forms (e.g. unpaired 3D ground truth data, a small subset of labels) or the camera parameters in multiview settings.  
 To address these problems, we present EpipolarPose, a self-supervised learning method for 3D human pose estimation, which does not need any 3D ground-truth data or camera extrinsics.  
+
+> 정확한 3D human pose estimators를 훈련하려면 수집 비용이 많이 드는 large amount of 3D ground-truth data가 필요하다.
+다양한 weakly or self supervised pose estimation methods가 제안되어왔다.
+그럼에도 불구하고 이러한 방법은 2D ground-truth poses 외에도 다양한 형태(예: unpaired 3D ground truth data, a small subset of labels)의 additional supervision이나 multiview settings의 camera parameters를 필요로 한다.
+이러한 문제를 해결하기 위해, 우리는 3D ground-truth data나 camera extrinsics이 전혀 필요하지 않은 3D human pose estimation을 위한 self-supervised learning method인 EpipolarPose를 제시한다.
+
 During training, EpipolarPose estimates 2D poses from multi-view images, and then, utilizes epipolar geometry to obtain a 3D pose and camera geometry which are subsequently used to train a 3D pose estimator.  
 We demonstrate the effectiveness of our approach on standard benchmark datasets (i.e. Human3.6M and MPI-INF-3DHP) where we set the new state-of-the-art among weakly/self-supervised methods.  
 Furthermore, we propose a new performance measure Pose Structure Score (PSS) which is a scale invariant, structure aware measure to evaluate the structural plausibility of a pose with respect to its ground truth.  
 Code and pretrained models are available at [https://github.com/mkocabas/EpipolarPose](https://github.com/mkocabas/EpipolarPose)
 
+> training 중에 EpipolarPose는 multi-view images에서 2D poses를 추정한 다음 epipolar geometry를 사용하여 3D pose와 카camera geometry를 얻고 이후 3D pose estimator를 훈련하는 데 사용된다.  
+우리는 weakly/self-supervised methods중 새로운 state-of-the-art임을 보여주기위해 standard benchmark datasets(즉, Human3.6M과 MPI-INF-3DHP)에 대한 우리의 approach 효과를 보여준다.  
+또한, 우리는 그것의 ground truth에 대한 pose의 구조적 신뢰성을 평가하기 위한 '스케일 불변', ''구조 인식 측정'인 새로운 성능 측정 포즈 구조 점수(PSS)를 제안한다.
+
 
 ## 1. Introduction
 
-![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised Learning of 3D Human Pose using Multi-view Geometry/Fig1.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised_Learning_of_3DHP_using_Multi-view_Geometry/Fig1.PNG)
 
 Human pose estimation in the wild is a challenging problem in computer vision.  
 Although there are large-scale datasets [2, 20] for two-dimensional (2D) pose estimation, 3D datasets [15, 23] are either limited to laboratory settings or limited in size and diversity.  
@@ -45,17 +55,39 @@ These methods, in addition to ground-truth 2D poses, require either additional s
 To the best of our knowledge, there is only one method [9] which can produce a 3D pose estimator by using only 2D ground-truth.  
 In this paper, we propose another such method.  
 
+> in the wild의 Human pose estimation은 computer vision에서 challenging problem이다.  
+two-dimensional (2D) pose estimation을 위한 large-scale datasets [2, 20]가 있지만, 3D datasets [15, 23]는 실험실 설정으로 제한되거나 크기와 다양성이 제한된다.  
+in the wild에서 3D human pose annotations을 수집하는 것은 비용이 많이 들고3D datasets가 제한적이기 때문에, 연구원들은 기존의  2D pose datasets 위에 최소한의 additional supervision을 사용하여 정확한 3D pose estimator를 얻는 것을 목표로 weakly or self supervised approaches에 의존했다.  
+이를 위해 다양한 방법이 개발되었다.  
+이러한 방법은 ground-truth 2D poses 외에도 다양한 형태(unpaired 3D ground truth data[41], a small subset of labels [31]) 또는 multiview settings [30]의 (extrinsic) camera parameters의 additional supervision을 필요로 한다.  
+우리가 아는 한,2D ground-truth만 사용하여 3D pose estimator를 생성할 수 있는 방법은 단 하나 [9]이다.  
+본 논문에서, 우리는 또 다른 그러한 방법을 제안한다.
+
 Our method, “EpiloparPose,” uses 2D pose estimation and epipolar geometry to obtain 3D poses, which are subsequently used to train a 3D pose estimator.  
 EpipolarPose works with an arbitrary number of cameras (must be at least 2) and it does not need any 3D supervision or the extrinsic camera parameters, however, it can utilize them if provided.  
 On the Human3.6M [15] and MPI-INF-3DHP [23] datasets, we set the new state-of-the-art in 3D pose estimation for weakly/self-supervised methods.  
 
+> 우리의 방법인 "EpiloparPose"는 2D pose estimation과 epipolar geometry을 사용하여 3D poses를 얻으며, 이후 3D pose estimator를 훈련시키는 데 사용된다.  
+EpipolarPose는 임의의 카메라 개수(최소 2개여야 함)로 작동하며 3D supervision이나 extrinsic camera parameters가 전혀 필요하지 않지만 제공된 경우 이를 활용할 수 있다.  
+uman3.6M [15] 및 MPI-INF-3DHP [23] datasets에서, 우리는 weakly/self-supervised methods에 대한new state-of-the-art in 3D pose estimation을 설정한다.
+
 Human pose estimation allows for subsequent higher level reasoning, e.g. in autonomous systems (cars, industrial robots) and activity recognition.  
 In such tasks, structural errors in pose might be more important than the localization error measured by the traditional evaluation metrics such as MPJPE (mean per joint position error) and PCK (percentage of correct keypoints).  
 These metrics treat each joint independently, hence, fail to asses the whole pose as a structure.  
+
+> Human pose estimation은 자율 시스템(자동차, 산업용 로봇) 및 활동 인식과 같은 후속적으로 더 높은 수준의 추론을 가능하게 한다.  
+이러한 작업에서, pose에서 structural errors는 MPJPE(mean per joint position error) 및 PCK(percentage of correct keypoints)와 같은 전통적인 평가 지표에 의해 측정된 localization error보다 더 중요할 수 있다.  
+이러한 metrics는 각 joint를 독립적으로 처리하므로 전체 자세를 하나의 구조로 평가하지 못한다.
+
 Figure 4 shows that structurally very different poses yield the same MPJPE with respect to a reference pose.  
 To address this issue, we propose a new performance measure, called the Pose Structure Score (PSS), which is sensitive to structural errors in pose.  
 PSS computes a scale invariant performance score with the capability to score the structural plausibility of a pose with respect to its ground truth.  
 Note that PSS is not a loss function, it is a performance measure that can be used along with MPJPE and PCK to account for structural errors made by a pose estimator.
+
+> 그림 4는 구조적으로 매우 다른 포즈가 기준 포즈와 관련하여 동일한 MPJPE를 산출한다는 것을 보여준다.  
+이 문제를 해결하기 위해, 우리는 pose의 구조적 오류에 민감한 Pose Structure Score (PSS)라는 new performance measure을 제안한다.
+PSS는 그것의 ground truth에 관한 pose의 structural plausibility을 점수화하는 능력으로 scale invariant performance score를 계산한다.  
+PSS는 loss function이 아니라 pose estimator에 의해 이루어진 structural errors를 설명하기 위해 MPJPE 및 PCK와 함께 사용할 수 있는 performance measure이라는 점에 유의한다.
 
 To compute PSS, we first need to model the natural distribution of ground-truth poses.  
 To this end, we use an unsupervised clustering method.  
@@ -76,6 +108,9 @@ If both of them are closest to (i.e. assigned to) the same cluster center, then 
 Our method, EpipolarPose, is a single-view method during inference; and a multi-view, self-supervised method during training.  
 Before discussing such methods in the literature, we first briefly review entirely single-view (during both training and inference) and entirely multi-view methods for completeness.
 
+> 우리의 방법인 EpipolarPose는 inference에서 single-view method, training에서는 multi-view, self-supervised method이다.  
+literature에서 이러한 방법을 논의하기 전에 먼저 completeness을 위해 entirely single-view (during both training and inference)와  entirely multi-view methods을 간략하게 review한다.
+
 **Single-view methods**
 In many recent works, convolutional neural networks (CNN) are used to estimate the coordinates of the 3D joints directly from images [38, 39, 40, 35, 23].  
 Li and Chan [19] were the first to show that deep neural networks can achieve a reasonable accuracy in 3D human pose estimation from a single image.  
@@ -84,35 +119,68 @@ Tekin et al. [38] show that combining traditional CNNs for supervised learning w
 Contrary to common regression practice, Pavlakos et al. [29] were the first to consider 3D human pose estimation as a 3D keypoint localization problem in a voxel space.  
 Recently, “integral pose regression” proposed by Sun et al. [36] combined volumetric heat maps with a soft-argmax activation and obtained state-of-the-art results.
 
+> 최근의 많은 연구에서, convolutional neural networks (CNN)은 images에서 직접 3D joints의 좌표를 추정하는 데 사용된다[38, 39, 40, 35, 23].  
+Li와 Chan[19]은 deep neural networks이 단일 이미지에서 3D human pose estimation을 합리적인 정확도를 달성할 수 있다는 것을 처음으로 보여주었다.  
+two deep regression networks와 body part detection를 사용했다.  
+Tekin 등[38]은 supervised learning을 위한 traditional CNNs과 structure learning을 위한 auto-encoders를 결합하면 좋은 결과를 얻을 수 있음을 보여준다.  
+일반적인 regression practice과는 반대로 Pavlakos 등[29]은 voxel space에서 3D human pose estimation을 3D keypoint localization problem으로 가장 먼저 고려했다.  
+최근 Sun 등이 제안한 “integral pose regression”[36]는 olumetric heat maps와 soft-argmax activation을 결합하고 state-of-the-art results를 얻었다.
+
 Additionally, there are two-stage approaches which decompose the 3D pose inference task into two independent stages: estimating 2D poses, and lifting them into 3D space [8, 24, 22, 11, 46, 8, 40, 23].   
 Most recent methods in this category use state-of-the-art 2D pose estimators [7, 43, 25, 17] to obtain joint locations in the image plane.  
 Martinez et al. [22] use a simple deep neural network that can estimate 3D pose given the estimated 2D pose computed by a state-of-the-art 2D pose estimator.  
 Pavlakos et al. [28] proposed the idea of using ordinal depth relations among joints to bypass the need for full 3D supervision.
 
+> 또한, 3D pose inference task을 두 개의 독립된 단계로 분해하는 two-stage approaches가 있다: estimating 2D poses과 lifting them into 3D space[8, 24, 22, 11, 46, 8, 40, 23].   
+이 category의 최신 방법은 state-of-the-art 2D pose estimators[7, 43, 25, 17]를 사용하여 이미지 plane에서 joint locations를 얻는다.  
+Martinez 등[22]은 state-of-the-art 2D pose estimator에 의해 계산된 estimated 2D pose가 주어진 3D pose를 추정할 수 있는 simple deep neural network을 사용한다.  
+Pavlakos 등 [28]은 full 3D supervision의 필요성을 bypass하기 위해 joints 사이의 ordinal depth relations를 사용하는 아이디어를 제안했다.
+
 Methods in this category require either full 3D supervision or extra supervision (e.g. ordinal depth) in addition to full 3D supervision.
+
+> 이 category의 Methods은 full 3D supervision 또는 full 3D supervision 외에 extra supervision(예: ordinal depth)을 필요로 한다.
 
 **Multi-view methods**  
 Methods in this category require multi-view input both during testing and training.  
 Early work [1, 5, 6, 3, 4] used 2D pose estimations obtained from calibrated cameras to produce 3D pose by triangulation or pictorial structures model.  
 More recently, many researchers [10] used deep neural networks to model multi-view input with full 3D supervision.
 
+> 이 category의 Methods은 testing과 training  모두 multi-view input을 필요로 한다.  
+초기 작업[1, 5, 6, 3, 4]은 calibrated cameras에서 얻은 2D pose estimations을 사용하여 triangulation 또는 pictorial structures model에 의한 3D pose를 생성했다.  
+보다 최근에는 [10] 많은 연구자가 deep neural networks를 사용하여 full 3D supervision으로 multi-view input을 모델링했다.
+
 **Weakly/self-supervised methods**  
 Weak and self supervision based methods for human pose estimation have been explored by many [9, 31, 41, 30] due to lack of 3D annotations.  
 Pavlakos et al. [30] use a pictorial structures model to obtain a global pose configuration from the keypoint heatmaps of multi-view images.  
 Nevertheless, their method needs full camera calibration and a keypoint detector producing 2D heatmaps.
 
+> human pose estimation을 위한 Weak and self supervision based methods은 3D annotations의 부족으로 인해 [9, 31, 41, 30]에 의해 탐구되었다.  
+Pavlakos 등 [30]은 pictorial structures model을 사용하여 multi-view images의 keypoint heatmaps에서 global pose configuration을 얻는다.  
+그럼에도 불구하고, 이들의 방법은 full camera calibration과 2D heatmaps을 생성하는 keypoint detector가 필요하다.
+
 Rhodin et al. [31] utilize multi-view consistency constraints to supervise a network.  
 They need a small amount of 3D ground-truth data to avoid degenerate solutions where poses collapse to a single location.  
 Thus, lack of in-the-wild 3D ground-truth data is a limiting factor for this method [31].
+
+> Rhodin 등 [31]은 multi-view 일관성 제약 조건을 활용하여 network를 supervise한다.  
+poses가 single location으로 collapse되는 degenerate solutions을 방지하기 위해 소량의 3D ground-truth data가 필요합니다.  
+따라서, in-the-wild 3D ground-truth data의 부족은 이 method의 limiting factor이다 [31].
 
 Recently introduced deep inverse graphics networks [18, 44] have been applied to the human pose estimation problem [41, 9].  
 Tung et al. [41] train a generative adversarial network which has a 3D pose generator trained with a reconstruction loss between projections of predicted 3D poses and input 2D joints and a discriminator trained to distinguish predicted 3D pose from a set of ground truth 3D poses.  
 Following this work, Drover et al. [9] eliminated the need for 3D ground-truth by modifying the discriminator to recognize plausible 2D projections.
 
+> 최근 도입된 deep inverse graphics networks [18, 44]가 human pose estimation problem에 적용되었다[41, 9].  
+Tung 등 [41]은 projections of predicted 3D poses와 input 2D joints간의 reconstruction loss로 train된 3D pose generator와 a set of ground truth 3D poses로부터 predicted 3D pose를 구별하기위해 train된 discriminator를 가지는 generative adversarial network를 train하였다.
+그 다음으로, Driver 등[9]은 discriminator를 수정하여 타당한 2D projections을 인식함으로써 3D ground-truth의 필요성을 없앴다.
+
 To the best of our knowledge, EpipolarPose and Drover et al.’s method are the only ones that do not require any 3D supervision or camera extrinsics.  
 While their method does not utilize image features, EpipolarPose makes use of both image features and epipolar geometry and produces much more accurate results (4.3 mm less error than Drover et al.’s method).
 
-![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised Learning of 3D Human Pose using Multi-view Geometry/Fig1.PNG)
+> 우리가 아는 한, EpipolarPose와 'Drover 등'의 방법은 3D supervision이나 camera extrinsics이 필요하지 않은 유일한 방법이다.  
+그들의 방법은 image features을 활용하지 않지만, EpipolarPose는 image features와 epipolar geometry을 모두 사용하며 훨씬 더 정확한 결과('Drover등'의 방법보다 4.3mm 더 적은 error)를 산출한다.
+
+![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised_Learning_of_3DHP_using_Multi-view_Geometry/Fig2.PNG)
 
 ## 3. Models and Methods  
 
@@ -207,9 +275,9 @@ The overall RU architecture is inspired by [22, 11].
 It has 2 computation blocks which have certain linear layers followed by Batch Normalization [14], Leaky ReLU [21] activation and Dropout layers to map 3D noisy inputs to more reliable 3D pose predictions.   
 To facilitate information flow between layers, we add residual connections [13] and apply intermediate loss to expedite the intermediate layers’ access to supervision.
 
-![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised Learning of 3D Human Pose using Multi-view Geometry/Fig3.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised_Learning_of_3DHP_using_Multi-view_Geometry/Fig3.PNG)
 
-![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised Learning of 3D Human Pose using Multi-view Geometry/Fig4.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised_Learning_of_3DHP_using_Multi-view_Geometry/Fig4.PNG)
 
 ### 3.4. Pose Structure Score
 
@@ -225,9 +293,9 @@ PSS is an indicator about the deviation from the ground truth pose that has the 
 
 **Implementation details**
 
-![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised Learning of 3D Human Pose using Multi-view Geometry/Fig5.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised_Learning_of_3DHP_using_Multi-view_Geometry/Fig5.PNG)
 
-![Fig1](/assets/img/Blog/papers/Pose/Self-Supervised Learning of 3D Human Pose using Multi-view Geometry/Fig6.PNG)
+![Fig1](/assets/img/Blog/papers/Self-Supervised_Learning_of_3DHP_using_Multi-view_Geometry/Fig6.PNG)
 
 ## 4. Experiments
 
