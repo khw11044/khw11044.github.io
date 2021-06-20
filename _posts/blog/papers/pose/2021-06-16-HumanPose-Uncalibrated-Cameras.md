@@ -199,7 +199,7 @@ where $$L$$ denotes the separation of each joint pair, introduced in Section 3.1
 This objective function consists of two major error terms as follows,
 
 $$E(P, J,L,D) = E_{rep}(P, J,D) + E_{mdoel}(J,L,D)$$
-where Erep(P, J,D) and Emodel(J,L,D) represent the error terms of the reprojection error and the human model, respectively.  
+where $$E_{rep}(P, J,D) and $$E_{model}(J,L,D)$$ represent the error terms of the reprojection error and the human model, respectively.  
 Following sections detail these error terms.
 
 ![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/Fig3.PNG)
