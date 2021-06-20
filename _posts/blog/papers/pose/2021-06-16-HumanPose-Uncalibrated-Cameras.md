@@ -38,7 +38,7 @@ We demonstrate the performance of the proposed algorithm of synchronization and 
 joint의 projections을 corresponding points로 활용하기 위해서, images에서 검출해야 하지만, 이러한 2D joint는 때떄로 estimation을 불안정하게 만드는 detection errors가 포함되는 경우도 있다.  
 이러한 errors를 처리하기 위해 제안된 방법은 두 가지 아이디어를 소개한다.  
 The first idea는 noised observations을 optimizing하는 것을 피하기 위해 reprojection errors를 완화하는 것이다.  
-The second idea는 기준점이 human joints로 구성된다는 reference points인 prior knowledge에 대한 geometric constraint를 도입하는 것이다.  
+The second idea는  human joints로 구성되는 reference points의 prior knowledge에 대한 geometric constraint를 도입하는 것이다.  
 우리는 synthesized 및 real data를 사용한 정성적 및 정량적 평가로 제안된 pose estimation과 synchronization 알고리듬의 성능을 입증한다.
 
 ## 1. Introduction
