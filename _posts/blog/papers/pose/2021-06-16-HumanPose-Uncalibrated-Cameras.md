@@ -199,10 +199,10 @@ where $$L$$ denotes the separation of each joint pair, introduced in Section 3.1
 This objective function consists of two major error terms as follows,
 
 $$E(P, J,L,D) = E_{rep}(P, J,D) + E_{mdoel}(J,L,D)$$
-where $$E_{rep}(P, J,D) and $$E_{model}(J,L,D)$$ represent the error terms of the reprojection error and the human model, respectively.  
+where $$E_{rep}(P, J,D)$$ and $$E_{model}(J,L,D)$$ represent the error terms of the reprojection error and the human model, respectively.  
 Following sections detail these error terms.
 
-![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/Fig3.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/FIg3.PNG)
 
 #### 3.1.1 Relaxed Reprojection Error
 
@@ -243,7 +243,7 @@ $$E_{motion}(J,D) = \frac{1}{N_t \times N_j} u(j^k_t). \tag{10}$$
 $$u(j^k_t)$$ represents the third order differential value of $$j^k_t$$.  
 The minimization of $$u(j^k_t)$$ forces the second order differential value of $$j^k _t$$ , that is the acceleration, to be consistent in sequential frames.
 
-![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/Fig4.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/FIg4.PNG)
 
 ### 3.2. Algorithm
 
@@ -255,7 +255,7 @@ The extrinsic camera parameters of the other cameras are estimated by solving Pn
 Then, Eq.(4) is computed using the initial parameters and minimized by the Levenberg-Marquardt algorithm over parameters $$P$$, $$J$$, and $$L$$.  
 Finally, the parameters yielding the smallest value of Eq. (4) with $$d_i$$ are selected as the optimized parameters.
 
-![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/Fig5.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/HumanPoseasCalibrationPattern/FIg5.PNG)
 
 ## 4. Evaluations
 
