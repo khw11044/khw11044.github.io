@@ -209,7 +209,8 @@ Following sections detail these error terms.
 The conventional 2D features for camera synchronization or calibration, such as chess corners, local features and so on, are detected with sub-pixel precision. On the other hand, the proposed method utilizes the 2D joint positions detected by a 2D pose estimation algorithms [7, 24, 25] as 2D features and most of these positions include detection errors of a few pixels. These detection errors severely impact the performance of the conventional bundle adjustment approach, which attempts to minimize the reprojection errors. Here, the proposed method avoids the problem of detection errors by relaxing the reprojection errors.
 
 Most conventional 2D pose estimation techniques such as [7, 24, 25] estimate a confidence map for each joint and define the 2D joint position as the peak of the map as illustrated in Figure 3. Following this idea, the proposed method uses the confidence map to relax the reprojection error; that is, the influence of the reprojection error is weakened when the reprojected point is in an area of high-confidence and enhanced in when the reprojected point is in an area of lowconfidence. The proposed method assumes that the highconfidence area in the confidence map follows a normal distribution and defines the reprojection error term as follows,
-$$E_{rep}(P,J,D) = \frac{1}{N_rep} \sum^{N_t}_{t=0} \sum^{N_c}_{i=0} \sum^{N_j}_{k=0} g(^kj^i_{f_t},^k\hat{j}^i_{f_t}) \tag{5} \tag{5}$$  
+
+$$E_{rep}(P,J,D) = \frac{1}{N_rep} \sum^{N_t}_{t=0} \sum^{N_c}_{i=0} \sum^{N_j}_{k=0} g(^kj^i_{f_t},^k\hat{j}^i_{f_t}) \tag{5}$$  
 
 where $$Nrep = N_t \times N_c \times N_j$$ and $$^k\hat{j}^i_{f_t}$$ denote the reprojection of $$^kj^i_{f_t}$$ computed from $$P, J$$ and $$D,$$ and
 
@@ -217,7 +218,8 @@ $$g(x,x') = (n(0) - n(e_{rep}(x,x')))e_{rep}(x,x'), \tag{6}$$
 
 $$e_{rep}(x,x) = ||x-x'||. \tag{7}$$
 
-$$n(x)$$ denotes the probability density function of normal distribution $$N(\mu_p, \sigma^2_p)$$ and $$||x||$$ denotes the $$L^2$$-norm of x.
+$$n(x)$$ denotes the probability density function of normal distribution
+$$N(\mu_p, \sigma^2_p)$$ and $$\||x|\|$$ denotes the $$L^2$$-norm of x.
 
 #### 3.1.2 Constraints on Human Joints
 
