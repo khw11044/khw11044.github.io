@@ -189,7 +189,7 @@ $$f^0_t = f^i_t + d_i \tag{2}$$
 where $$f^i_t$$ denotes a $$t \in [1, · · · ,N_t]$$ th frame of a video captured by $$C_i$$.  
 Hereafter, $$f^0_t$$ is written as $$f_t$$ for simplicity.  
 
-The goal of this research is to estimate the 3D positions of human joint jk f , the extrinsic camera parameters Ri and ti, and temporal differences di. This paper assumes that a single human appears in the captured video, however, the proposed method can be extended to cover multiple people. This extension is discussed in Section 5.
+The goal of this research is to estimate the 3D positions of human joint $$j^k_f$$ , the extrinsic camera parameters $$R_i$$ and $$t_i$$, and temporal differences di. This paper assumes that a single human appears in the captured video, however, the proposed method can be extended to cover multiple people. This extension is discussed in Section 5.
 
 For estimating these parameters, the proposed method regards as the human model as a reference object and takes a bundle adjustment approach by utilizing their projections <sup>i</sup>$$j^k_f$$ as points for which correspondence is to be found.  
 The proposed method defines the following objective function,
