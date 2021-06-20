@@ -68,7 +68,7 @@ To deal with such errors, the proposed method introduces two ideas.
 The first idea is to relax the reprojection errors to avoid the optimization of noisy observations.  
 The second idea is to introduce a geometric constraint based on the a priori knowledge that the reference points are actually human joints.
 
-> 본 논문은 wide baselines을 가진 unsynchronized 및 uncalibrated되지 않은 cameras에 의해 캡처된 multi-view videos에서 3D human pose estimation문제를 다룬다.  
+> 본 논문은 wide baselines을 가진 unsynchronized 및 uncalibrated된 cameras에 의해 캡처된 multi-view videos에서 3D human pose estimation문제를 다룬다.  
 본 논문의 key feature은 common reference points로 사용하기 위한 robust point 연관성을 도출하기 위해 human joints의 projections을 사용하는 데 초점을 맞춘다는 것이다.  
 human joints의 projections을 감지하려면, pose detector의 어떤 2D form이 필요하지만 [7,24,25], 그러나 2D joint positions에는 estimation이 불안정해지는 detection errors가 포함되는 경우도 있다.  
 이러한 errors를 처리하기 위해, 제안된 방법은 두 가지 아이디어를 도입한다.  
