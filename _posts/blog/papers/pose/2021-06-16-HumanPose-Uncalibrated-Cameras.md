@@ -193,7 +193,7 @@ The goal of this research is to estimate the 3D positions of human joint $$j^k_f
 
 For estimating these parameters, the proposed method regards as the human model as a reference object and takes a bundle adjustment approach by utilizing their projections <sup>i</sup>$$j^k_f$$ as points for which correspondence is to be found.  
 The proposed method defines the following objective function,
-$$\argmin_{P,J,L,D} E(P, J,L,D) \tag{3}$$
+$$\arg\max_{P,J,L,D} E(P, J,L,D) \tag{3}$$
 where $$L$$ denotes the separation of each joint pair, introduced in Section 3.1.2, and minimizes Eq.(3) over parameters $$P,J,L$$ and $$D$$.
 
 This objective function consists of two major error terms as follows,
