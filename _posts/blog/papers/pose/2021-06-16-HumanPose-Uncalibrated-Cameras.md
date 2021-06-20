@@ -177,7 +177,7 @@ This paper assumes that a human body is captured by multiple unsynchronized and 
 As illustrated in Figure 2, the human body is modeled as a set of articulated 3D joints.  
 The 3D position of the $$k$$ th joint and its 2D projection onto the image plane of the $$i$$th camera, $$C_i$$, in frame $$f$$ are represented as $$J = {j^k_f}, k \in [1, · · · ,N_J]$$ and <sup>i</sup>$$j^k_f , i \in [1, · · · ,N_c,N_c ≥ 2]$$ respectively.
 
-Let $$P = {R_i, t_i}$$ denote the rotation matrix and translation vector, that is the extrinsic parameters of $$i$$th camera $$C_i$$; they satisfy,
+Let $$P = \{R_i, t_i\}$$ denote the rotation matrix and translation vector, that is the extrinsic parameters of $$i$$th camera $$C_i$$; they satisfy,
 $$p^{C_i} = R_ip^W + t_i \tag{1}$$
 
 where $$p^{C_i}$$ and $$p^W$$ denote the coordinates of 3D point $$p$$ in the $$C_i$$ coordinate system and the world coordinate system respectively.  
