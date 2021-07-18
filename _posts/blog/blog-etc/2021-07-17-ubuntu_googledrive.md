@@ -7,7 +7,10 @@ categories:
     - blog-etc
 tags: human3.6m
 comments: true
+date: '2021-07-17 14:45:51 +0900'
 related_posts:
+  - category/_posts/blog/blog-etc/2020-07-18-Macbuntu.md
+  - category/_posts/blog/blog-etc/2020-07-18-ubuntu_background.md
 published: true
 ---
 
