@@ -5,7 +5,9 @@ subtitle: '.'
 categories:
     - blog
     - blog-etc
-tags: 오류,import
+tags:
+    - 오류
+    - import
 comments: true
 date: '2021-07-18 01:45:51 +0900'
 related_posts:
