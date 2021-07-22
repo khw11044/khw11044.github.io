@@ -5,14 +5,9 @@ subtitle: '.'
 categories:
     - blog
     - blog-etc
-tags:
-    - 오류
-    - import
+tags: human3.6m
 comments: true
-date: '2021-07-18 01:45:51 +0900'
 related_posts:
-  - category/_posts/blog/blog-etc/2020-07-18-ubuntu_googledrive.md
-  - category/_posts/blog/blog-etc/2020-07-18-Macbuntu.md
 published: true
 ---
 
