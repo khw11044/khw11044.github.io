@@ -1,23 +1,16 @@
 ---
 layout: post
-bigtitle: [Ubuntu 20.04] 우분투 배경 자동변경,슬라이드
-subtitle: '.'
+bigtitle:  "[Ubuntu 20.04] 우분투 배경 자동변경,슬라이드"
+subtitle:   "."
 categories:
     - blog
     - blog-etc
 tags:
-    - 맥분투
-    - Macbuntu
-    - 우분투
-    - 우분투배경
-    - 배경슬라이드쇼
+    - pose
 comments: true
-date: '2021-07-18 01:45:51 +0900'
-related_posts:
-  - category/_posts/blog/blog-etc/2020-07-18-ubuntu_googledrive.md
-  - category/_posts/blog/blog-etc/2020-07-18-Macbuntu.md
 published: true
 ---
+
 
 # 우분투 배경 자동 변경, 배경 슬라이드쇼, 데스크톱슬라이드쇼
 
