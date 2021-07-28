@@ -1,13 +1,13 @@
 ---
 layout: post
-bigtitle: [Ubuntu 20.04] 우분투에서 구글 드라이브 사용하기
-subtitle: '.'
+bigtitle:  " Test page"
+subtitle:   "."
 categories:
     - blog
     - blog-etc
-tags: ubuntu_googledrive
+tags:
+    - pose
 comments: true
-related_posts:
 published: true
 ---
 
