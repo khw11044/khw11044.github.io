@@ -2,9 +2,9 @@
 layout: post
 bigtitle: [Ubuntu 20.04] 우분투 python subfolder from, import 오류
 subtitle: '.'
-categories:
-    - blog
-    - blog-etc
+category:
+   - blog
+   - blog-etc
 tags:
     - 오류
     - import
