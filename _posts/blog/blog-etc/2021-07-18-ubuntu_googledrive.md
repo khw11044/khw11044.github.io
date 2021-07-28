@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  " Test page"
+bigtitle:  "[Ubuntu 20.04] 우분투에서 구글 드라이브 사용하기"
 subtitle:   "."
 categories:
     - blog
