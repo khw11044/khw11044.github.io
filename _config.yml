@@ -18,7 +18,7 @@ url:                   https://khw11044.github.io
 lang:                  ko-KR, en-US
 
 # The title of your blog. Used in the sidebar and the browser tab.
-title:                 AI 대학원생의 공부 블로그
+title:                 따라쟁이의 AI 대학원 블로그
 
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
