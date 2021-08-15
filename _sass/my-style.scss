@@ -333,3 +333,14 @@ u{
 *::-webkit-scrollbar-track {
   background-color: white;
 }
+
+.content .avatar {
+  float: left;
+  box-sizing: content-box;
+  border: 1rem solid var(--body-bg);
+  transition: border-color 1s ease;
+  margin-top: 5px;
+  margin-left: 5px;
+  width:140px; 
+  height:140px;
+}
