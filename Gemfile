@@ -25,7 +25,7 @@ gem "jekyll-theme-hydejack", "~> 9.0"
 #
 # If you're using the MathJax math engine instead, free to remove the line below:
 gem "kramdown-math-katex"
-gem "jekyll-mermaid"
+
 group :jekyll_plugins do
   gem "jekyll-default-layout", git: "https://github.com/benbalter/jekyll-default-layout"
   gem "jekyll-feed"
@@ -48,3 +48,4 @@ gem 'wdm' if Gem.win_platform?
 gem "tzinfo-data" if Gem.win_platform?
 
 gem 'jekyll-spaceship'
+gem "jekyll-mermaid"
