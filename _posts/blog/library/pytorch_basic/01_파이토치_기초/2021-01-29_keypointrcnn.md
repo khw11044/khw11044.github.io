@@ -13,7 +13,7 @@ related_posts:
 published: true
 ---
 
-# 01.파이토치 기초(PyTorch Basic)
+# KeypointRCNN
 ## KeypointRCNN
 ---
 
