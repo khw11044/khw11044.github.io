@@ -17,7 +17,7 @@ published: true
 ## KeypointRCNN
 ---
 
-~~~
+~~~python
 import torch
 import torchvision
 import torchvision.transforms as T
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     print(outputs)
 ~~~
 
-결과 
+결과
 ~~~
 outputs
 [{'boxes': tensor([], size=(0, ...Backward>), 'labels': tensor([], dtype=torch.int64), 'scores': tensor([], grad_fn=<...Backward>), 'keypoints': tensor([], size=(0, 17, 3)), 'keypoints_scores': tensor([], size=(0, 17))}, {'boxes': tensor([], size=(0, ...Backward>), 'labels': tensor([], dtype=torch.int64), 'scores': tensor([], grad_fn=<...Backward>), 'keypoints': tensor([], size=(0, 17, 3)), 'keypoints_scores': tensor([], size=(0, 17))}, {'boxes': tensor([], size=(0, ...Backward>), 'labels': tensor([], dtype=torch.int64), 'scores': tensor([], grad_fn=<...Backward>), 'keypoints': tensor([], size=(0, 17, 3)), 'keypoints_scores': tensor([], size=(0, 17))}]
