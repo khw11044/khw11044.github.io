@@ -1,7 +1,7 @@
 ---
 layout: post
-bigtitle: PyTorch로 배우는 딥러닝/머신러닝 생기초2
-subtitle: '08.01.자연어 처리(NLP)의 전처리 이해하기2'
+bigtitle: PyTorch KeypointRCNN
+subtitle: 'KeypointRCNN'
 categories:
     - blog
     - library
@@ -12,8 +12,8 @@ related_posts:
 published: true
 ---
 
-# 자연어 전처리의 전처리2
-## 자연어 처리의 전처리 이해하기2
+# PyTorch KeypointRCNN
+## PyTorch KeypointRCNN
 ---
 
 
