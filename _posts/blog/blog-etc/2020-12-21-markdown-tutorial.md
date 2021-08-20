@@ -724,6 +724,9 @@ Bob -> Alice : hello world
 
 {% include youtubeplayer.html id="HF8mouev8-A" %}
 
+{% include youtubeplayer.html id="HF8mouev8-A" %}
+
+
 
 하지만 Jekyll-Spaceship만 깔면 위과정을 할필요없다.
 
