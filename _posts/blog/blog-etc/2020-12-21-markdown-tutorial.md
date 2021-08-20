@@ -712,23 +712,27 @@ _includes\youtubePlayer.html 파일을 만든다.
 원하는 위치에 아래 코드를 삽입한다.
 
 ~~~
-\{\% include youtubePlayer.html id="9UuEUZ8QUe8" \%\}
+\{\% include youtubePlayer.html id="ah9MZQ0PjMI" \%\}
 ~~~
+
+```plantuml!
+Bob -> Alice : hello world
+```
 
 
  🔍 **결과**
 
-{% include youtubePlayer.html id="9UuEUZ8QUe8" %}
+{% include youtubePlayer.html id="ah9MZQ0PjMI" %}
 
 하지만 Jekyll-Spaceship만 깔면 위과정을 할필요없다.
 
 ~~~
-![](https://www.youtube.com/watch?v=ah9MZQ0PjMI&t=28s)
+![](https://www.youtube.com/watch?v=ah9MZQ0PjMI)
 
 ![](//www.youtube.com/watch?v=ah9MZQ0PjMI&t=28s?width=800&height=500)
 ~~~
 
-![](https://www.youtube.com/watch?v=ah9MZQ0PjMI&t=28s)
+![](//www.youtube.com/watch?v=ah9MZQ0PjMI)
 
 ![](//www.youtube.com/watch?v=ah9MZQ0PjMI&t=28s?width=800&height=500)
 
