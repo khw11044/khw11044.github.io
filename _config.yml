@@ -524,5 +524,6 @@ tipue_search:
     categories: []
     tags: []
 
+
 mermaid:
   src: '_includes/scripts/mermaid.js'
