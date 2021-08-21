@@ -722,7 +722,7 @@ Bob -> Alice : hello world
 
  🔍 **결과**
 
-{% include youtubeplayer.html id="HF8mouev8-A" %}
+{% include youtubePlayer.html id="HF8mouev8-A" %}
 
 테스트 
 
