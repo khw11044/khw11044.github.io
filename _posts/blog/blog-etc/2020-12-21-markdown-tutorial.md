@@ -722,13 +722,7 @@ Bob -> Alice : hello world
 
  🔍 **결과**
 
-{% include youtubePlayer.html id="HF8mouev8-A" %}
-
-테스트 
-
-<iframe width="100%" height="600" src="https://www.youtube.com/embed/HF8mouev8-A" frameborder="0" allowfullscreen></iframe>
-
-
+{% include youtubePlayer.html id="ah9MZQ0PjMI" %}
 
 
 하지만 Jekyll-Spaceship만 깔면 위과정을 할필요없다.
