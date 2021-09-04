@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  "Weakly-Supervised Cross-view 3D Human Pose Estimation"
+bigtitle:  "[Pose]Weakly-Supervised Cross-view 3D Human Pose Estimation"
 subtitle:   "."
 categories:
     - blog
@@ -14,7 +14,7 @@ published: true
 
 
 
-# Weakly-Supervised Cross-view 3D Human Pose Estimation
+# [Pose]Weakly-Supervised Cross-view 3D Human Pose Estimation
 
 Hua, Guoliang, et al. "Weakly-supervised Cross-view 3D Human Pose Estimation." arXiv preprint arXiv:2105.10882 (2021). [paper](https://arxiv.org/abs/2105.10882)
 
