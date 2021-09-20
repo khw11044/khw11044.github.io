@@ -43,6 +43,7 @@
     {% include components/message.html text=post.description hide=hide_description alt=alt %}
     <!--상단버튼-->
     {% include page-button.html %}
+    <!--게시물 생성시 hits생성-->
       <div style="text-align:right; text-align: center">
           <a href="https://hits.seeyoufarm.com/{{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ page.url }}"
             target="_blank">
