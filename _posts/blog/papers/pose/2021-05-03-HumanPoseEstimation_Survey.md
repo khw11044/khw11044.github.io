@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  "The Progress of Human Pose Estimation:"
+bigtitle:  "[Pose]The Progress of Human Pose Estimation:"
 subtitle:   " A Survey and Taxonomy of Models Applied in 2D Human Pose Estimation"
 categories:
     - blog
@@ -14,7 +14,7 @@ published: true
 
 
 
-# The Progress of Human Pose Estimation : Survey-2020
+# [Pose]The Progress of Human Pose Estimation : Survey-2020
 
 IEEE 2020 [paper](https://ieeexplore.ieee.org/abstract/document/9144178)
 

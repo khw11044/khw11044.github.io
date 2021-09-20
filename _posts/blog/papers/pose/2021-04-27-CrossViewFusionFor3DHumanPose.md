@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  "Cross View Fusion for 3D Human Pose Estimation"
+bigtitle:  "[Pose]Cross View Fusion for 3D Human Pose Estimation"
 subtitle:   "."
 categories:
     - blog
@@ -14,7 +14,7 @@ published: true
 
 
 
-# Cross View Fusion for 3D Human Pose Estimation
+# [Pose]Cross View Fusion for 3D Human Pose Estimation
 
 ICCV 2019 [paper](https://openaccess.thecvf.com/content_ICCV_2019/papers/Qiu_Cross_View_Fusion_for_3D_Human_Pose_Estimation_ICCV_2019_paper.pdf)
 

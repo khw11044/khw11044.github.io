@@ -7,6 +7,7 @@
           <span class="sr-only">{{ site.data.strings.navigation | default:"Navigation" }}</span>
           <span class="icon-menu"></span>
           </a>
+          <!--상단메뉴 카테고리들 -->
           <div class="top-menu">
               {% if site.menu %}
                   {% for node in site.menu %}
@@ -22,6 +23,8 @@
                   {% endfor %}
               {% endif %}
           </div>
+          
+          <!--검색 tipuesearch -->
           <div class="nav-span">
             <form action="/search">
                 <div class="tipue_search_left">
@@ -32,6 +35,7 @@
                 <div style="clear: both;"></div>
               </form>
           </div>
+          
       </div>
   </div>
 </div>

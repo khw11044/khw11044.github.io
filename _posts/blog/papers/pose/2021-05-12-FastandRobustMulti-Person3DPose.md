@@ -1,6 +1,6 @@
 ---
 layout: post
-bigtitle:  "Fast and Robust Multi-Person 3D Pose Estimation from Multiple Views"
+bigtitle:  "[Pose]Fast and Robust Multi-Person 3D Pose Estimation from Multiple Views"
 subtitle:   "."
 categories:
     - blog
@@ -14,7 +14,7 @@ published: true
 
 
 
-# Fast and Robust Multi-Person 3D Pose Estimation from Multiple Views
+# [Pose]Fast and Robust Multi-Person 3D Pose Estimation from Multiple Views
 
 IEEE 2019 [paper]()
 
