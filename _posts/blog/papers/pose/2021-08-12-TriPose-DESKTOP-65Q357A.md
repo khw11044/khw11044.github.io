@@ -1,0 +1,245 @@
+---
+layout: post
+bigtitle:  "TriPose : A Weakly-Supervised 3D Human Pose Estimation via Triangulation from Video"
+subtitle:   "요약"
+categories:
+    - blog
+    - papers
+    - pose-estimation
+tags:
+    - pose
+comments: true
+published: true
+---
+
+ 2021 arXiv [paper](https://arxiv.org/pdf/2105.06599.pdf)
+
+* toc
+{:toc}
+
+
+# TriPose : A Weakly-Supervised 3D Human Pose Estimation via Triangulation from Video
+
+## Abstract
+
+Video에서 3D human pose를 estimation하는것 -> 어려움  
+3D human pose annotation의 부족
+-	Supervised training을 어렵게함
+-	Unseen data에 generalization하기 어렵게함  
+
+Tripose는 3D annotations, calibrated cameras가 필요없는 Weakly-supervised training method이다. 이것은 temporal information과 triangulation에 종속되어있다.  
+1.	Multiple views로 부터 input을 받아 2D Poses얻고 이것을 이용해서 relative camera orientations를 estimate한다.
+2.	얻은 2D poses와 relative camera orientations를 통해 triangulation을 하여 3D poses를 generate한다.
+  -	triangulation은 high 2D human joint confidence를 갖는 view에게만 적용된다.  
+3.	생성된 3D pose는 (2D poses로 부터 3D pose를 estimate하는) Recurrent Lifting Network (RLN)을 학습하는데 사용된다.
+  -	estimated된 3D poses에 multi-view re-projection loss를 적용하고 일치하는 multi-view로부터 estimated된 3D pose를 강화  
+본 논문의 method는 constraints를 완화하고 training시에만 multi-view video를 요구하기 때문에 in-the-wild setting에 알맞다.
+
+
+## 1. Introduction  
+3D human pose estimation분야에 기존의 대부분 제안된 Solutions들은 3D annotations를 요구하는 Supervised-training이다.  
+  -	3D annotation을 얻는것은 어려움
+  -	사용가능한 datasets는 겅의 특별한 lab setting에서 만들어졌다.  
+->	in-the-wild에 적용, 일반화하기 어렵다.  
+이런 문제를 unpaired 2D와 3D annotations를 이용하여 다루는것을 제안한 Weakly-supervised methods :  
+[38] : Weakly supervised training of an adversarial reprojection network for 3d human pose estimation – CVPR 2019  
+[40] : Distill knowledge from nrsfm for weakly supervised 3d pose learning – ICCV 2019  
+[20] : Self-supervised 3d human pose estimation via part guided novel image synthesis  
+
+이런 문제를 limited availabel 3D annotations를 이용하여 다루는 것을 제안한 Weakly-supervised methods :  
+[33] : Learning monocular 3d human pose estimation from multi-view images. - CVPR 2018  
+[30] : 3d human pose estimation in video with temporalconvolutions and sem-supervised trainig – CVPR 2019  
+
+이런 문제를 calibrated multi-view recordings를 이용하여 다루는 것을 제안한 Weakly-supervised methods :  
+[32] : Unsupervised geometry-aware representation for 3d human pose estimation – CVPR 2018  
+[30] : 3d human pose estimation in video with temporal convolutions and semi-supervised trainig – CVPR 2019  
+
+하지만 unsupervised learning task를 위해 위와같은 정보를 얻는것 또한 여전히 어렵다.  
+
+
+3D annotation을 전혀 사용하지 않는 Weakly-Supervised training schemes를 제안한 몇몇 works들이 있다.  
+[13] : Weakly-supervised 3d human pose learning via multi-view images in the wild – CVPR 2020  
+[18] : Self-supervised learning of 3d human pose using multi-view geometry – CVPR 2019  
+[39] : Canonpose: Self-supervised monocular 3d human pose estimation in the wild – CVPR 2021  
+[40] : Distill knowledge from nrsfm for weakly supervised 3d pose learning – ICCV 2019  
+
+**1. multi-view consistency**  
+[13]과 [39]는 supervision으로써 multi-view consistency를 제안  
+  - multi-view consistency는 유망한 self-supervision 요소이지만 상대적으로 weak cue이다.  
+	- consistent를 강화해주는 different views에서 3D poses는 여전히 erroneous하다.  
+[18]은 epipolar geometry를 이용하여 pseudo ground-truth 3D poses를 생성한다.  
+  -	triangulation로 pseudo ground truth를 생성하는 것은 유망한 performance임을 보여주는 또 하나의 approach이다.  
+  -	그러나 생성된 pseudo groudn truth의 error에 의해 final error가 제한된다.  
+
+**2. temporal information**  
+본 논문에서는 temporal lifting network를 사용하여 video에서 temporal dependency를 활용하면서 multi-view cameras와 traingulation supervision을 결합하는 method를 제안한다.  
+이 approach는 training시 3D annotations와 calibrated cameras 모두 필요하지 않는다.  
+본 논문은 [18]의 EpipolarPose에 영감을 받고 traingulation을 사용하여 3D poses를 생성했다. 하지만 충분히 good views를 선택하기 위해 camera joint confidence scores를 traingulation에 통합한다. --> 잘못된 triangulation을 줄이는 것을 도와준다.  
+->	lifting network 학습을 위해 poor한 pseudo ground truths 전부를 얻는 traingulation을 하는 대신 충분히 괜찮은 pseudo ground truths를 생성히기를 했다.  
+estimated된 3D poses를 wrong depth estimation을 다루거나 triangulation에서 발생할 수 있는 errors를 다루는 multi-view re-projection을 사용하여 서로 다른 views에서 consistenct하게 한다.  
+비록 이 re-projection loss가 preprocessing triangulation 목적과 동등하지만 temporally consistent 뿐만 아니라 모든 training images에서 consisitently하게 맞춰야 하는 meural network paramenters를 train하는데 사용되기 때문에 그 작동이 다르다.  
+
+[30] : 3d human pose estimation in video with temporal convolutions and semi-supervised trainig – CVPR 2019  
+은 re-projection loss를 이용하여 semi-supervised training을 위해 temporal convolution network를 이용한다. 그러나 그것들의 re-projection scheme는 root trajectory를 estimate하는것을 요구한다. video에서 root trajectory를 estimating하는것은 어려운 task이다. 그러므로 그들은 small set of 3D annotations를 training 초기에 요구한다.  
+[17] : Vibe: Video inference for human body pose and shape estimation. – CVPR 2020  
+은 adversarial training scheme에서 temporal motion discriminator를 사용한다. 이것은 3D poses GT를 사용함
+[30]과 [17] 둘다 video에서 temporal information을 이용하는 장점을 보여준다.  
+==> temporal structure은 single frame에서 occluded body parts문제를 도와주고 jittery motions를 줄어주며 network가 이전 frames의 pose information으로 부터 혜택을 얻을수 있다.  
+
+비슷하게, 본 논문은 2D poses를 3D pose로 mapping하기 위해 recurrent-based temporal lifting network를 사용한다. 이전 approaches들과 다르게 본 논문은 training중 어떠한 3D annotation도 사용하지 않는다.
+
+**3. re-projection**  
+이전 weakly-supervised works들에서는 Single-view reprojection from 3D to 2D를 사용한다.  
+[15] : End-to-end recovery of human shape and pose. – CVPR 2018  
+[18] : Selfsupervised learning of 3d human pose using multi-view geometry. – CVPR 2019
+
+perspective ambiguity 때문에, single 2D pose는 여러 다른 3D poses에 상응한다. 따라서 re-projection만으로는 training에 충분하지 않고 unpaired 3D annotaions나 limited 3D annotaions와 같은 supervision 요소들이 동반되어야 한다.  
+본 논문에서는 unpaired/limited 3D annotations보다 얻기 더 편리한 multi-view re-projection을 이용한다. Multi-view re-projection은 multi-view 2D planes에 정확하게 re-project될수 있는 오로지 하나의 3D pose가 있기깨문에 perspective ambiguity로부터 고통받지않는다.  
+
+Introduction, Contributions 요약  
+-	camera extrinsic과 어떠한 3D annotations도 필요없는 weakly supervised training scheme 제안  
+-	제단되고 self-supervised training을 support하는 temporal lifting network를 제안  
+-	view-consistency를 강화하는 multi-view re-projection 제안  
+-	가장 널리 사용되는 3D pose estimation benchmarks에 대한 이전 논문과 최신 결과를 깊이 비교 제공  
+
+
+## 2. Related Work
+**Full-3D Supervision**  
+Fully supervised 3D human pose estimation methods는 크게 2개로 나뉠수 있다.  
+i) end-to-end training : image나 video를 input으로 받고 directly로 3D poses를 estimate한다.  
+ii) two-step methods : 먼저 2D skeleton을 estimate하고 이 2D poses를 3D space로 lift한다.  
+두번째 approach는 large in-the-wild 2D annotations로 부터 intermediate supervision의 장점이 있다. 최근에는 lifting methods를 사용한 결과가 유망함을 보여주고 있다.  
+
+**Temporal Supervision**  
+Temporal information은 occlusion과 jittery estimations를 도와줄수 있는 previous and future human pose motion 정보를 제공한다.  
+[3] : Exploiting temporal context for 3d human pose estimation in the wild. - CVPR 2019  
+[7] : Occlusion-aware networks for 3d human pose estimation in video. – CVPR 2019  
+[11] : Exploiting temporal information for 3d human pose estimation. – ECCV 2018  
+[16] : Learning 3d human dynamics from video. – CVPR 2019  
+[17] : Vibe: Video inference for human body pose and shape estimation. – CVPR 2020  
+[30] : 3d human pose estimation in video with temporal convolutions and semi-supervised training. – CVPR 2019  
+A long short-term memory (LSTM) sequence to sequence method는 video에서 temporal information을 사용하기를 제안하고 2D pose의 sequence에서부터 3D pose sequence를 predict한다.  
+Sequence to sequence pose models는 drift하기 쉬운것을 보여준다.  
+[30]은 long sequences에서 drift에 robust하는 long history information을 이용하기 위해 확장된(dilated) convolutional network를 제안한다.  
+[17]은 또한 GRU encoder를 convolutional layers에 의해 생성된 pose information의 sequence를 encode하기 위해 사용한다. 본 논문은 [17]에 가깝다. 그러나 우리는 pose information을 decode하기 위해 residual network를 사용한다.  
+본 논문은 many-input에서 single-output하는 recurrent lifting network가 sequence to sequence model[11]보다 더 좋은 결과를 성취함을 보여준다.  
+[11] : Exploiting temporal information for 3d human pose estimation. – CVPR 2018  
+
+
+**Unpaired/Limited 3D supervision**  
+limitied or unpaired 3D annotations을 얻는것이 full 3D annotations보다 훨씬 편하다. generative adversarial networks를 이용하는것은 unpaired 2D and 3D data를 이용하기 위해 광범위하게 연구되고있다.  
+[6] : Weakly-supervised discovery of geometry-aware representation for 3d human pose estimation. – CVPR 2019  
+[15] : End-to-end recovery of human shape and pose. – CVPR 2018  
+[20] : Self-supervised 3d human pose estimation via part guided novel image synthesis. – CVPR 2020  
+[38] : Repnet: Weakly supervised training of an adversarial reprojection network for 3d human pose estimation. – CVPR 2019  
+[43] : 3d human pose estimation in the wild by adversarial learning. – CVPR 2018  
+이 작업들에서 generator는 discriminator가 진짜와 가짜 3D poses를 구별할수 없게 real poses만큼 그럴듯한 3D fake poses를 estimate한다. re-projection error를 보통 supervise training에 adversarial losses를 사용한다. [15],[38]  
+
+Partial 3D annotation은 re-projection[7,30]이나 multi-view consistency loss [25, 33]와 같은 semi-supervised training에 효과적임을 보여준다.  
+multi-view consistency의 idea는 different views에서 estimated된 3D poses가 같아야함이다.  
+multi-view constraint는 3D annotations의 필요성을 줄이는 geometry of human poses를 learn하는데 사용된다. [6, 32]  
+[25] : Multiview-consistent semi-supervised learningfor 3d human pose estimation. – CVPR 2020  
+[33] : Learning monocular 3d human pose estimation from multi-view images. – CVPR 2018  
+[6] : Weakly-supervised discovery of geometry-aware representation for 3d human pose estimation. – CVPR 2019  
+[32] : Unsupervised geometry-aware representation for 3d human pose estimation. – ECCV 2018  
+
+
+**Supervision without 3D**  
+input으로 오로지 multi-view data만을 필요로하는 3개의 유사한 works가 있다.  
+[13] : Weakly-supervised 3d human pose learning via multi-view images in the wild. – CVPR 2020  
+[18] : Self-supervised learning of 3d human pose using multi-view geometry. – CVPR 2019  
+[39] : Canonpose: Self-supervised monocular 3d human pose estimation in the wild. – CVPR 2021  
+
+[18]은 multi-view data로부터 triangualtion을 통해 pseudo 3D ground truth를 생성한다. 이 간단한 approach는 2D keypoints가 아주 정확하면 효과적임을 보여준다. 이 approach의 주요 한계는 input 2D keypoints에서 lack of robustness to error 이다.  
+[13]은 x와 y coordinates로 부터 depth를 해결하는 2.5 training method를 제안하였다. 그들은 x와 y를 estimating하기 위해 독립적인 2D annotation을 사용한다. depth를 estimation하기 위해, 모든 views로부터 estimated된 3D pose는 같아야만 함을 가정하며 서로 다른 views들로 부터 estimated된 3D poses들간의 multi-view consistency loss를 사용한다. 비록 multi-view consistency사 강력함을 보여주지만, 두개의 잘못된 3D poses가 일관되었을때, indirect supervision에 모호함이 남아있다.  
+[39]는 estimated된 3D poses의 multi-view re-projection을 2D로 되돌리는것을 제안한다. 간단히 multi-view estimated 3D poses사이의 loss를 사용하는것 대신에, [39]는 re-projected 2D poses 간?의 loss를 정의한다. 3D에서 multi-view consistency를 비교하면, multi-view re-projection to 2D는 view-consistency enforcing에 더욱 유망함을 보여준다.  
+
+3D annotations의 부재에서, 정확한 2D poses는 정확한 multi-view re-projection에 아주 중요하다. Occluded body parts는 degenerated solutions로 이끈다. 그러므로 temporal lifting network를 사용하여 2D keypoints의 sequence로 부터 정보를 encode한다.  
+EpipolarPose[18]과 유사하게, 본 논문은 lifting network를 train하기위해 pseudo ground truth 3D annotations를 생성한다. 그러나 적절한 views들에서부터 확실히 triangulation하기위해, 2D joint의 confidence를 통합한다. 게다가, training이 pseudo ground truth annotations에 완전히 의존하지 않기위해 multi-view re-projection loss를 사용한다.
+
+## 3. Method  
+
+우리의 framework는 training을 위해 un-calibrated multi-view videos를 요구하고 inference time시 단일 video에서 적용될수 있다. training동안, 우리는 rough pseudo ground truth 3D annotation를 생산하기 위해 triangulation을 사용하고 selfcalibrated camera orientation을 사용한다.  
+
+그런다음, 2D poses 입력 시퀀스에서 single 3D pose를 estimate하기위해 recurrent lifting network를 train한다.
+training criteria은 pseudo 3D annotations와 multi-view reprojection loss인 least-square loss이다.
+inference시 오로지 single-view videos만 필요하다.
+
+### 3.1. Triangulation
+
+two views에서 a set of 2D keypoints를 input으로 한다, X_(1,j),X_(2,j), j는 2D keypoints의 범위.  
+two views에서 joint confidences $$[c_{1,1},….,c_{1,J} ], [c_{2,1},….,c_{2,J} ]$$, $$J$$는 human joints의 수이다.
+만일 어떤 view의 average confidence가 0.8보다 작으면 또는 만약 어떤 joint의 confidence가 0.7보다 작으면, 그 view를 triangulation에서 배제한다.
+epipolar constrain은 $$X_{1,j},X_{2,j}$$에 다음과 같이 적용된다.
+$$X_{1,j} \mathbf{F}X_{2,j}  = 0, \tag{1}$$
+$$\mathbf{F}$$는 fundamental matrix이다. 위 constrain은 $$\mathbf{A}f = 0$$ 으로 다시 공식화된다. f는 $$\mathbf{F}$$의 vector form이다. fundamental matrix를 찾는것은 singular value decomposition (SVD)에 의해 풀리고 a set of two views에 걸처 RANSAC에서 outliers를 제거한다. RANSAC의 consensus(일치)에 대한 threshold는 $$3/(f_1 + f_2)$$로 되어있었다, $$f_1$$과 $$f_2$$는 two cameras의 focal length 이다.  
+estimated된 matrix가 정확하기 위한 the level of confidence는 0.999로 되어있었다.
+fundamental matrix에서, 우리는 essential matrix decomposition, $$E = K^T \mathbf{F}K$$ 를 이용해서 상대적 camera orientation을 계산한다. 우리는 첫번째 카메라를 coordinate frame의 center로 간주한다. 그러므로, 첫번째 카메라의 rotation matrix: $$R$$, 그리고 transition vector: $$t$$는 identical matrix이고 0이다, respectively.  
+essential matrix decomposition은 카메라의 rotations이 다른 4가지 solutions가 있다.  
+ triangulation 후 camera coordinate frame의 negative depth를 반환하는 camera parameters를 제거하기 위해 charity check를 사용한다.  
+estimated된 R과 t는 polynominal triangulation에 의해 3D poses를 reconstruct하는데 사용된다. triangulated된 3D poses는 first view의 camera coordinate system안에 있다. 그것들은 R을 사용하여 second view로 옮길수 있다.   Triangulation의 output은 실제 human skeleton의 크기가 아니다. 그러므로 우리는 3D poses의 scale을 조정하기 위해서 training set의 body bone length의 평균을 이용한다. triangulation loss는 triangulated 3D pose $$\hat{Y}$$ ̂와 estimated된 3D pose $$Y$$간의 mean per joint position error로 정의된다.
+$$L_T=||\hat{Y}-Y||_2 , \tag{2}$$
+
+### 3.2. View-Switching re-projection
+
+estimated된 3D pose를 image plane에 re-projecting하는것은 이상적인 경우에 input 2D와 동일한 2D pose를 생성해야한다. 그러나 perspective(원근법) ambiguity 때문에 2D pose는 많은 3D poses에 상응하며 single-view re-projection은 wrong depth estimaties를 명확하게 할수 없다. 다시말해, multi-view에 re-projection은 3D space에 multi-views들의 해당 points에 정확하게 project될수 있는 point가 오로지 하나만 있으므로 옳은 depth estimation을 하게 해준다.   
+
+이 작업에서, 우리는 multiple views들 사이에 상대적 camera orientation의 estimate(추정치)에 대한 multi-view re-projection을 사용한다.
+그러므로 우리는 same-view projection에 camera extrinsic parmaeters가 필요하지않다. 게다가 우리는 weak perspective re-projection을 사용한다,
+
+$$X_{rep}^{(i,j)} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix}R_{ij} X_{3D} \tag{3}$$
+
+$$R_{ij}$$는 view i와 j간의 relative rotation matrix.  
+same camera에 re-projection에서는, $$R_{ij}$$는 identity(matrix)와 동일하다. (그렇겠지)    
+relative camera parameter는 previous step에 RANSAC algorithm을 사용하여 초기화됩니다.  
+우리는 root joint trajectorty를 estimating하지 않기 때문에 re-projected 2D poses는 모두 같은 scale이며 root joints같에 offset이 있다. 따라서 우리는 root centering을 수행하고(중심을 맞추고) 그런다음 reconstructed되고 input되는 2D에 normalization을 수행합니다.  
+모든 camera pairs i,j에 걸친 re-projection loss는 다음과 같다.
+
+$$L_R= \sum_{i=1}^n \sum_{j=1}^n \begin{Vmatrix} \frac{X_{2D}}{||X_{2D}||}  - \frac{X_{rep}^{(i,j)}}{||X_{rep}^{(i,j)}||} \end{Vmatrix} \tag{4}$$
+
+$$X_{2D}$$는 실제 2D skeletons, $$X_{rep}^{(i,j)}$$는 re-projected 2D skeletions이다.
+
+### 3.3. Lifting Network
+
+1024 size의 two layers of GRUs를 사용하여 previous와 future time frames에서 정보를 encode한다. $$[X_{t-T},…,X_{t+T}]$$의 sequence를 input으로 하고, GRU layers는 hidden state of sequence $$[h_{t-T},…,h_{t+T}]$$를 반환한다. final hidden state를 사용하는것 대신, 우리는 sequence of hidden states에 걸쳐 maxpooling과 average pooling을 수행하고 two representations를 concatenate한다.   
+
+GRU layers로 부터 학습된 정보는 residual neural network의 blocks에 넣어진다.
+network의 second part는 2 fully connected residual blocks를 가지고 있고 각 block은 two fully connected layers로 1000개의 neurons가 있다.  
+우리는 모든 hidden layers에 정보들을 aggregates하는 static pooling layers와 GRU layers를 사용한다. [17]은 GRU layers가 important time frames를 dynamically 하게 learn하는것을 돕고 self-attention mechanism을 사용하는것을 보여주었다. 그러나 우리는 static feature aggregation과 self-attention mechanism 사이의 difference를 관측하지 않는다.  
+[11]은 last hidden layer of an LSTM-based encoder에서 나온 정보를 사용하고 그것을 decoder로 보낸다. 우리는 sequence of hidden layers를 aggregate하고 3D poses를 return하기 위해 two fully connected residual blocks를 사용한다. 우리는 batch normalization과 drop out을 하지 않는다.  
+lifting network를 training하기 위해, two loss functions가 사용된다. 이것은 2D multi-view re-projection loss $$L_R$$ 과 triangulation loss $$L_T$$, total lifting network loss는 다음과 같다.  
+$$L= L_R+ L_T \tag{5}$$
+
+### 3.4. Camera Correction Network
+
+우리는 two input views들 간의 relative rotation matrix $$R \in \mathbb{R}^{3×3}$$ 을 estimate하기 위해 camera network에대해 two GRU layers와 two residual blocks의 same structure을 사용한다.  
+오직 one sequence of 2D poses를 input으로 갖는 lifting network에도 불구하고, camera network의 input은 both views에서 two sequences of 2D poses로 구성한다. 이 input은 network가 two input views의 relative rotation matrix를 학습하게 해준다. 각 카메라에서 rotation matrix를 estimate하는 이전작업[39]에도 불구하고, relative rotation matrix를 estimate하는것은 camera model에 multiple views들을 input으로 사용하는 이득을 가진다. 게다가 inference하는동안 camera network가 필요하지 않기 때문에, 우리의 framework는 inference time에서 single-view input에도 작동할수 있다.  
+first and second view rotation matrices은 $$R_i, R_j$$  
+The relative rotation matrix of these two views은 $$R_{ij}= R_j \times R_i^T$$   
+Camera correction network는 $$\bar{R}_{ij}$$를 estimate한다, $$\bar{R}_{ij} = R_{ij} - R_{ij(triang)}$$   
+$$R_{ij}$$는 actual rotation matrix 이고 $$R_{ij(triang)}$$는 triangulation으로 계산된 rotation matrix이다.  
+이것은 우리의 camera network가 previous rotation matrix를 바로잡는다는것을 의미한다.  
+우리는 수식 4의 objective function을 최소화하기 위해 camera correction network의 parameters를 optimize한다. 수식 4에 계산된 loss는 camera correction network 뿐만아니라 lifting network를 통과하는 back-propagation이 수행된다.
+
+### 3.5. Adversarial Training
+
+multi-view data를 [38]처럼 하는대신 unpaired한 2D와 3D annotation에 대한 우리의 lifting network의 performance를 분석하였다. 실험에서, 우리는 오로지 보통의 weakly sueprvised training schemes에 대해 우리의 temporal lifting network의 performance를 평가하는것이 목표이다. 이 실험에서 input은 single-view video이지만, 우리는 unpaired한 3D human poses의 collection을 가지고 있다. outdoor images와 indoor motion capture studio에서 captured한 2D label과 3D poses를 결합할수 있다.   
+
+우리는 generator와 critic network가 있는 Wasserstein GAN을 수행한다. 소개한 lifting network는 generator로 사용된다. critic network는 lifting network의 output과 진짜 3D human pose의 batches사이의 거리를 최대화하려고 시도한다.  
+
+single 3D pose 뿐만아니라 a sequence of 3D poses도 받는 motion critic network를 사용한다.
+이 motion critic은 2개의 GRU units layers에 이어 linear layer로 구성된다.
+critic의 parameters는 $$[-0.01,0.01]$$사이로 clip된다. [38]에서 소개한 서로 다른 crtic models 그리고 4개의 convolutional layers가 있는 convolutional network 그리고 중간에 maxpooling layer 에 대해 실험을 수행한다.
+
+우리의 실험은 GRU critic이 다른 논문들을 능가하는것을 보여준다.
+우리는 single-view re-projection loss, $$L_R$$, 그리고 lifting network를 training하기 위한 unpaired한3D annotations로 부터 adversarial loss, $$L_{adv\mathcal{G}}$$를 사용한다.  
+
+$$L=L_R + L_{adv\mathcal{G}} \tag{6}$$
+
+이 loss function은 adversarial training되며 critic과 genrator networks는 다음과 같이 정의된다.  
+
+$$L_{adv\mathcal{C}}=\mathbb{E}_{W \sim P_R} [(\mathcal{C}(W)] - E_{W \sim P_G} [(\mathcal{C}(W)], \tag{7}$$
+$$L_{adv\mathcal{G}} = E_{W \sim P_G} [(\mathcal{C}(W)] ,\tag{8}$$
+C는 critic G는 generator networks
+$$L_{adv\mathcal{C}}$$는 critic network에 대한 adversarial loss이다.
+$$P_R$$과 $$P_G$$는 진짜와 생성한 3D poses의 상대적인,분포이다.
