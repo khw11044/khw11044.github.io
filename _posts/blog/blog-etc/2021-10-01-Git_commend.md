@@ -15,9 +15,9 @@ published: true
 
 ## Git 설치 (우분투에서)
 
-1) 터미널 (ctrl + Alt + T)
-2) <code>sudo apt install git</code>
-3) <code>git --version</code>
+1) 터미널 (ctrl + Alt + T)  
+2) <code>sudo apt install git</code>  
+3) <code>git --version</code>  
 
 ## 1.1 Git 명령어
 
