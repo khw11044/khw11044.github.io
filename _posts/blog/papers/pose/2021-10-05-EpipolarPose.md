@@ -114,11 +114,12 @@ $$T = \begin{bmatrix} T_{x} \\ T_{y} \\ T_{z} \end{bmatrix}$$
 여기서 $$w_{i,j}$$는 camera reference frame과 관련된 $$i^{th}$$번째 camera의 image에서  $$j^{th}$$번째 joint의 depth이고, K는 camera intrinsic parameters(즉, focal length $$f_x$$와 $$f_y$$, principal point $$c_x$$ and $$x_y$$)로 encode되고, R과 T는 rotation과 translation의 camera extrinsic parameters이다.  
 우리는 simplicity(단순성)을 위해 camera distortion(카메라 왜곡)을 생략한다.
 
-보통 dynamic capture environments인 경우인, camera extrinsic parameters가 사용가능하지 않을때, 우리는 body joints를 calibration targets로 사용할 수 있다. 우리는 첫번째 camera를 coordinate system의 중심으로 가정한다, 이것은 첫번째 camera의 R이 identity matrix를 의미한다.  
+보통 dynamic capture environments인 경우인, camera extrinsic parameters가 사용가능하지 않을때, 우리는 body joints를 calibration targets로 사용할 수 있다.  
+우리는 첫번째 camera를 coordinate system의 중심으로 가정한다, 이것은 첫번째 camera의 R이 identity matrix를 의미한다.  
 image plane에서 $$U_i$$와 $$U_{i+1}$$의 해당 joints의 경우, 우리는 RANSAC algorithm을 이용하여 $$\forall_j$$에 대해 $$U_{i,j}FU_{i+1,j}=0$$을 만족하는 fundamental matrix F를 찾는다.  
-F에서부터, 우리는 $$E=K^TFK$$에 의해 essential matrix E를 계산한다.
+F에서부터, 우리는 $$E=K^TFK$$에 의해 essential matrix E를 계산한다.  
 SVD로부터 E를 decomposing함으로써, R에 대한 4가지 가능한 solutions를 얻는다.  
-cheirality check를 함으로써 possible pose hypotheses를 검즈하여 옳은 하나를 결정한다.  
+cheirality check를 함으로써 possible pose hypotheses를 검증하여 옳은 하나를 결정한다.  
 cheirality check는 triangulated 3D points가 positive depth(양의 깊이)를 갖여야한다는 것을 의미한다[26].  
 우리의 모델이 normalized poses를 ground truth로 사용하기 때문에, training중 scale은 생략한다.  
 
@@ -127,11 +128,11 @@ cheirality check는 triangulated 3D points가 positive depth(양의 깊이)를 �
 2개 이상의 cameras settings에서, 우리는 median 3D postion을 찾기위해 vector-median을 계산한다.  
 upper (3D) branch에서 예측한 camera frame에서의 3D pose간의 loss를 계산하기위해, V를 상응하는 camera space에 project한다, 그런다음 3D branch를 학습하기 위해 $$\text{smooth}_{L_1}(V-\hat{V})$$를 최소화 한다 :  
 
-$f(n)=
+$$f(n)=
 \begin{cases}
 0.5x^2, & \text{if } |x| < 1 \\
 |x| - 0.5, & \text{otherwise}
-\end{cases}$
+\end{cases}$$
 
 **Why do we need a frozen 2D pose estimator?**   
 EpipolarPose의 training pipeline에는 pose estimator로 각각 시작하는 2개의 branches가 있다.  
