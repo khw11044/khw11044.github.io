@@ -12,7 +12,7 @@ comments: true
 published: true
 ---
 
- 2021 CVPR [paper](https://arxiv.org/pdf/2108.04869.pdf)
+ 2019 CVPR [paper](https://arxiv.org/pdf/1903.02330.pdf)
 
 * toc
 {:toc}
@@ -22,7 +22,7 @@ published: true
 
 ##  EpipolarPose
 
-![Fig1](/assets/img/Blog/papers/Pose/EpipolarPose/Fig1.PNG)
+![Fig1](/assets/img/Blog/papers/Pose/EpipolarPose/Fig1.png)
 
 ## Abstract
 
@@ -93,7 +93,7 @@ scene에서 동시에 사람 사진을 찍는 _n_ camera(_n_은 무조건 2이�
 cameras들은 각각 images $$I_1,I_2,...,I_n$$를 생산한다.  
 그런다음, 연속적인 image pairs, $$\{(I_i,I_{i+1}) \vert i=1,2,...,n-1\}$$는 training examples를 형성한다.  
 
-![Fig2](/assets/img/Blog/papers/Pose/EpipolarPose/Fig2.PNG)
+![Fig2](/assets/img/Blog/papers/Pose/EpipolarPose/Fig2.png)
 
 ### 3.1. Training
 
@@ -151,7 +151,7 @@ input은 single image이고 output은 soft-argmax activation, $$\varphi(.)$$에 
 
 ### 3.3 Refinement, an optional post-training
 
-![Fig3](/assets/img/Blog/papers/Pose/EpipolarPose/Fig3.PNG)
+![Fig3](/assets/img/Blog/papers/Pose/EpipolarPose/Fig3.png)
 
 detected 2D keypoints를 3D joints로 lift하는 몇몇 기술 [22,11,39]가 있다.  
 이 methods는 random camera projections를 시행함으로써 motion capture (MoCap) data로 부터 얻을 수 있는 generalized 2D -> 3D mapping을 학습할 수 있다.  
