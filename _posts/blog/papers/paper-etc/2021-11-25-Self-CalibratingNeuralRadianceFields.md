@@ -64,7 +64,7 @@ in Faugeras et al. [4].
 
 우리는 각각의 제한점을 상세히 discuss한다.  
 
-첫째, linear pinhole camera model은 $\text{Kx}$로 공식화 할 수 있다, 여기서 $K \in \mathbb{R}^{3 \times 3}$ 이고 $\text{x}$는 homogeneous 3D coordinate이다.  
+첫째, linear pinhole camera model은 $$\text{Kx}$$로 공식화 할 수 있다, 여기서 $$K \in \mathbb{R}^{3 \times 3}$$ 이고 $$\text{x}$$는 homogeneous 3D coordinate이다.  
 
 이 linear model은 camera model을 simplify할 수 있고 computation 할 수 있지만 real lenses는 real world 와 images간의 정확한 mapping을 캡쳐하게 하는 complex non-linear distortions를 갖는다.
 
@@ -118,13 +118,13 @@ iNeRF는 inverse problem of NeRF를 다루는데, 이것은 observed images의 p
 
 **Implicit Volumetric Representation.**  
 implicit representation을 이용한 scene의 dense 3D geometry을 learning하는것은 최근에 robustness함과 accuracy때문에 상당히 주목을 받고있다.  
-그것은 2개의 implicit representations를 학습한다: transparency $\alpha(\text{x})$ 와 color $\text{c(x,v)}$ ($\text{x} \in \mathbb{R}^3$은 world coordinate에서 3D position) 그리고 $\mathbf{r}_d \in \{\mathbf{r}_d | \mathbf{r}_d \in \mathbb{R}^3, |\mathbf{r}_d| = 1\}$은 ray $\mathbf{r}(t) = \text{r}_o + t\mathbf{r}_d$ 의 direction을 representing하는 normal 3-vector이다.  
+그것은 2개의 implicit representations를 학습한다: transparency $\alpha(\text{x})$ 와 color $$\text{c(x,v)}$$ 와 ($$\text{x} \in \mathbb{R}^3$$은 world coordinate에서 3D position) 그리고 $$\mathbf{r}_d \in \{\mathbf{r}_d | \mathbf{r}_d \in \mathbb{R}^3, |\mathbf{r}_d| = 1\}$$은 ray $$\mathbf{r}(t) = \text{r}_o + t\mathbf{r}_d$$ 의 direction을 representing하는 normal 3-vector이다.  
 
-ray의 color value $\text{C}$는 ray에 따하 opaqueness에 의해 weighted된 모든 colors의 integral에 의해 represented될 수 있고 또한 ray위의 N points에서 colors의 weighted sum을 통해 approximated될 수 있다.
+ray의 color value $$\text{C}$$는 ray에 따하 opaqueness에 의해 weighted된 모든 colors의 integral에 의해 represented될 수 있고 또한 ray위의 N points에서 colors의 weighted sum을 통해 approximated될 수 있다.
 
 $$\hat{C}(r) \approx \sum^N_i (\prod_{j=1}^{i-1} \alpha(\text{r}(t_j), \Delta_j)) (1 - \alpha(t_i, \Delta_i))\text{c}(\text{r}(t_i),\text{v})$$
 
-$\Delta_i = t_{i+1} - t_i$
+$$\Delta_i = t_{i+1} - t_i$$
 
 따라서, method의 정확도는 얼마나 우리가 points를 sample하느냐 뿐만아니라 samples의 수에 상당히 의존적이다.
 
@@ -141,9 +141,9 @@ NeRF++은 separate implicit networks로 foreground와 background를 모델링하
 
 이번 섹션에서, 우리는 self-calibration에 대한 pinhole camera model, radial distortion, 그리고 generic non-linear camera distortion을 combines한 우리의 differential camera model의 정의를 소개한다.  
 
-수학적으로, camera model은 image plane에서 3D ray $\text{r}$에서 2D coordinate $\mathbf{p}$로 정의되는 mapping $\mathbf{p} = \pi(\mathbf{r})$이다.  
+수학적으로, camera model은 image plane에서 3D ray $$\text{r}$$에서 2D coordinate $$\mathbf{p}$$로 정의되는 mapping $$\mathbf{p} = \pi(\mathbf{r})$$이다.  
 이 작업에서, 우리는 geometry learning으로써 unprojection function 또는 ray인, $\mathbf{r(p)} = \pi^{-1}(\mathbf{p})$에 초점을 맞추고 우리의 'projected ray distance'는 오직 pixel에서 ray로의 unprojection만을 요구한다.    
-따라서, 우리는 camera model과 camera unprojection interchangeably부분의 term을 사용한다, 그리고 pixel $\mathbf{p}$의 ray $\mathbf{r(p)}$를 a pair of 3-vectors : direction vector $\mathbf{r}_d$, offset 또는 ray origin vector $\mathbf{r}_o$로 represent한다.  
+따라서, 우리는 camera model과 camera unprojection interchangeably부분의 term을 사용한다, 그리고 pixel $$\mathbf{p}$$의 ray $$\mathbf{r(p)}$$를 a pair of 3-vectors : direction vector $$\mathbf{r}_d$$, offset 또는 ray origin vector $$\mathbf{r}_o$$로 represent한다.  
 
 우리의 camera unprojection process는 two components로 구성된다 :  
 unprojection of pixels using a differentialbel pinhole camera model 그리고  
@@ -154,9 +154,9 @@ generic non-linear ray distortions.
 
 우리의 differentiable camera unprojection의 첫번째 component는 3D space에서 4-vector homogeneous coordinate를 image plane에서 3-vector로 mapping하는 pinhole camera model을 기반으로한다.  
 
-첫째, 우리는 camera intrinsics를 initialization $K_0$과 residual parameter matrix $\Delta K$로 decompose한다.  
+첫째, 우리는 camera intrinsics를 initialization $$K_0$$과 residual parameter matrix $$\Delta K$$로 decompose한다.  
 그 이유는 많은 local minima를 갖는 intrinsics matrix의 highly non-convex nature 때문이다.  
-그래서 final intrinsics는 이것들의 합이다 : $K = K_0 + \Delta K \in \mathbb{R}^{3 times 3}$
+그래서 final intrinsics는 이것들의 합이다 : $$K = K_0 + \Delta K \in \mathbb{R}^{3 times 3}$$
 
 $$K =
 \begin{bmatrix}
@@ -165,7 +165,7 @@ f_x + \Delta f_x & 0 & c_x + \Delta c_x \\
 0 & 0 & 1
 \end{bmatrix}$$
 
-같은 방식으로 우리는 camera rotation $R$과 translation $t$를 represent하기 위해 extrinsics initial values $R_0$와 $t_0$ 그리고 residual parameters를 사용한다.  
+같은 방식으로 우리는 camera rotation $$R$$과 translation $$t$$를 represent하기 위해 extrinsics initial values $$R_0$$와 $$t_0$$ 그리고 residual parameters를 사용한다.  
 그러나, rotation matrix의 각 element별 rotation offset을 직접적으로 learning하는것은 rotation matrix의 orthogonality를 깨트린다.  
 따라서, 우리는 3D rotation을 represent하시 위해 rotation matrix의 첫 two columns를 unnormalized하는 6-vector representation을 채택한다 :
 
@@ -184,35 +184,35 @@ f = \begin{pmatrix}
 \end{bmatrix}
 $$
 
-여기서 $\mathbf{b_1},\mathbf{b_2},\mathbf{b_3} \in \mathbb{R}^3$은  
-$\mathbf{b_1} = N(\mathbf{a_1})$  
-$\mathbf{b_2} = N(\mathbf{a_2} - (\mathbf{b_1} \cdot \mathbf{a_2})\mathbf{b_1})$  
-$\mathbf{b_3} = \mathbf{b_1} \times \mathbf{b_2}$  
-$N(\cdot)$ 은 L2 norm  
+여기서 $$\mathbf{b_1},\mathbf{b_2},\mathbf{b_3} \in \mathbb{R}^3$$은  
+$$\mathbf{b_1} = N(\mathbf{a_1})$$  
+$$\mathbf{b_2} = N(\mathbf{a_2} - (\mathbf{b_1} \cdot \mathbf{a_2})\mathbf{b_1})$$  
+$$\mathbf{b_3} = \mathbf{b_1} \times \mathbf{b_2}$$  
+$$N(\cdot)$$ 은 L2 norm  
 
 Final rotation과 translation은  
 $$R = f(\mathbf{a_0} + \Delta \mathbf{a}), \mathbf{t} = \mathbf{t_0} + \Delta \mathbf{t}$$
 
 우리는 pixels에서 rays로 unproject하기 위해 K를 사용한다.  
-intinsics로 부터 얻은 ray는 $\mathbf{\tilde{r}(p)}_d = K^{-1}\mathbf{p}$와 $\tilde{\mathbf{r}}_0 = 0$이고  
-$\tilde{\cdot}$은 camera coordinate system에서 vector이다.  
-우리는 extrinsics $R,t$를 world coordinate의 vectors로 변환하는데 사용한다.
+intinsics로 부터 얻은 ray는 $$\mathbf{\tilde{r}(p)}_d = K^{-1}\mathbf{p}$$와 $$\tilde{\mathbf{r}}_0 = 0$$이고  
+$$\tilde{\cdot}$$은 camera coordinate system에서 vector이다.  
+우리는 extrinsics $$R,t$$를 world coordinate의 vectors로 변환하는데 사용한다.
 
-이 ray parameters $(\mathbf{r}_d, \mathbf{r}_o)$는 intrinsics residuals와 extrinsics residuals $(\Delta \mathbf{f}, \Delta \mathbf{c}, \Delta \mathbf{a}, \Delta \mathbf{t})$ 의 finctions이기 때문에, parameters를 optimize하기위해 rays에서 residuals까지 gradients를 통과시킬 수 있다. $K_0, R_0, t_0$은 optimize 하지 않는다.
+이 ray parameters $$(\mathbf{r}_d, \mathbf{r}_o)$$는 intrinsics residuals와 extrinsics residuals $$(\Delta \mathbf{f}, \Delta \mathbf{c}, \Delta \mathbf{a}, \Delta \mathbf{t})$$ 의 finctions이기 때문에, parameters를 optimize하기위해 rays에서 residuals까지 gradients를 통과시킬 수 있다. $$K_0, R_0, t_0$$은 optimize 하지 않는다.
 
 Camera는 rays를 center로 warp하는 a set of circular lenses로 만들어진다. 따라서, lenses의 edge에서 distortions는 circular distortion patterns를 만들어 낸다.
 
 우리는 이러한 radial distortions를 통합하기 위해 모델을 확장한다.
 
-COLMAP에서 radial fisheye model을 따라, 우리는 rare higher order distortions를 drop하는 fourth order radial distortion model을 채택한다, 즉 $\mathbf{k} = (k_1 + z_{k_1}, k_2 + z_{k_2})$
+COLMAP에서 radial fisheye model을 따라, 우리는 rare higher order distortions를 drop하는 fourth order radial distortion model을 채택한다, 즉 $$\mathbf{k} = (k_1 + z_{k_1}, k_2 + z_{k_2})$$
 
-$n = ((\mathbf{p_x} - c_x)/c_x, (\mathbf{p_y} - c_y)/c_y, 1)$  
+$$n = ((\mathbf{p_x} - c_x)/c_x, (\mathbf{p_y} - c_y)/c_y, 1)$$  
 
-$d = (1 + \mathbf{k_1}n^2_x + k_2n^4_x, 1 + \mathbf{k_1}n^2_y + \mathbf{k_2}n^4_y)$  
+$$d = (1 + \mathbf{k_1}n^2_x + k_2n^4_x, 1 + \mathbf{k_1}n^2_y + \mathbf{k_2}n^4_y)$$  
 
-$\mathbf{p}' = (\mathbf{p_x}d_x, \mathbf{p_y}d_y,1)$  
+$$\mathbf{p}' = (\mathbf{p_x}d_x, \mathbf{p_y}d_y,1)$$  
 
-$\mathbf{r}_d = RK^{-1}\mathbf{p}', \mathbf{r_o}=t$
+$$\mathbf{r}_d = RK^{-1}\mathbf{p}', \mathbf{r_o}=t$$
 
 다른 camera parameters와 유사하게, 우리는 photometric errors를 이용하여 이런 camera parameters를 learn한다.
 
@@ -220,7 +220,7 @@ $\mathbf{r}_d = RK^{-1}\mathbf{p}', \mathbf{r_o}=t$
 
 우리는 수식적으로 쉽게 표현되는 some distortions를 model한다. 그러나, real lenses에서 complex optical abberations은 parametric camera를 사용하여 modeling 할 수 없다.  
 이런 noise 때문에, 우리는 Grossberg를 따라서 generic non-linear aberration을 포착하기위해 local raxel parameters를 사용하여  non-linear model을 사용한다.  
-특별히, 우리는 local ray parameter residuals $\mathbf{z}_d = \Delta \mathbf{r}_d(\mathbf{p}), \mathbf{z}_o = \Delta \mathbf{r}_o(\mathbf{p})$ 여기서 $\mathbf{p}$는 image coordinate.
+특별히, 우리는 local ray parameter residuals $$\mathbf{z}_d = \Delta \mathbf{r}_d(\mathbf{p}), \mathbf{z}_o = \Delta \mathbf{r}_o(\mathbf{p})$$ 여기서 $$\mathbf{p}$$는 image coordinate.
 
 $$\mathbf{r'}_d = \mathbf{r}_d + \mathbf{z}_d, \mathbf{r'}_o = \mathbf{r}_o + \mathbf{z}_o$$.
 
@@ -255,39 +255,39 @@ geometric loss는
 ![Fig3](/assets/img/Blog/papers/SelfCalibratingNeuralRadianceFields/Fig3.PNG)
 
 Fig 3 참고
-($ \mathbf{p}_A \leftrightarrow \mathbf{p}_B$)는 camera 1과 camera 2 각각에 correspondence하다고 하자.  
-모든 camera parameters는 calibrated되었을때, ray $\mathbf{r}_A$ 와 $\mathbf{r}_B$는 point $\mathbf{p}_A$와 $\mathbf{p}_B$를 만들어 내는 3D point에 교차한다.
+($$ \mathbf{p}_A \leftrightarrow \mathbf{p}_B$$)는 camera 1과 camera 2 각각에 correspondence하다고 하자.  
+모든 camera parameters는 calibrated되었을때, ray $$\mathbf{r}_A$$ 와 $$\mathbf{r}_B$$는 point $$\mathbf{p}_A$$와 $$\mathbf{p}_B$$를 만들어 내는 3D point에 교차한다.
 
 그러나, camera parameters에서 error 때문에 misalignment가 생길때, 우리는 corresponding rays간의 가장 짧은 distance를 계산함으로써 deviation(편차)를 측정할 수 있다.
 
-line A위의 point를 $\mathbf{x}_A(t_A) = \mathbf{r}_{o,A} + t_A\mathbf{r}_{d,A}$ 이고  
-line B위의 point는 $\mathbf{x}_B(t_B) = \mathbf{r}_{o,B} + t_B\mathbf{r}_{d,B}$ 라고 하자.
+line A위의 point를 $$\mathbf{x}_A(t_A) = \mathbf{r}_{o,A} + t_A\mathbf{r}_{d,A}$$ 이고  
+line B위의 point는 $$\mathbf{x}_B(t_B) = \mathbf{r}_{o,B} + t_B\mathbf{r}_{d,B}$$ 라고 하자.
 
 line A와 line B위의 point간의 거리를 다음과 같이 나타낼 수 있다.
 
 $$d = \frac{|(\mathbf{r}_{o,B} + t_B\mathbf{r}_{d,B} - \mathbf{r}_{o,A}) \times \mathbf{r}_{A,d}|}{ \mathbf{r}_{A,d} \cdot  \mathbf{r}_{A,d}}$$
 
-이것은 $\hat{t}_B$에 대해 미분해서 0이 나오는  
+이것은 $$\hat{t}_B$$에 대해 미분해서 0이 나오는  
 $$\frac{\mathbf{d}d^2}{\mathbf{d}t_B}\vert_{\hat{t}_B} = 0$$
-인 지점에서의  $\hat{t}_B$를 구할 수 있다.  
+인 지점에서의  $$\hat{t}_B$$를 구할 수 있다.  
 
 $$\hat{t}_B = \frac{ (\mathbf{r}_{A,o} - \mathbf{r}_{B,o}) \times \mathbf{r}_{A,d} \cdot (\mathbf{r}_{A,d} \times \mathbf{r}_{B,d})}{(\mathbf{r}_{A,d} \times \mathbf{r}_{B,d})^2}$$
 
-그러면 이 거리를 가장 짧게하는 지점$\hat{t}_B$에서의 line B위의 점 $\hat{\mathbf{x}}_B = \mathbf{x}_B(\hat{t}_B)$를 얻을 수 있다.
+그러면 이 거리를 가장 짧게하는 지점$$\hat{t}_B$$에서의 line B위의 점 $$\hat{\mathbf{x}}_B = \mathbf{x}_B(\hat{t}_B)$$를 얻을 수 있다.
 
-같은 방식으로 $\mathbf{\hat{x}}_A$을 얻을 수 있다. 간단하게 하기위해, 우리는 주로 최종 해결책에 초점을 맞출 것이기 때문에, 우리는 $\mathbf{x}$를 $\mathbf{\hat{x}}$로 표기한다.
-2개의 points간의 distanc $\hat{d} = \bar{\mathbf{x}_A\mathbf{x}_B}$ 는 다음과 같다.
+같은 방식으로 $$\mathbf{\hat{x}}_A$$을 얻을 수 있다. 간단하게 하기위해, 우리는 주로 최종 해결책에 초점을 맞출 것이기 때문에, 우리는 $$\mathbf{x}$$를 $$\mathbf{\hat{x}}$$로 표기한다.
+2개의 points간의 distanc $$\hat{d} = \bar{\mathbf{x}_A\mathbf{x}_B}$$ 는 다음과 같다.
 
 $$\hat{d} = \frac{|(\mathbf{r}_{A,o} - \mathbf{r}_{B,o}) \cdot (\mathbf{r}_{A,d} \times \mathbf{r}_{B,d})|}{|\mathbf{r}_{A,d} \times \mathbf{r}_{B,d}|}$$
 
 그러나, 이 distance는 correspondences에 normalized되어 있지않다.
 동일한 camera distortions을 고려할 때 카메라에서 멀리 떨어진 지점에 대한 correspondence은 편차(deviation)가 더 큰 반면, 카메라에 더 가까운 지점에 대한 correspondence은 편차(deviation)가 더 작다.
 
-그래서, 우리는 distance의 scale을 normalize할 필요가 있다. 따라서, 우리는 3D space에서 distance를 directly하게 사용하는것보다 , points $\mathbf{x}_A,\mathbf{x}_B$를 image planes $I_A, I_B$에 project하고 image planes에서 dostance를 계산한다.
+그래서, 우리는 distance의 scale을 normalize할 필요가 있다. 따라서, 우리는 3D space에서 distance를 directly하게 사용하는것보다 , points $$\mathbf{x}_A,\mathbf{x}_B$$를 image planes $$I_A, I_B$$에 project하고 image planes에서 dostance를 계산한다.
 
 $$d_{\pi} = \frac{||\pi_A(\mathbf{x}_B) - \mathbf(p)_A || + ||\pi_B(\mathbf{x}_A) - \mathbf(p)_B||}{2}$$
 
-$\pi(\cdot)$은 projection function이고 camera와의 distance와 관계없이 각 correspondence의 기여도는 균등하다.
+$$\pi(\cdot)$$은 projection function이고 camera와의 distance와 관계없이 각 correspondence의 기여도는 균등하다.
 
 이 projected ray distance는 epipolar distance또는 reprojection error와 다른 novel geometric loss이다.
 epipolar distance는 오로지 linear pinhole cameras로부터 정의되고 non-linear camera distortions를 modeling 할 수 없다.  
@@ -299,24 +299,24 @@ camera distortion은 large하고 cameras간 baseline은 작을때, correspondenc
 
 $$R_A \mathbf{x}_B [z] > 0, R_B \mathbf{x}_A [z] > 0$$
 
-$\mathbf{x}[z]$는 vector의 z component를 가리킨다.  
+$$\mathbf{x}[z]$$는 vector의 z component를 가리킨다.  
 최종적으로, 우리는 geometric loss를 계산하기 위해 모든 correspondeces에 대해 valid projected ray distances를 평균한다.
 
 ## Photometric Consistency  
 
 geometric consistency와 달리, photometric consistency는 3D geometry를 reconstructing하는것을 요구한다. 왜냐하면 3D point의 color가 현재 perspective에서 visible이 유효한지 아닌지 보기위해서 이다.  
-우리 작업에서는, 우리는 3D occupancy와 color를 reconstruct하기위해 neural radiance field를 사용한다. 이 implicit representation은 position과 color value를 통해 미분가능하며 volumetric rendering을 통해 visible surface를 capture할 수 있게해준다. 특별히, rendering process 동안, ray는 $\mathbf{z}_o[\cdot], \mathbf{z}_d[\cdot]$ 뿐만 아니라 $\Delta K, \Delta a \Delta t$ 뿐만 아니라 $K_0, R_0, t_0$를 이용해서 parameterized된다.  
+우리 작업에서는, 우리는 3D occupancy와 color를 reconstruct하기위해 neural radiance field를 사용한다. 이 implicit representation은 position과 color value를 통해 미분가능하며 volumetric rendering을 통해 visible surface를 capture할 수 있게해준다. 특별히, rendering process 동안, ray는 $$\mathbf{z}_o[\cdot], \mathbf{z}_d[\cdot]$$ 뿐만 아니라 $$\Delta K, \Delta a \Delta t$$ 뿐만 아니라 $$K_0, R_0, t_0$$를 이용해서 parameterized된다.  
 우리의 self-calibration model을 optimize하기위해 learnable camera parameters와 관련하여 다음 energy function을 정의한다.
 
 $$\mathcal{L} = \sum_{\mathbf{p}\in\mathcal{I}} || C(\mathbf{p}) - \hat{C}(\mathbf{\mathbf{r(p)}}) ||^2_2$$
 
-여기 $\mathbf{p}$는 pixel coordinate이고 $\mathcal{I}$는 image에서 pixel coordinate의 집합이다.  
-$\hat{C}(\mathbf{r})$은 ray $\mathbf{r}$을 이용한 volumetric rendering의 output이고 이것은 pixel $\mathbf{p}$에 corresponds하다.  
-$C(\mathbf{p})$는 ground truth color이다. 따라서 intrinsics에 대한 gradient는 다음과 같다.  
+여기 $$\mathbf{p}$$는 pixel coordinate이고 $$\mathcal{I}$$는 image에서 pixel coordinate의 집합이다.  
+$$\hat{C}(\mathbf{r})$$은 ray $$\mathbf{r}$$을 이용한 volumetric rendering의 output이고 이것은 pixel $$\mathbf{p}$$에 corresponds하다.  
+$$C(\mathbf{p})$$는 ground truth color이다. 따라서 intrinsics에 대한 gradient는 다음과 같다.  
 
 $$\frac{\partial L}{\partial \Delta K} = \frac{\partial L}{\partial \mathbf{r}} (\frac{\partial \mathbf{r}}{\partial \mathbf{r}_d} \frac{\partial \mathbf{r}_d}{\partial \Delta K} + \frac{\partial \mathbf{r}}{\partial \mathbf{r}_o} \frac{\partial \mathbf{r}_o}{\partial \Delta K} + \frac{\partial L}{\partial \mathbf{r}_d} \frac{ \mathbf{r}_d}{\partial \Delta K})$$
 
-비슷하게, 우리는 parameters의 나머지 $\Delta a, \Delta t$ 뿐만아니라 $\mathbf{z}_o[\cdot], \mathbf{z}_d[\cdot]$ 그리고 calibration cameras 에 대해서 gradients를 정의할 수 있다.
+비슷하게, 우리는 parameters의 나머지 $$\Delta a, \Delta t$$ 뿐만아니라 $$\mathbf{z}_o[\cdot], \mathbf{z}_d[\cdot]$$ 그리고 calibration cameras 에 대해서 gradients를 정의할 수 있다.
 
 ## 6. Optimizing Geometry and Camera
 
