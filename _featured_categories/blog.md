@@ -17,10 +17,10 @@ description: >
 * [Library]{:.heading.flip-title} --- Pytorch등 각종 라이브러리 공부
 * [ML/DL]{:.heading.flip-title} --- ML/DL 개념 공부
 * [Papers]{:.heading.flip-title} --- 논문 읽기, 논문 공부
-* [blog-etc]{:.heading.flip-title} --- 기타, 이것저것
+* [Blog-etc]{:.heading.flip-title} --- 기타, 이것저것
 
 [GithubPages]: /githubpages/
 [Library]: /library/
 [ML/DL]: /mldl/
 [Papers]: /papers/
-[blog-etc]: /blog-etc/
+[Blog-etc]: /blog-etc/
