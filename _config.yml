@@ -119,7 +119,7 @@ collections:
 # Theme
 # ---------------------------------------------------------------------------------------
 
-theme: jekyll-theme-hydejack          # 이거 무조건 주석처리해야 함
+# theme: jekyll-theme-hydejack          # 이거 무조건 주석처리해야 함
 remote_theme: hydecorp/hydejack@v9.0.5
 
 
