@@ -26,54 +26,59 @@
         
       <li>
         <div class="menu-wrapper" onmouseover="javascript:spread(11)" onmouseout="javascript:spread(11)">
-           <!-- submenu 변수는 _config.yml 에서 추가합니다 -->
-          <a href="/study/" class="sidebar-nav-item ">
-            Study
-          </a>
+            <!-- submenu 변수는 _config.yml 에서 추가합니다 -->
+             <!-- spread 함수는 js 파일로 작성하고 my-head.html에 추가합니다 -->
+             <!-- spread-btn class는 my-style.scss에 추가합니다. -->
 
-          <div id="submenu-11" class="menu-wrapper submenu hide">
-            <ul style="list-style: none;">
-            
-              <li>
-                <a class="sidebar-nav-item" href="/papers/">
-                  논문
-                </a>
-              </li>
-            
-              <li>
-                <a class="sidebar-nav-item" href="/library/">
-                  라이브러리
-                </a>
-              </li>
-            
-              <li>
-                <a class="sidebar-nav-item" href="/mldl/">
-                  머신러닝/딥러닝
-                </a>
-              </li>
-            
-              <li>
-                <a class="sidebar-nav-item" href="/codingtest/">
-                  코딩테스트 연습
-                </a>
-              </li>
-            
-              <li>
-                <a class="sidebar-nav-item" href="/python/">
-                  파이썬
-                </a>
-              </li>
-              
-              <li>
-                <a class="sidebar-nav-item" href="/study-etc/">
-                  공부 이것저것
-                </a>
-              </li>
-            </ul>
-          </div>
-        
-          
-       </div>
+            <button class="spread-btn">
+                 <!-- marterial stylesheet를 my-head.html에 추가합니다 -->
+               <span id="spread-icon-11" class="material-icons">arrow_right</span>
+            </button>
+            <a href="/study/" class="sidebar-nav-item ">
+                Study
+            </a>
+    
+            <div id="submenu-11" class="menu-wrapper submenu hide">
+                <ul style="list-style: none;">
+                
+                <li>
+                    <a class="sidebar-nav-item" href="/papers/">
+                    논문
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="sidebar-nav-item" href="/library/">
+                    라이브러리
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="sidebar-nav-item" href="/mldl/">
+                    머신러닝/딥러닝
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="sidebar-nav-item" href="/codingtest/">
+                    코딩테스트 연습
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="sidebar-nav-item" href="/python/">
+                    파이썬
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="sidebar-nav-item" href="/study-etc/">
+                    공부 이것저것
+                    </a>
+                </li>
+                </ul>
+            </div>  
+        </div>
       </li>
     
       
