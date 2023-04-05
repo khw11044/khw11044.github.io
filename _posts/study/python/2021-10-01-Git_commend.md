@@ -4,11 +4,13 @@ bigtitle:  "파이썬으로 기본 수학수식 구현하기"
 subtitle:   "python"
 categories:
     - study
+    - python
 tags:
-  - etc
+  - python
 comments: true
 published: true
 ---
+
 
 # 파이썬으로 기본 수학수식 구현하기
 

@@ -3,7 +3,7 @@ layout: post
 bigtitle:  "MachineLearning 용어 사전"
 subtitle:   "MachineLearning 용어 정리"
 categories:
-    - blog
+    - study
     - mldl
 tags:
     - ML

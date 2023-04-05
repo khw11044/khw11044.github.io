@@ -1,14 +1,14 @@
 ---
 layout: post
 category: blog
-bigtitle: ML/DL
+bigtitle: Daily
 description: >
-  Machine Learning, Deep Learning 공부 내용
+  일상, 취미, 후기, 경험, 기타 
 related_posts:
   -
 addons:
   - related
   - comments
 list: true
-order: 3
+order: 1
 ---

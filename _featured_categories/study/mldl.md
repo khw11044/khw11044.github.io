@@ -1,9 +1,9 @@
 ---
 layout: post
-category: blog
-bigtitle: Blog-etc
+category: study
+bigtitle: MLDL
 description: >
-  특별한 날, 카테고리화 하기 힘든 게시물들
+  Machine Learning, Deep Learning 공부 내용
 related_posts:
   -
 addons:

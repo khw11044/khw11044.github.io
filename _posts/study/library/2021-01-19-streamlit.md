@@ -3,7 +3,7 @@ layout: post
 bigtitle: "streamlit"
 subtitle: 'streamlit 라이브러리'
 categories:
-    - blog
+    - study
     - library
 tags:
     - streamlit
