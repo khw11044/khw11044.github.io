@@ -1,14 +1,14 @@
 ---
 layout: post
 category: blog
-bigtitle: AIblog
+bigtitle: Library
 description: >
-  인공지능이 써주는 게시물들
+  각종 라이브러리 프레임워크 등등
 related_posts:
   -
 addons:
   - related
   - comments
 list: true
-order: 4
+order: 2
 ---

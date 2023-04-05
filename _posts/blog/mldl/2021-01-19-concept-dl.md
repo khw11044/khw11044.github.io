@@ -3,7 +3,7 @@ layout: post
 bigtitle:  "DeepLearning 용어 사전"
 subtitle:   "DeepLearning 용어 정리"
 categories:
-    - study
+    - blog
     - mldl
 tags:
     - DL

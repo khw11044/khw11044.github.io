@@ -1,14 +1,14 @@
 ---
 layout: post
-category: study
-bigtitle: Papers
+category: blog
+bigtitle: Coding Test
 description: >
-  논문읽기, 논문 공부
+    코딩테스트 문제들
 related_posts:
   -
 addons:
   - related
   - comments
 list: true
-order: 1
+order: 5
 ---

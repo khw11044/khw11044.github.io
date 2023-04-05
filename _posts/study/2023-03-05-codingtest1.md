@@ -8,7 +8,6 @@ tags:
   - etc
 comments: true
 published: true
-date: '2023-03-05 02:45:51 +0900'
 ---
 
 # \[프로그래머스\] 바탕화면 정리
