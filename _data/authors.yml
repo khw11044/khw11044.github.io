@@ -2,16 +2,14 @@
 # Must be the same as `author` in `_config.yml`.
 # Change `author1` to your shortname.
 author1:
-  name:              김현우(따라쟁이)
+  name:              치빠(따라쟁이)
   email:             khw11044@gmail.com
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:             |
-    인공지능 연구원을 꿈꾸는 백수
-
-    대학원을 탈출했지만 백수입니다만?!
-
+    일단 치고 안되면 빠지자!🤦‍♂️🤷‍♂️
+    인공지능 개발/연구 노트 & 취미/일상 블로그입니다. 🎶😎
     Please check my [CV](/public/CV.pdf) to find out for more about me !
 
   # This photo will be used in the about section
