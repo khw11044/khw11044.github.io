@@ -23,17 +23,6 @@ layout: base
   <header>
     <h1 class="page-title">{{ page.title | default:strings.home | default:"Home" }}</h1>
     {% include components/message.html text=page.description hide=page.hide_description %}
-
-    <style> 
-      ::-webkit-scrollbar{width: 16px;}
-      ::-webkit-scrollbar-track {background-color:#4b4f52; border-radius: 16px;}
-      ::-webkit-scrollbar-thumb {background-color:#5e6265; border-radius: 16px;}
-      ::-webkit-scrollbar-thumb:hover {background: #ffd24c;}
-      ::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment 
-      {
-          width:12px;height:12px;background:transparent;}
-      } 
-    </style>
     
   </header>
   <div class="markdown-body">
