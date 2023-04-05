@@ -4,7 +4,7 @@ type: category
 bigtitle: Papers
 sitemap: true
 hide_description: false
-order: 4
+order: 1
 description: >
   논문들
 ---
