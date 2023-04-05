@@ -83,6 +83,8 @@ menu:
         url:      /blog-etc/
       - title:  GithubPages
         url:      /githubpages/
+  - title:             Search
+    url:               /search/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
