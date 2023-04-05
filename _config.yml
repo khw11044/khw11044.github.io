@@ -57,26 +57,32 @@ menu:
     url:               /project/
   - title:             Study
     url:               /study/
+    submenu:
+      - title:  Papers
+        url:      /papers/
+      - title:  Library
+        url:      /library/
+      - title:  MLDL
+        url:      /mldl/
+      - title:  CodingTest
+        url:      /codingtest/
+      - title:  Python
+        url:      /python/
+      - title:  Study-etc
+        url:      /study-etc/
   - title:             Blog
     url:               /blog/
     submenu:
-      - title:  GithubPages
-        url:      /githubpages/
-      - title:  Library
-        url:      /library/
-      - title:  ML/DL
-        url:      /mldl/
-      - title:  Class
-        url:      /class/
-      - title:  blog-etc
-        url:      /blog-etc/
-  - title:             Etc
-    url:               /etc/
-    submenu:
-      - title:  Diary
-        url:      /diary/
+      - title:  Daily
+        url:      /daily/
       - title:  Travel
         url:      /travel/
+      - title:  AIblog
+        url:      /aiblog/
+      - title:  Blog-etc
+        url:      /blog-etc/
+      - title:  GithubPages
+        url:      /githubpages/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
@@ -518,10 +524,10 @@ jekyll_compose:
 
 tipue_search:
   include:
-    pages: true
+    pages: false
     collections: []
   exclude:
-    files: []
+    files: [search.html, index.html, tags.html]
     categories: []
     tags: []
 
