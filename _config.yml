@@ -60,6 +60,15 @@ menu:
     submenu:
       - title:  Papers
         url:      /papers/
+        submenu:
+          - title:  PointCloud
+            url:      /pointcloud/
+          - title:  FashionAI
+            url:      /fashionai/
+          - title:  Pose
+            url:      /pose/
+          - title:  Paper-Etc
+            url:      /paper-etc/
       - title:  Library
         url:      /library/
       - title:  MLDL
