@@ -2,7 +2,7 @@
 # Must be the same as `author` in `_config.yml`.
 # Change `author1` to your shortname.
 author1:
-  name:              치빠(따라쟁이)
+  name:              김현우(따라쟁이)
   email:             khw11044@gmail.com
 
   # Used at the bottom of each page and at the top of the `about` layout

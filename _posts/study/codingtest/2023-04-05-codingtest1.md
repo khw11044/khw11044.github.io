@@ -1,7 +1,7 @@
 ---
 layout: post
-bigtitle:  "[1일차] [코딩테스트] [프로그래머스] 약수의 합"
-subtitle:   "[LV.1] 연습문제 코딩테스트 연습 "
+bigtitle:  "[프로그래머스] 약수의 합"
+subtitle:  "[1일차] [코딩테스트] [연습문제] [LV.1]"
 categories:
     - study
     - codingtest
