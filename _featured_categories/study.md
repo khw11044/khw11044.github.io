@@ -9,7 +9,7 @@ description: >
   연구, 논문, 공부, 지식, 기타 등등
 ---
 
-# Blog
+# Study
 
 ## 카테고리
 
@@ -23,6 +23,6 @@ description: >
 [Papers]: /papers/
 [Library]: /library/
 [MLDL]: /mldl/
-[CodingTestc]: /codingtest/
+[CodingTest]: /codingtest/
 [Python]: /python/
 [Study-etc]: /study-etc/
