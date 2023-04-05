@@ -524,15 +524,5 @@ jekyll_compose:
           url: https://example.com
 
 
-tipue_search:
-  include:
-    pages: false
-    collections: []
-  exclude:
-    files: [search.html, index.html, tags.html]
-    categories: []
-    tags: []
-
-
 mermaid:
   src: '_includes/scripts/mermaid.js'
