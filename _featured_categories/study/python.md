@@ -1,13 +1,14 @@
 ---
 layout: post
-category: etc
-title: Diary
+category: study
+bigtitle: Python
 description: >
-  내 일기
+  파이썬 이것저것
 related_posts:
-  - 
+  -
 addons:
   - related
   - comments
 list: true
+order: 5
 ---

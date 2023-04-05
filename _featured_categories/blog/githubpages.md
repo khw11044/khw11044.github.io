@@ -10,5 +10,5 @@ addons:
   - related
   - comments
 list: true
-order: 1
+order: 5
 ---

@@ -1,9 +1,9 @@
 ---
 layout: post
-category: blog
-bigtitle: Papers
+category: study
+bigtitle: CodingTest
 description: >
-  논문읽기, 논문 공부
+  코딩테스트 일기
 related_posts:
   -
 addons:
