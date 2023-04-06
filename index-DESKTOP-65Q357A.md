@@ -41,8 +41,6 @@ Github pages 블로그를 운영하는 중입니다.💻
     <div><img src= "/assets/img/me/me0.jpg"></div>
     <div><img src= "/assets/img/me/me1.jpg"></div>
     <div><img src= "/assets/img/me/me3.jpg"></div>
-    <div><img src= "/assets/img/me/me5.jpg"></div>
-    <div><img src= "/assets/img/me/profile1.jpg"></div>
     <div><img src= "/assets/img/me/profile2.jpg"></div>
 </div>
 

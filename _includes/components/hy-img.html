@@ -17,12 +17,14 @@
     src="{% include_cached smart-url url=include.img %}"
   {% endcapture %}
 {% endif %}
-<div class="img-set" style="background-color: rgb(58, 77, 33);"></div>
-<img
+<div class="img-set" style="background-color: rgb(58, 77, 33);">
+  <img
   {{ sources }}
   {% if include.alt %}alt="{{ include.alt }}"{% endif %}
   {% if include.class %}class="{{ include.class }}"{% endif %}
   {% if include.property %}property="{{ include.property }}"{% endif %}
   {% if include.width and include.height %}loading="lazy"{% endif %}
 />
+</div>
+
 </div>
