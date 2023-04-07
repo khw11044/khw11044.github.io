@@ -49,7 +49,7 @@ __입출력 예__
 
 ### 🚀 나의 풀이 ⭕
 
-```
+```python
 # 포인트는 insert()와 pop() 또는 remove()등을 쓰지 않는 것이다. 
 def solution(players, callings):
     # 선수: 위치

@@ -40,7 +40,7 @@ __입출력 예__
 
 ### 🚀 나의 풀이 ⭕
 
-```
+```python
 def solution(n):
     answer = 0
     for i in range(1,n+1):

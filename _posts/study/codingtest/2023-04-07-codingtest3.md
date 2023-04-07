@@ -55,7 +55,7 @@ date: '2023-04-07 02:45:51 +0900'
 
 ### 🚀 나의 풀이 ⭕
 
-```
+```python
 def solution(name, yearning, photo):
     # ny_dict = {n:yearning[i] for i,n in enumerate(name)}
     ny_dict = dict(zip(name,yearning))
