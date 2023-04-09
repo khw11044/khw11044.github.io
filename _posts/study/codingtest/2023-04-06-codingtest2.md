@@ -1,7 +1,7 @@
 ---
 layout: post
-bigtitle:  "[프로그래머스] 달리기 경주"
-subtitle:  "[2일차] [코딩테스트] [연습문제] [LV.1]"
+bigtitle:  "[프로그래머스] [파이썬] 달리기 경주"
+subtitle:  "[2일차] [코딩테스트] [연습문제] [LV.1] [Python]"
 categories:
     - study
     - codingtest
