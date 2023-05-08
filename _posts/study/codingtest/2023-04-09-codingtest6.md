@@ -12,7 +12,7 @@ published: true
 date: '2023-04-09 02:45:51 +0900'
 ---
 
-# A+B
+# [4일차] [Softeer] [파이썬] A+B
 
 [https://softeer.ai/practice/info.do?idx=1&eid=362&sw_prbl_sbms_sn=173126](https://softeer.ai/practice/info.do?idx=1&eid=362&sw_prbl_sbms_sn=173126)
 

@@ -12,7 +12,7 @@ published: true
 date: '2023-04-09 02:45:51 +0900'
 ---
 
-# 로봇이 지나간 경로
+# [4일차] [Softeer] [파이썬] 로봇이 지나간 경로
 
 [https://softeer.ai/practice/info.do?idx=1&eid=577](https://softeer.ai/practice/info.do?idx=1&eid=577)
 

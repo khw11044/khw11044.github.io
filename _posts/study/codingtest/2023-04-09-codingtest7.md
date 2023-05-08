@@ -12,7 +12,7 @@ published: true
 date: '2023-04-09 02:45:51 +0900'
 ---
 
-# 주행거리 비교하기
+# [4일차] [Softeer] [파이썬] 주행거리 비교하기
 
 [https://softeer.ai/practice/info.do?idx=1&eid=1016](https://softeer.ai/practice/info.do?idx=1&eid=1016)
 
