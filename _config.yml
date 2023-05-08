@@ -1,6 +1,8 @@
 # Config
 # ========================================================================================
 # 
+# $ git config --global user.name "John Doe"
+# $ git config --global user.email johndoe@example.com
 # Uncomment and set the URL of your site (with protocol, e.g. `https://`)
 # NOTE: You don't need to provide this property when hosting on GitHub Pages or Netlify.
 url:                   https://khw11044.github.io
