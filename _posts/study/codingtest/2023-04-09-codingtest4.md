@@ -1,18 +1,19 @@
 ---
 layout: post
 bigtitle:  "[프로그래머스] [파이썬] 둘만의 암호"
-subtitle:  "[4일차] [코딩테스트] [연습문제] [LV.1] [Python]"
+subtitle:  "[4일차] [코딩테스트] [연습문제] [LV.1] [구현]"
 categories:
     - study
     - codingtest
 tags:
   - codingtest
+  - 구현
 comments: true
 published: true
 date: '2023-04-09 02:45:51 +0900'
 ---
 
-# [4일차] [프로그래머스] [파이썬] 둘만의 암호
+# [4일차] [프로그래머스] [파이썬] [구현] 둘만의 암호
 
 [https://school.programmers.co.kr/learn/courses/30/lessons/155652](https://school.programmers.co.kr/learn/courses/30/lessons/155652)
 

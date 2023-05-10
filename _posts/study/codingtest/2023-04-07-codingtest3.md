@@ -1,18 +1,19 @@
 ---
 layout: post
 bigtitle:  "[프로그래머스] [파이썬] 추억점수"
-subtitle:  "[3일차] [코딩테스트] [연습문제] [LV.1] [Python]"
+subtitle:  "[3일차] [코딩테스트] [연습문제] [LV.1] [구현]"
 categories:
     - study
     - codingtest
 tags:
   - codingtest
+  - 구현
 comments: true
 published: true
 date: '2023-04-07 02:45:51 +0900'
 ---
 
-# [3일차] [프로그래머스] [파이썬] 추억점수
+# [3일차] [프로그래머스] [파이썬] [구현] 추억점수
 
 ### 문제 설명
 

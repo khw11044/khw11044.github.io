@@ -1,19 +1,20 @@
 ---
 layout: post
 bigtitle:  "[프로그래머스] [파이썬] 달리기 경주"
-subtitle:  "[2일차] [코딩테스트] [연습문제] [LV.1] [Python]"
+subtitle:  "[2일차] [코딩테스트] [연습문제] [LV.1] [시뮬레이션]"
 categories:
     - study
     - codingtest
 tags:
   - codingtest
+  - 시뮬레이션
 comments: true
 published: true
 date: '2023-04-06 02:45:51 +0900'
 ---
 
 
-# [2일차] [프로그래머스] [파이썬] 달리기 경주
+# [2일차] [프로그래머스] [파이썬] [시뮬레이션] 달리기 경주
 
 __문제 설명__ 
 
