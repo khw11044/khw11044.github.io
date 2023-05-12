@@ -782,7 +782,6 @@ $f(x) = x^2$
 
 <kbd>hello</kbd>
 
-
 <a>hello</a>
 
 <code>hello</code>
