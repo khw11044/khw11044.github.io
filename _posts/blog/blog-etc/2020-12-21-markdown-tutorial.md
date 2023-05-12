@@ -768,8 +768,6 @@ $f(x) = x^2$
 ~~~
 <kbd>hello</kbd>
 
-==hello==
-
 <a>hello</a>
 
 <code>hello</code>
@@ -784,7 +782,6 @@ $f(x) = x^2$
 
 <kbd>hello</kbd>
 
-==hello==
 
 <a>hello</a>
 
@@ -793,6 +790,7 @@ $f(x) = x^2$
 <mark>hello</mark>  
 
 <under>hello</under>
+
 ---
 ## Reference
 ---
