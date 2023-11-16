@@ -58,3 +58,6 @@ Github pages 블로그를 운영하는 중입니다.💻
 ![Luncheon_of_Boating_Party](/assets/img/Luncheon_of_Boating_Party.JPG)
 
 [Google Arts & Culture](https://artsandculture.google.com/asset/luncheon-of-the-boating-party-pierre-auguste-renoir/mgHsTKDNJVzPAg) ©  <b> Pierre-Auguste Renoir</b>. <code>Luncheon of the Boating Party</code>.  _1880-1881_. Oil on canvas
+
+
+[1](/public/안산 중흥S-클래스 더퍼스트 입주자사전점검 안내문.pdf)
