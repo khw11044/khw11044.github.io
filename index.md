@@ -29,7 +29,6 @@ Github pages 블로그를 운영하는 중입니다.💻
 
 > [강의보러가기](https://www.inflearn.com/course/%EA%B9%83%ED%97%88%EB%B8%8C-%EB%B8%94%EB%A1%9C%EA%B7%B8-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4)
 
-[1](/public/안산 중흥S-클래스 더퍼스트 입주자사전점검 안내문.pdf)
 
 <div class="me">
     <div><img src= "/assets/img/me/me0.jpg"></div>
